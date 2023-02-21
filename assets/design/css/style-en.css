@@ -1,0 +1,66 @@
+body {
+    font: 14px 'OpenSans', sans-serif;
+}
+
+.right-fa {
+    margin-right: 5px;
+}
+
+.left-fa {
+    margin-left: 5px;
+}
+
+.navbar-toggle {
+    margin: 30px 15px 0 0;
+    float: right;
+}
+
+.navbar-brand {
+    float: left;
+}
+
+footer p {
+    margin-right: 10px;
+}
+
+.owl-btn .fa {
+    transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+}
+
+.list-numbered {
+    margin-left: 20px;
+}
+
+/****/
+
+@media (min-width: 768px) {
+
+    .text-align-right {
+        text-align: left;
+    }
+
+    .text-align-left {
+        text-align: right;
+    }
+
+    .navbar-header, .navbar-right {
+        float: left !important;
+    }
+
+    .navbar-nav.navbar-left {
+        float: right !important;
+    }
+
+    .navbar-collapse .navbar-brand {
+        float: left;
+    }
+
+    .nav > li > a:after {
+        left: 0;
+    }
+
+}

@@ -1,0 +1,41 @@
+{{define "layout"}}
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="HandheldFriendly" content="true">
+        <title>{{template  "title" .}}</title>
+        {{/*        <title>{{template "title" .}}</title>*/}}
+        <link rel="icon" type="image/png" href="/assets/design/images/icon.png">
+        <link rel="stylesheet" type="text/css" href="/assets/design/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="/assets/design/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="/assets/design/owl-carousel/owl.carousel.css">
+        <link rel="stylesheet" type="text/css" href="/assets/design/css/style.css">
+        <link rel="stylesheet" type="text/css" href="/assets/design/css/style-en.css">
+
+        {{template "style" }}
+
+    </head>
+
+    <body>
+
+    {{template  "header" .}}
+
+    {{template "page" .}}
+
+    {{template "footer" .}}
+    {{template "scripts" .}}
+
+    </body>
+    </html>
+{{end}}
+
+{{define "style"}}
+{{end}}
+
+{{define "scripts" }}{{end}}
+
+{{define "title" }}
+    Photo Maker
+{{end}}
