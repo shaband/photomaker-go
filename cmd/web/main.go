@@ -7,12 +7,20 @@ import (
 
 	"github.com/gin-contrib/multitemplate"
 	"github.com/gin-gonic/gin"
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
 )
 
 func main() {
 	router := gin.Default()
+	_, err := gorm.Open(sqlite.Open("./database/test.db"), &gorm.Config{})
+	if err != nil {
+		panic("failed to connect database")
+	}
+
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
+
 	router.HTMLRender = loadTemplates("./templates")
 	router.Static("assets", "./assets")
 	router.GET("/", func(context *gin.Context) {
@@ -42,7 +50,7 @@ func main() {
 		context.HTML(http.StatusOK, "site.pill.gohtml", gin.H{})
 	})
 
-	err := router.Run(":8080")
+	err = router.Run(":8080")
 	if err != nil {
 		panic(err)
 	} // listen and serve on 0.0.0.0:8080
