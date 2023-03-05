@@ -6,9 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-
-
-func SiteRegister(router *gin.RouterGroup){
+func SiteRegister(router *gin.RouterGroup) {
 
 	router.GET("/", func(context *gin.Context) {
 		context.HTML(http.StatusOK, "site.index.gohtml", gin.H{})
@@ -37,5 +35,3 @@ func SiteRegister(router *gin.RouterGroup){
 		context.HTML(http.StatusOK, "site.pill.gohtml", gin.H{})
 	})
 }
-
-
