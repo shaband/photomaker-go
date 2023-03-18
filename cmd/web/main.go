@@ -6,55 +6,40 @@ import (
 
 	"github.com/gin-contrib/multitemplate"
 	"github.com/gin-gonic/gin"
+	"github.com/shaband/photomaker-go/libs/config/database"
 	"github.com/shaband/photomaker-go/libs/site"
-	"gorm.io/driver/sqlite"
-	"gorm.io/gorm"
 )
 
 func main() {
 	router := gin.Default()
-	_, err := gorm.Open(sqlite.Open("./database/test.db"), &gorm.Config{})
-	if err != nil {
-		panic("failed to connect database")
-	}
+	// db, err := gorm.Open(sqlite.Open("./libs/internal/database/test.db"), &gorm.Config{})
+	// if err != nil {
+	// 	panic("failed to connect database")
+	// }
+	// db.AutoMigrate(
+	// 	&categories.Category{},
+	// 	&categories.CategoryImage{},
+	// 	&clients.Client{},
+	// 	&contacts.Contact{},
+	// 	&services.Service{},
+	// 	&contacts.Contact{},
+	// 	&contacts.ServiceType{},
+	// 	&settings.Setting{},
+	// 	&sliders.Slider{},
+	// )
 
+	database.Init()
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
-
 	router.HTMLRender = loadTemplates("./templates")
 	router.Static("assets", "./assets")
 	site.SiteRegister(router.Group("/"))
-	// router.GET("/", func(context *gin.Context) {
-	// 	context.HTML(http.StatusOK, "site.index.gohtml", gin.H{})
-	// })
-	// router.GET("/about", func(context *gin.Context) {
-	// 	context.HTML(http.StatusOK, "site.about.gohtml", gin.H{})
-	// })
 
-	// router.GET("/category", func(context *gin.Context) {
-	// 	context.HTML(http.StatusOK, "site.category.gohtml", gin.H{})
-	// })
-
-	// router.GET("/contact", func(context *gin.Context) {
-	// 	context.HTML(http.StatusOK, "site.contact.gohtml", gin.H{})
-	// })
-
-	// router.GET("/gallery", func(context *gin.Context) {
-	// 	context.HTML(http.StatusOK, "site.gallery.gohtml", gin.H{})
-	// })
-
-	// router.GET("/services", func(context *gin.Context) {
-	// 	context.HTML(http.StatusOK, "site.services.gohtml", gin.H{})
-	// })
-
-	// router.GET("/pill", func(context *gin.Context) {
-	// 	context.HTML(http.StatusOK, "site.pill.gohtml", gin.H{})
-	// })
-
-	err = router.Run(":8080")
+	err := router.Run(":8080")
 	if err != nil {
 		panic(err)
 	} // listen and serve on 0.0.0.0:8080
+
 }
 
 func loadTemplates(templatesDir string) multitemplate.Renderer {

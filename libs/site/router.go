@@ -8,7 +8,7 @@ import (
 
 func SiteRegister(router *gin.RouterGroup) {
 
-	router.GET("/", func(context *gin.Context) {
+	router.GET("/", func( context *gin.Context) {
 		context.HTML(http.StatusOK, "site.index.gohtml", gin.H{})
 	})
 	router.GET("/about", func(context *gin.Context) {
