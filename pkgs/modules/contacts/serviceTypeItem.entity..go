@@ -12,15 +12,14 @@ type ServiceTypeItem struct {
 	InputType string
 }
 
-func (s ServiceTypeItem) Fake() *ServiceTypeItem {
+func (s *ServiceTypeItem) Fake() interface{} {
 	var types []string = []string{
 		"text", "checkbox", "number",
 	}
 
-	s = ServiceTypeItem{
-		NameAr:    gofakeit.Word(),
-		NameEn:    gofakeit.Word(),
-		InputType: gofakeit.RandomString(types),
-	}
-	return &s
+	s.NameAr = gofakeit.Word()
+	s.NameEn = gofakeit.Word()
+	s.InputType = gofakeit.RandomString(types)
+
+	return s
 }

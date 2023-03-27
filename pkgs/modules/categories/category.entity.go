@@ -13,12 +13,11 @@ type Category struct {
 	Cover  string
 }
 
-func (c Category) Fake() *Category {
+func (c *Category) Fake() interface{} {
 
-	c = Category{
-		NameAr: gofakeit.Name(),
-		NameEn: gofakeit.Name(),
-		Cover:  gofakeit.ImageURL(400, 400),
-	}
-	return &c
+	c.NameAr = gofakeit.Name()
+	c.NameEn = gofakeit.Name()
+	c.Cover = gofakeit.ImageURL(400, 400)
+
+	return c
 }

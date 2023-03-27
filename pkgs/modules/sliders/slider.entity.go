@@ -10,12 +10,8 @@ type Slider struct {
 	Order uint
 	Image string
 }
-
-func (s Slider) Fake() *Slider {
-	s = Slider{
-		Order: gofakeit.UintRange(1, 1000),
-		Image: gofakeit.ImageURL(400, 400),
-	}
-	return &s
-
+func (s *Slider) Fake() interface{} {
+    s.Order = gofakeit.UintRange(1, 1000)
+    s.Image = gofakeit.ImageURL(400, 400)
+    return s
 }

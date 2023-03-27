@@ -13,12 +13,11 @@ type Client struct {
 	Image  string
 }
 
-func (c Client) Fake() *Client {
-	c = Client{
-		NameAr: gofakeit.Name(),
-		NameEn: gofakeit.Name(),
-		Image:  gofakeit.ImageURL(400, 400),
-	}
-	return &c
+func (c *Client) Fake() interface{} {
+	c.NameAr = gofakeit.Name()
+	c.NameEn = gofakeit.Name()
+	c.Image = gofakeit.ImageURL(400, 400)
+
+	return c
 
 }

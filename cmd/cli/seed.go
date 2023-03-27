@@ -1,9 +1,6 @@
 package main
 
 import (
-	"fmt"
-
-	"github.com/brianvoe/gofakeit/v6"
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/database"
 	"github.com/shaband/photomaker-go/pkgs/modules/clients"
 	"github.com/shaband/photomaker-go/pkgs/modules/settings"
@@ -94,19 +91,20 @@ func settingsSeeder(db *gorm.DB) {
 	}
 }
 
-type IFake interface {
-	Fake() *interface{}
+type Fakable interface {
+	Fake() interface{}
 }
 
-func CreateFakeEntity(entity IFake) *interface{} {
+func CreateFakeEntity(entity Fakable) interface{} {
 
 	return entity.Fake()
 
 }
 
-func createClient(db *gorm.DB) {
+func createClient(db *gorm.DB) clients.Client {
 
 	client := clients.Client{}
 
-	CreateFakeEntity(client)
+	CreateFakeEntity(&client)
+	return client
 }

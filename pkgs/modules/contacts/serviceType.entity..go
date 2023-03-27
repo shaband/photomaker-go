@@ -8,11 +8,11 @@ type ServiceType struct {
 	NameEn string
 }
 
-func (s ServiceType) Fake() *ServiceType {
-	s = ServiceType{
-		Order:  uint(gofakeit.Number(1, 1000)),
-		NameAr: gofakeit.Word(),
-		NameEn: gofakeit.Word(),
-	}
-	return &s
+func (s *ServiceType) Fake() interface{} {
+
+	s.Order = gofakeit.UintRange(1, 1000)
+	s.NameAr = gofakeit.Word()
+	s.NameEn = gofakeit.Word()
+
+	return s
 }
