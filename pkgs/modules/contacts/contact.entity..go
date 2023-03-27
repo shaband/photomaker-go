@@ -9,5 +9,5 @@ type Contact struct {
 	Phone        string
 	Email        string
 	File         string
-	ServiceTypes interface{}
+	ServiceTypes interface{} `gorm:"serializer:json"`
 }

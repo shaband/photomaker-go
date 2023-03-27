@@ -6,13 +6,13 @@ import (
 
 	"github.com/gin-contrib/multitemplate"
 	"github.com/gin-gonic/gin"
-	"github.com/shaband/photomaker-go/libs/config/database"
-	"github.com/shaband/photomaker-go/libs/site"
+	"github.com/shaband/photomaker-go/pkgs/infrastucture/database"
+	"github.com/shaband/photomaker-go/pkgs/site"
 )
 
 func main() {
 	router := gin.Default()
-	// db, err := gorm.Open(sqlite.Open("./libs/internal/database/test.db"), &gorm.Config{})
+	// db, err := gorm.Open(sqlite.Open("./pkgs/internal/database/test.db"), &gorm.Config{})
 	// if err != nil {
 	// 	panic("failed to connect database")
 	// }
@@ -29,6 +29,7 @@ func main() {
 	// )
 
 	database.Init()
+	database.MakeMigration(database.GetConnection())
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
 	router.HTMLRender = loadTemplates("./templates")

@@ -3,12 +3,12 @@ package database
 import (
 	"fmt"
 
-	"github.com/shaband/photomaker-go/libs/modules/categories"
-	"github.com/shaband/photomaker-go/libs/modules/clients"
-	"github.com/shaband/photomaker-go/libs/modules/contacts"
-	"github.com/shaband/photomaker-go/libs/modules/services"
-	"github.com/shaband/photomaker-go/libs/modules/settings"
-	"github.com/shaband/photomaker-go/libs/modules/sliders"
+	"github.com/shaband/photomaker-go/pkgs/modules/categories"
+	"github.com/shaband/photomaker-go/pkgs/modules/clients"
+	"github.com/shaband/photomaker-go/pkgs/modules/contacts"
+	"github.com/shaband/photomaker-go/pkgs/modules/services"
+	"github.com/shaband/photomaker-go/pkgs/modules/settings"
+	"github.com/shaband/photomaker-go/pkgs/modules/sliders"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
@@ -17,7 +17,7 @@ var db *gorm.DB
 
 func Init() {
 
-	DB, err := gorm.Open(sqlite.Open("./test.db"), &gorm.Config{})
+	DB, err := gorm.Open(sqlite.Open("./test.sqlite"), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
@@ -38,7 +38,6 @@ func MakeMigration(db *gorm.DB) {
 		&clients.Client{},
 		&contacts.Contact{},
 		&services.Service{},
-		&contacts.Contact{},
 		&contacts.ServiceType{},
 		&settings.Setting{},
 		&sliders.Slider{},
