@@ -30,6 +30,7 @@ func main() {
 
 	database.Init()
 	database.MakeMigration(database.GetConnection())
+
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
 	router.HTMLRender = loadTemplates("./templates")

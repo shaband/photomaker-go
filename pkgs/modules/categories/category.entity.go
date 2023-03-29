@@ -10,6 +10,7 @@ type Category struct {
 	NameAr string
 	NameEn string
 	Cover  string
+	Images []CategoryImage
 }
 
 func (c *Category) Fake() interface{} {

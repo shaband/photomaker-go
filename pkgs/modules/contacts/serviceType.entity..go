@@ -10,6 +10,7 @@ type ServiceType struct {
 	Order  uint
 	NameAr string
 	NameEn string
+	Items  []ServiceTypeItem
 }
 
 func (s *ServiceType) Fake() interface{} {
