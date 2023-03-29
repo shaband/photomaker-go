@@ -1,8 +1,12 @@
 package contacts
 
-import "github.com/brianvoe/gofakeit/v6"
+import (
+	"github.com/brianvoe/gofakeit/v6"
+	"gorm.io/gorm"
+)
 
 type ServiceType struct {
+	gorm.Model
 	Order  uint
 	NameAr string
 	NameEn string

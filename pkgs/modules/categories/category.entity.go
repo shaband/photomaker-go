@@ -7,7 +7,6 @@ import (
 
 type Category struct {
 	gorm.Model
-
 	NameAr string
 	NameEn string
 	Cover  string

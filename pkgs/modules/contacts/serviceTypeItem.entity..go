@@ -7,9 +7,11 @@ import (
 
 type ServiceTypeItem struct {
 	gorm.Model
-	NameAr    string
-	NameEn    string
-	InputType string
+	NameAr        string
+	NameEn        string
+	InputType     string
+	ServiceTypeId int
+	ServiceType   ServiceType
 }
 
 func (s *ServiceTypeItem) Fake() interface{} {
@@ -17,9 +19,12 @@ func (s *ServiceTypeItem) Fake() interface{} {
 		"text", "checkbox", "number",
 	}
 
+	ServiceType := ServiceType{}
+	ServiceType.Fake()
 	s.NameAr = gofakeit.Word()
 	s.NameEn = gofakeit.Word()
 	s.InputType = gofakeit.RandomString(types)
+	s.ServiceType = ServiceType
 
 	return s
 }

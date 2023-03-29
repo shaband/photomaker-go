@@ -7,14 +7,18 @@ import (
 
 type CategoryImage struct {
 	gorm.Model
-	Image string `fake:"{imageURL:400x400}"`
-	Order uint   `fake:"{Number:1,100}"`
+	Image    string
+	Order    uint
+	CategoryId int
+	Category Category  
 }
 
 func (c *CategoryImage) Fake() interface{} {
-	
-		c.Order= gofakeit.UintRange(1,1000);
-		c.Image= gofakeit.ImageURL(400, 400);
-	
+
+	category := Category{}
+	category.Fake()
+	c.Order = gofakeit.UintRange(1, 1000)
+	c.Image = gofakeit.ImageURL(400, 400)
+	c.Category = category
 	return c
 }
