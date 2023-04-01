@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"path/filepath"
+	"text/template"
 
 	"github.com/gin-contrib/multitemplate"
 	"github.com/gin-gonic/gin"
@@ -12,21 +13,6 @@ import (
 
 func main() {
 	router := gin.Default()
-	// db, err := gorm.Open(sqlite.Open("./pkgs/internal/database/test.db"), &gorm.Config{})
-	// if err != nil {
-	// 	panic("failed to connect database")
-	// }
-	// db.AutoMigrate(
-	// 	&categories.Category{},
-	// 	&categories.CategoryImage{},
-	// 	&clients.Client{},
-	// 	&contacts.Contact{},
-	// 	&services.Service{},
-	// 	&contacts.Contact{},
-	// 	&contacts.ServiceType{},
-	// 	&settings.Setting{},
-	// 	&sliders.Slider{},
-	// )
 
 	database.Init()
 	database.MakeMigration(database.GetConnection())
@@ -46,7 +32,6 @@ func main() {
 
 func loadTemplates(templatesDir string) multitemplate.Renderer {
 	r := multitemplate.NewRenderer()
-
 	siteLayouts, err := filepath.Glob(templatesDir + "/site/layout/*.gohtml")
 	if err != nil {
 		panic(err.Error())
@@ -63,7 +48,12 @@ func loadTemplates(templatesDir string) multitemplate.Renderer {
 		copy(siteLayoutCopy, siteLayouts)
 		files := append(siteLayoutCopy, sitePage)
 		fmt.Println(files)
-		r.AddFromFiles("site."+filepath.Base(sitePage), files...)
+		r.AddFromFilesFuncs("site."+filepath.Base(sitePage), template.FuncMap{
+			"getSetting":func (name)  {
+					database.GetConnection().Select("value").Find()
+			}
+		}, files...)
+
 	}
 	// adminLayouts, err := filepath.Glob(templatesDir + "/layouts/admin/*.gohtml")
 	// if err != nil {

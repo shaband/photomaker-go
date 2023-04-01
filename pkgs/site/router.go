@@ -1,17 +1,9 @@
 package site
 
 import (
-	"net/http"
-
 	"github.com/gin-gonic/gin"
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/database"
-	"github.com/shaband/photomaker-go/pkgs/modules/categories"
-	"github.com/shaband/photomaker-go/pkgs/modules/clients"
-	"github.com/shaband/photomaker-go/pkgs/modules/contacts"
-	"github.com/shaband/photomaker-go/pkgs/modules/services"
 	"github.com/shaband/photomaker-go/pkgs/modules/settings"
-
-	"github.com/shaband/photomaker-go/pkgs/modules/sliders"
 )
 
 func LoadSettings() gin.HandlerFunc {
@@ -19,7 +11,7 @@ func LoadSettings() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
 		var results []*settings.Setting
-		database.GetConnection().Find(&results)
+		database.GetConnection().Select("slug", "value").Find(&results)
 
 		c.Set("settings", results)
 
@@ -33,70 +25,19 @@ func LoadSettings() gin.HandlerFunc {
 func SiteRegister(router *gin.RouterGroup) {
 
 	router.Use(LoadSettings())
-	router.GET("/", func(context *gin.Context) {
 
-		context.HTML(http.StatusOK, "site.index.gohtml", gin.H{
-			"settings": context.MustGet("settings").([]*settings.Setting),
-			"sliders":  sliders.NewSliderService(database.GetConnection()).GetSliders(),
-		})
-	})
-	router.GET("/about", func(context *gin.Context) {
+	handler := NewSiteHandler(database.GetConnection())
 
-		Clients := []*clients.Client{}
+	router.GET("/", handler.IndexPage)
+	router.GET("/about", handler.AboutPage)
 
-		database.GetConnection().Find(&Clients)
+	router.GET("/category/:id", handler.CategoryPage)
 
-		context.HTML(http.StatusOK, "site.about.gohtml", gin.H{
-			"settings": context.MustGet("settings").([]*settings.Setting),
-			"clients":  Clients,
-		})
-	})
+	router.GET("/contact", handler.ContactPage)
 
-	router.GET("/category/:id", func(context *gin.Context) {
-		Category := categories.Category{}
-		database.GetConnection().Preload("Images").First(&Category, context.Param("id"))
+	router.GET("/gallery", handler.GalleryPage)
 
-		context.HTML(http.StatusOK, "site.category.gohtml", gin.H{
-			"settings": context.MustGet("settings").([]*settings.Setting),
-			"category": Category,
-		})
-	})
+	router.GET("/services", handler.ServicesPage)
 
-	router.GET("/contact", func(context *gin.Context) {
-
-		ServiceTypes := contacts.ServiceType{}
-		database.GetConnection().Preload("Items").Find(&ServiceTypes)
-
-		context.HTML(http.StatusOK, "site.contact.gohtml", gin.H{
-			"settings":     context.MustGet("settings").([]*settings.Setting),
-			"serviceTypes": ServiceTypes,
-		})
-	})
-
-	router.GET("/gallery", func(context *gin.Context) {
-		Categories := []*categories.Category{}
-		database.GetConnection().Find(&Categories)
-
-		context.HTML(http.StatusOK, "site.gallery.gohtml", gin.H{
-			"settings":   context.MustGet("settings").([]*settings.Setting),
-			"categories": Categories,
-		})
-	})
-
-	router.GET("/services", func(context *gin.Context) {
-
-		Services := []*services.Service{}
-		database.GetConnection().Find(&Services)
-
-		context.HTML(http.StatusOK, "site.services.gohtml", gin.H{
-			"settings": context.MustGet("settings").([]*settings.Setting),
-			"services": Services,
-		})
-	})
-
-	router.GET("/pill", func(context *gin.Context) {
-		context.HTML(http.StatusOK, "site.pill.gohtml", gin.H{
-			"settings": context.MustGet("settings").([]*settings.Setting),
-		})
-	})
+	router.GET("/pill", handler.PillPage)
 }
