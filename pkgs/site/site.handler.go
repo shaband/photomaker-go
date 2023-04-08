@@ -10,6 +10,8 @@ import (
 	"github.com/shaband/photomaker-go/pkgs/modules/services"
 	"github.com/shaband/photomaker-go/pkgs/modules/sliders"
 	"gorm.io/gorm"
+	"github.com/utrack/gin-csrf"
+
 )
 
 type SiteHandler struct {
@@ -44,6 +46,8 @@ func (handler *SiteHandler) CategoryPage(context *gin.Context) {
 func (handler *SiteHandler) ContactPage(context *gin.Context) {
 
 	context.HTML(http.StatusOK, "site.contact.gohtml", gin.H{
+
+		"token": csrf.GetToken(context),
 		"serviceTypes": contacts.NewContractService(handler.db).GetAll(),
 	})
 }

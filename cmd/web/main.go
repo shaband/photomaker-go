@@ -8,10 +8,13 @@ import (
 	"text/template"
 
 	"github.com/gin-contrib/multitemplate"
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/database"
 	"github.com/shaband/photomaker-go/pkgs/modules/settings"
 	"github.com/shaband/photomaker-go/pkgs/site"
+	csrf "github.com/utrack/gin-csrf"
 )
 
 func main() {
@@ -22,6 +25,17 @@ func main() {
 
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
+	store := cookie.NewStore([]byte("secret"))
+	router.Use(sessions.Sessions("mysession", store))
+	router.Use(csrf.Middleware(csrf.Options{
+		Secret: "secret123",
+		ErrorFunc: func(c *gin.Context) {
+			c.String(400, "CSRF token mismatch")
+			c.Abort()
+		},
+	}))
+	router.MaxMultipartMemory = 8 << 20 // 8 MiB
+
 	router.HTMLRender = loadTemplates("./templates")
 	router.Static("assets", "./assets")
 	site.SiteRegister(router.Group("/"))

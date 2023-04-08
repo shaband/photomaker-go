@@ -76,12 +76,12 @@
 
         <div class="row">
             <div class="col-xs-12 col-sm-8">
-                <form>
-                    <input type="text" placeholder="الاسم / الشركة">
-                    <input type="text" placeholder="نوع النشاط">
-                    <input type="tel" placeholder="رقم التواصل">
-                    <input type="email" placeholder="البريد الإلكتروني">
-
+                <form method="post" action="/contact">
+                    <input type="hidden" name="csrf_token" value="{{.token}}">
+                    <input type="text" name="name" placeholder="الاسم / الشركة">
+                    <input type="text" name="subject" placeholder="نوع النشاط">
+                    <input type="tel" name="phone" placeholder="رقم التواصل">
+                    <input type="email" name="email" placeholder="البريد الإلكتروني">
 
                     <label>نوع الخدمة</label>
 
@@ -102,7 +102,12 @@
                                 <div class="check-open">
                                 {{range .Items}}
                                     <label class="checkbox-holder">
-                                        <input type="{{.InputType}}" name="service_type[{{.ServiceTypeId}}][]" value={{.ID}}>
+                                        <input type="{{.InputType}}" name="service_type[{{.ServiceTypeId}}][]" 
+                                        
+                                        {{if or (eq  .InputType "checkbox") (eq  .InputType "radio") }}
+                                        value={{.NameAr}}
+                                        {{end}}
+                                        >
                                         <span class="checkbox-icon"></span>
                                         <span>{{.NameAr}}</span>
                                     </label>
@@ -118,7 +123,7 @@
 
 
                     <label>إرفاق ملف</label>
-                    <input type="file" placeholder="إرفاق ملف">
+                    <input type="file" name="attachment" placeholder="إرفاق ملف">
                     <div class="btn btn-white btn-block">
                         <span><input type="submit" value="إرسال"></span>
                     </div>
