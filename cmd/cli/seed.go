@@ -100,6 +100,36 @@ func settingsSeeder(db *gorm.DB) {
 			Page:  "contact",
 			Type:  "text",
 		},
+
+		{
+			Slug:  "google",
+			Label: "google",
+			Value: "https://google.com",
+			Page:  "contact",
+			Type:  "text",
+		},
+
+		{
+			Slug:  "pinterest",
+			Label: "pinterest",
+			Value: "https://pinterest.com",
+			Page:  "contact",
+			Type:  "text",
+		},
+		{
+			Slug:  "behance",
+			Label: "behance",
+			Value: "https://behance.com",
+			Page:  "contact",
+			Type:  "text",
+		},
+		{
+			Slug:  "vimeo",
+			Label: "vimeo",
+			Value: "https://vimeo.com",
+			Page:  "contact",
+			Type:  "text",
+		},
 	}
 
 	for _, value := range settingsData {

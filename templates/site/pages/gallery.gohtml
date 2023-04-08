@@ -14,95 +14,17 @@
         <h1 class="main-heading">أعمالنا</h1>
 
         <div class="row">
+{{range .categories}}
             <div class="col-xs-12 col-sm-6 col-md-4 no-padding">
-                <a href="category.gohtml" class="img-holder">
-                    <img src="/assets/design/images/1.jpg" alt="...">
+                <a href="/category/{{.ID}}" class="img-holder">
+                    <img src="{{.Cover}}" alt="...">
 
                     <div class="hover-content">
-                        <h1>اسم القسم</h1>
+                        <h1>{{.NameAr}}</h1>
                     </div>
                 </a>
             </div>
-
-            <div class="col-xs-12 col-sm-6 col-md-4 no-padding">
-                <a href="category.gohtml" class="img-holder">
-                    <img src="/assets/design/images/2.jpg" alt="...">
-
-                    <div class="hover-content">
-                        <h1>اسم القسم</h1>
-                    </div>
-                </a>
-            </div>
-
-            <div class="col-xs-12 col-sm-6 col-md-4 no-padding">
-                <a href="category.gohtml" class="img-holder">
-                    <img src="/assets/design/images/3.jpg" alt="...">
-
-                    <div class="hover-content">
-                        <h1>اسم القسم</h1>
-                    </div>
-                </a>
-            </div>
-
-            <div class="col-xs-12 col-sm-6 col-md-4 no-padding">
-                <a href="category.gohtml" class="img-holder">
-                    <img src="/assets/design/images/1.jpg" alt="...">
-
-                    <div class="hover-content">
-                        <h1>اسم القسم</h1>
-                    </div>
-                </a>
-            </div>
-
-            <div class="col-xs-12 col-sm-6 col-md-4 no-padding">
-                <a href="category.gohtml" class="img-holder">
-                    <img src="/assets/design/images/2.jpg" alt="...">
-
-                    <div class="hover-content">
-                        <h1>اسم القسم</h1>
-                    </div>
-                </a>
-            </div>
-
-            <div class="col-xs-12 col-sm-6 col-md-4 no-padding">
-                <a href="category.gohtml" class="img-holder">
-                    <img src="/assets/design/images/3.jpg" alt="...">
-
-                    <div class="hover-content">
-                        <h1>اسم القسم</h1>
-                    </div>
-                </a>
-            </div>
-
-            <div class="col-xs-12 col-sm-6 col-md-4 no-padding">
-                <a href="category.gohtml" class="img-holder">
-                    <img src="/assets/design/images/1.jpg" alt="...">
-
-                    <div class="hover-content">
-                        <h1>اسم القسم</h1>
-                    </div>
-                </a>
-            </div>
-
-            <div class="col-xs-12 col-sm-6 col-md-4 no-padding">
-                <a href="category.gohtml" class="img-holder">
-                    <img src="/assets/design/images/2.jpg" alt="...">
-
-                    <div class="hover-content">
-                        <h1>اسم القسم</h1>
-                    </div>
-                </a>
-            </div>
-
-            <div class="col-xs-12 col-sm-6 col-md-4 no-padding">
-                <a href="category.gohtml" class="img-holder">
-                    <img src="/assets/design/images/3.jpg" alt="...">
-
-                    <div class="hover-content">
-                        <h1>اسم القسم</h1>
-                    </div>
-                </a>
-            </div>
+{{end}}
         </div>
 
     </div>

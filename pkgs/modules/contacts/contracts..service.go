@@ -2,19 +2,19 @@ package contacts
 
 import "gorm.io/gorm"
 
-type ContractService struct {
+type contractService struct {
 	db *gorm.DB
 }
 
-func (service *ContractService) GetAll() *[]*ServiceType {
+func (service *contractService) GetAll() *[]*ServiceType {
 	ServiceTypes := []*ServiceType{}
 	service.db.Preload("Items").Find(&ServiceTypes)
 	return &ServiceTypes
 }
 
-func NewContractService(db *gorm.DB) *ContractService {
+func NewContractService(db *gorm.DB) *contractService {
 
-	return &ContractService{
+	return &contractService{
 		db: db,
 	}
 }

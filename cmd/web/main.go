@@ -3,11 +3,14 @@ package main
 import (
 	"fmt"
 	"path/filepath"
+	"time"
+
 	"text/template"
 
 	"github.com/gin-contrib/multitemplate"
 	"github.com/gin-gonic/gin"
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/database"
+	"github.com/shaband/photomaker-go/pkgs/modules/settings"
 	"github.com/shaband/photomaker-go/pkgs/site"
 )
 
@@ -49,9 +52,14 @@ func loadTemplates(templatesDir string) multitemplate.Renderer {
 		files := append(siteLayoutCopy, sitePage)
 		fmt.Println(files)
 		r.AddFromFilesFuncs("site."+filepath.Base(sitePage), template.FuncMap{
-			"getSetting":func (name)  {
-					database.GetConnection().Select("value").Find()
-			}
+			"getSetting": func(slug string) *string {
+				Setting := settings.Setting{}
+				database.GetConnection().Select("value").Where("slug = ?", slug).Find(&Setting)
+				return &(Setting.Value)
+			},
+			"getYear": func() int {
+				return time.Now().Year()
+			},
 		}, files...)
 
 	}

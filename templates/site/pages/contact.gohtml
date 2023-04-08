@@ -86,289 +86,34 @@
                     <label>نوع الخدمة</label>
 
                     <div class="row">
+
+                    {{range .serviceTypes}}
                         <div class="col-xs-12 col-sm-6 col-md-4">
                             <div class="box black-box margin-bottom">
                                 <div class="main-label">
                                     <label class="checkbox-holder">
-                                        <input type="checkbox">
+                                        <input type="checkbox" name="service_types[]" value="{{.ID}}">
                                         <span class="checkbox-icon"></span>
-                                        <span>تصوير فوتوغرافي</span>
+                                        <span>{{.NameAr}}</span>
                                     </label>
                                 </div>
 
 
                                 <div class="check-open">
-
+                                {{range .Items}}
                                     <label class="checkbox-holder">
-                                        <input type="checkbox">
+                                        <input type="{{.InputType}}" name="service_type[{{.ServiceTypeId}}][]" value={{.ID}}>
                                         <span class="checkbox-icon"></span>
-                                        <span>أطعمة ومشروبات</span>
+                                        <span>{{.NameAr}}</span>
                                     </label>
-
-                                    <label class="checkbox-holder">
-                                        <input type="checkbox">
-                                        <span class="checkbox-icon"></span>
-                                        <span>أثاث</span>
-                                    </label>
-
-                                    <label class="checkbox-holder">
-                                        <input type="checkbox">
-                                        <span class="checkbox-icon"></span>
-                                        <span>فنادق</span>
-                                    </label>
-
-                                    <label class="checkbox-holder">
-                                        <input type="checkbox">
-                                        <span class="checkbox-icon"></span>
-                                        <span>عقار</span>
-                                    </label>
-
-                                    <label class="checkbox-holder">
-                                        <input type="checkbox">
-                                        <span class="checkbox-icon"></span>
-                                        <span>أجهزة إلكترونية</span>
-                                    </label>
-
-                                    <label class="checkbox-holder">
-                                        <input type="checkbox">
-                                        <span class="checkbox-icon"></span>
-                                        <span>أشخاص</span>
-                                    </label>
-
-                                    <label class="checkbox-holder">
-                                        <input type="checkbox">
-                                        <span class="checkbox-icon"></span>
-                                        <span>توثيق مناسبات</span>
-                                    </label>
-
-                                    <label class="checkbox-holder">
-                                        <input type="checkbox">
-                                        <span class="checkbox-icon"></span>
-                                        <span> (يرجى التحديد )أخرى </span>
-                                    </label>
-
-                                    <input type="text" placeholder="">
-
-                                    <label>عدد الصور</label>
-                                    <input type="number" placeholder="عدد الصور">
-
-                                    <label class="checkbox-holder">
-                                        <input type="checkbox">
-                                        <span class="checkbox-icon"></span>
-                                        <span>خلفية مفرغة</span>
-                                    </label>
-
-                                    <label class="checkbox-holder">
-                                        <input type="checkbox">
-                                        <span class="checkbox-icon"></span>
-                                        <span>خلفية مركبة</span>
-                                    </label>
-
-                                    <label class="checkbox-holder">
-                                        <input type="checkbox">
-                                        <span class="checkbox-icon"></span>
-                                        <span>تصوير بالشكل الطبيعي</span>
-                                    </label>
-
-                                    <label class="checkbox-holder">
-                                        <input type="checkbox">
-                                        <span class="checkbox-icon"></span>
-                                        <span>الممثلين  ( تصوير الأشخاص)</span>
-                                    </label>
-
+                                {{end}}
+                                    
                                 </div>
                             </div>
-                        </div>
+                        </div>  
+                    {{end}}
 
 
-                        <div class="col-xs-12 col-sm-6 col-md-4">
-                            <div class="box black-box margin-bottom">
-                                <div class="main-label">
-                                    <label class="checkbox-holder">
-                                        <input type="checkbox">
-                                        <span class="checkbox-icon"></span>
-                                        <span>تصوير فوتوغرافي</span>
-                                    </label>
-                                </div>
-
-
-                                <div class="check-open">
-
-                                    <label class="checkbox-holder">
-                                        <input type="checkbox">
-                                        <span class="checkbox-icon"></span>
-                                        <span>أطعمة ومشروبات</span>
-                                    </label>
-
-                                    <label class="checkbox-holder">
-                                        <input type="checkbox">
-                                        <span class="checkbox-icon"></span>
-                                        <span>أثاث</span>
-                                    </label>
-
-                                    <label class="checkbox-holder">
-                                        <input type="checkbox">
-                                        <span class="checkbox-icon"></span>
-                                        <span>فنادق</span>
-                                    </label>
-
-                                    <label class="checkbox-holder">
-                                        <input type="checkbox">
-                                        <span class="checkbox-icon"></span>
-                                        <span>عقار</span>
-                                    </label>
-
-                                    <label class="checkbox-holder">
-                                        <input type="checkbox">
-                                        <span class="checkbox-icon"></span>
-                                        <span>أجهزة إلكترونية</span>
-                                    </label>
-
-                                    <label class="checkbox-holder">
-                                        <input type="checkbox">
-                                        <span class="checkbox-icon"></span>
-                                        <span>أشخاص</span>
-                                    </label>
-
-                                    <label class="checkbox-holder">
-                                        <input type="checkbox">
-                                        <span class="checkbox-icon"></span>
-                                        <span>توثيق مناسبات</span>
-                                    </label>
-
-                                    <label class="checkbox-holder">
-                                        <input type="checkbox">
-                                        <span class="checkbox-icon"></span>
-                                        <span> (يرجى التحديد )أخرى </span>
-                                    </label>
-
-                                    <input type="text" placeholder="">
-
-                                    <label>عدد الصور</label>
-                                    <input type="number" placeholder="عدد الصور">
-
-                                    <label class="checkbox-holder">
-                                        <input type="checkbox">
-                                        <span class="checkbox-icon"></span>
-                                        <span>خلفية مفرغة</span>
-                                    </label>
-
-                                    <label class="checkbox-holder">
-                                        <input type="checkbox">
-                                        <span class="checkbox-icon"></span>
-                                        <span>خلفية مركبة</span>
-                                    </label>
-
-                                    <label class="checkbox-holder">
-                                        <input type="checkbox">
-                                        <span class="checkbox-icon"></span>
-                                        <span>تصوير بالشكل الطبيعي</span>
-                                    </label>
-
-                                    <label class="checkbox-holder">
-                                        <input type="checkbox">
-                                        <span class="checkbox-icon"></span>
-                                        <span>الممثلين  ( تصوير الأشخاص)</span>
-                                    </label>
-
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div class="col-xs-12 col-sm-6 col-md-4">
-                            <div class="box black-box margin-bottom">
-                                <div class="main-label">
-                                    <label class="checkbox-holder">
-                                        <input type="checkbox">
-                                        <span class="checkbox-icon"></span>
-                                        <span>تصوير فوتوغرافي</span>
-                                    </label>
-                                </div>
-
-
-                                <div class="check-open">
-
-                                    <label class="checkbox-holder">
-                                        <input type="checkbox">
-                                        <span class="checkbox-icon"></span>
-                                        <span>أطعمة ومشروبات</span>
-                                    </label>
-
-                                    <label class="checkbox-holder">
-                                        <input type="checkbox">
-                                        <span class="checkbox-icon"></span>
-                                        <span>أثاث</span>
-                                    </label>
-
-                                    <label class="checkbox-holder">
-                                        <input type="checkbox">
-                                        <span class="checkbox-icon"></span>
-                                        <span>فنادق</span>
-                                    </label>
-
-                                    <label class="checkbox-holder">
-                                        <input type="checkbox">
-                                        <span class="checkbox-icon"></span>
-                                        <span>عقار</span>
-                                    </label>
-
-                                    <label class="checkbox-holder">
-                                        <input type="checkbox">
-                                        <span class="checkbox-icon"></span>
-                                        <span>أجهزة إلكترونية</span>
-                                    </label>
-
-                                    <label class="checkbox-holder">
-                                        <input type="checkbox">
-                                        <span class="checkbox-icon"></span>
-                                        <span>أشخاص</span>
-                                    </label>
-
-                                    <label class="checkbox-holder">
-                                        <input type="checkbox">
-                                        <span class="checkbox-icon"></span>
-                                        <span>توثيق مناسبات</span>
-                                    </label>
-
-                                    <label class="checkbox-holder">
-                                        <input type="checkbox">
-                                        <span class="checkbox-icon"></span>
-                                        <span> (يرجى التحديد )أخرى </span>
-                                    </label>
-
-                                    <input type="text" placeholder="">
-
-                                    <label>عدد الصور</label>
-                                    <input type="number" placeholder="عدد الصور">
-
-                                    <label class="checkbox-holder">
-                                        <input type="checkbox">
-                                        <span class="checkbox-icon"></span>
-                                        <span>خلفية مفرغة</span>
-                                    </label>
-
-                                    <label class="checkbox-holder">
-                                        <input type="checkbox">
-                                        <span class="checkbox-icon"></span>
-                                        <span>خلفية مركبة</span>
-                                    </label>
-
-                                    <label class="checkbox-holder">
-                                        <input type="checkbox">
-                                        <span class="checkbox-icon"></span>
-                                        <span>تصوير بالشكل الطبيعي</span>
-                                    </label>
-
-                                    <label class="checkbox-holder">
-                                        <input type="checkbox">
-                                        <span class="checkbox-icon"></span>
-                                        <span>الممثلين  ( تصوير الأشخاص)</span>
-                                    </label>
-
-                                </div>
-                            </div>
-                        </div>
                     </div>
 
 
@@ -384,8 +129,8 @@
                 <div class="box black-box text-center">
                     <h3 class="main-heading">تفاصيل الاتصال</h3>
 
-                    <p><i class="fa fa-envelope-o right-fa"></i> Info@pmstu.com</p>
-                    <p><i class="fa fa-phone right-fa"></i> 0123456789</p>
+                    <p><i class="fa fa-envelope-o right-fa"></i> {{getSetting "email"}}</p>
+                    <p><i class="fa fa-phone right-fa"></i> {{getSetting "phone"}}</p>
                 </div>
                 <div class="box black-box text-center">
                     <h3 class="main-heading">إشترك معنا</h3>
