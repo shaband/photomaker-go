@@ -11,14 +11,14 @@ import (
 	"github.com/shaband/photomaker-go/pkgs/modules/sliders"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
+	// "gorm.io/gorm/logger"
 )
 
 var db *gorm.DB
 
 func Init() {
 	DB, err := gorm.Open(sqlite.Open("./test.sqlite"), &gorm.Config{
-		Logger: logger.Default.LogMode(logger.Info),
+		// Logger: logger.Default.LogMode(logger.Info),
 	})
 	if err != nil {
 		panic("failed to connect database")

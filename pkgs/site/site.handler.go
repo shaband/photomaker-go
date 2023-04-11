@@ -1,17 +1,18 @@
 package site
 
 import (
+	"fmt"
 	"net/http"
 
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/shaband/photomaker-go/pkgs/modules/categories"
 	"github.com/shaband/photomaker-go/pkgs/modules/clients"
 	"github.com/shaband/photomaker-go/pkgs/modules/contacts"
 	"github.com/shaband/photomaker-go/pkgs/modules/services"
 	"github.com/shaband/photomaker-go/pkgs/modules/sliders"
+	csrf "github.com/utrack/gin-csrf"
 	"gorm.io/gorm"
-	"github.com/utrack/gin-csrf"
-
 )
 
 type SiteHandler struct {
@@ -24,6 +25,22 @@ func NewSiteHandler(db *gorm.DB) *SiteHandler {
 }
 
 func (handler *SiteHandler) IndexPage(context *gin.Context) {
+	s := sessions.Default(context)
+
+	if s.Get("lang") != nil {
+		lang :=s.Get("lang").(string)
+		fmt.Println(lang)
+	}
+	lang := context.DefaultQuery("lang", "ar")
+	fmt.Print("final==============================================+")
+	fmt.Println(lang)
+	s.Set("lang", lang)
+	err := s.Save()
+	fmt.Println(err)
+	fmt.Print("from session  2 ===>   ")
+	fmt.Println(lang)
+
+
 	context.HTML(http.StatusOK, "site.index.gohtml", gin.H{
 		"sliders": sliders.NewSliderService(handler.db).GetSliders(),
 	})
@@ -47,7 +64,7 @@ func (handler *SiteHandler) ContactPage(context *gin.Context) {
 
 	context.HTML(http.StatusOK, "site.contact.gohtml", gin.H{
 
-		"token": csrf.GetToken(context),
+		"token":        csrf.GetToken(context),
 		"serviceTypes": contacts.NewContractService(handler.db).GetAll(),
 	})
 }

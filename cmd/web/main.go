@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"path/filepath"
 	"time"
 
@@ -22,7 +21,7 @@ func main() {
 
 	database.Init()
 	database.MakeMigration(database.GetConnection())
-
+	loadmiddlewares(router)
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
 	store := cookie.NewStore([]byte("secret"))
@@ -40,7 +39,7 @@ func main() {
 	router.Static("assets", "./assets")
 	site.SiteRegister(router.Group("/"))
 
-	err := router.Run(":8080")
+	err := router.Run(":8081")
 	if err != nil {
 		panic(err)
 	} // listen and serve on 0.0.0.0:8080
@@ -64,7 +63,6 @@ func loadTemplates(templatesDir string) multitemplate.Renderer {
 		siteLayoutCopy := make([]string, len(siteLayouts))
 		copy(siteLayoutCopy, siteLayouts)
 		files := append(siteLayoutCopy, sitePage)
-		fmt.Println(files)
 		r.AddFromFilesFuncs("site."+filepath.Base(sitePage), template.FuncMap{
 			"getSetting": func(slug string) *string {
 				Setting := settings.Setting{}
@@ -73,6 +71,9 @@ func loadTemplates(templatesDir string) multitemplate.Renderer {
 			},
 			"getYear": func() int {
 				return time.Now().Year()
+			},
+			"Trans": func(MessageID string) string {
+				return site.Trans(MessageID, make(map[string]string))
 			},
 		}, files...)
 
@@ -106,3 +107,16 @@ func loadTemplates(templatesDir string) multitemplate.Renderer {
 // 	return strings.ReplaceAll(template_with_suffix, "/", ".")
 
 // }
+func loadmiddlewares(router *gin.Engine) {
+	router.Use(gin.Logger())
+	router.Use(gin.Recovery())
+	store := cookie.NewStore([]byte("secret"))
+	router.Use(sessions.Sessions("mysession", store))
+	router.Use(csrf.Middleware(csrf.Options{
+		Secret: "secret123",
+		ErrorFunc: func(c *gin.Context) {
+			c.String(400, "CSRF token mismatch")
+			c.Abort()
+		},
+	}))
+}
