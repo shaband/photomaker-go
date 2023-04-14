@@ -1,8 +1,6 @@
 package categories
 
 import (
-	"fmt"
-
 	"gorm.io/gorm"
 )
 
@@ -32,6 +30,5 @@ func (s CategoriesService) GetSingleCategoryWithImages(conds ...interface{}) *Ca
 
 	s.db.Preload("Images").Find(&category, conds)
 
-	fmt.Println(category)
 	return &category
 }

@@ -12,14 +12,11 @@ func (service *SettingService) GetAll() []Setting {
 	return Settings
 }
 
-func (service *SettingService) Find(slug string) *Setting {
-	Settings := Setting{
-		Slug: slug,
-	}
-	service.db.Find(&Settings)
-	return &Settings
+func (service *SettingService) FindValue(slug string) *string {
+	Setting := Setting{}
+	service.db.Select("value").Where("slug = ?", slug).Find(&Setting)
+	return &(Setting.Value)
 }
-
 func NewSettingService(db *gorm.DB) *SettingService {
 
 	return &SettingService{

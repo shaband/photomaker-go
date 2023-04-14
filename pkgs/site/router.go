@@ -4,8 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 
-	// "fmt"
-
 	ginI18n "github.com/gin-contrib/i18n"
 	"github.com/gin-contrib/sessions"
 
@@ -37,7 +35,7 @@ import (
 func SiteRegister(router *gin.RouterGroup) {
 
 	// router.Use(LoadSettings())
-	router.Use(LoadLang())
+	// router.Use(LoadLang())
 
 	router.Use(loadLocalization())
 

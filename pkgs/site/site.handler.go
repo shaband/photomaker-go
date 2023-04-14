@@ -1,10 +1,8 @@
 package site
 
 import (
-	"fmt"
 	"net/http"
 
-	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/shaband/photomaker-go/pkgs/modules/categories"
 	"github.com/shaband/photomaker-go/pkgs/modules/clients"
@@ -25,21 +23,6 @@ func NewSiteHandler(db *gorm.DB) *SiteHandler {
 }
 
 func (handler *SiteHandler) IndexPage(context *gin.Context) {
-	s := sessions.Default(context)
-
-	if s.Get("lang") != nil {
-		lang :=s.Get("lang").(string)
-		fmt.Println(lang)
-	}
-	lang := context.DefaultQuery("lang", "ar")
-	fmt.Print("final==============================================+")
-	fmt.Println(lang)
-	s.Set("lang", lang)
-	err := s.Save()
-	fmt.Println(err)
-	fmt.Print("from session  2 ===>   ")
-	fmt.Println(lang)
-
 
 	context.HTML(http.StatusOK, "site.index.gohtml", gin.H{
 		"sliders": sliders.NewSliderService(handler.db).GetSliders(),

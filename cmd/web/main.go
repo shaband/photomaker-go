@@ -1,44 +1,35 @@
 package main
 
 import (
-	"path/filepath"
-	"time"
-
-	"text/template"
-
-	"github.com/gin-contrib/multitemplate"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/database"
-	"github.com/shaband/photomaker-go/pkgs/modules/settings"
+	"github.com/shaband/photomaker-go/pkgs/infrastucture/template"
 	"github.com/shaband/photomaker-go/pkgs/site"
 	csrf "github.com/utrack/gin-csrf"
 )
 
 func main() {
 	router := gin.Default()
-
 	database.Init()
 	database.MakeMigration(database.GetConnection())
 	loadmiddlewares(router)
-	router.Use(gin.Logger())
-	router.Use(gin.Recovery())
-	store := cookie.NewStore([]byte("secret"))
-	router.Use(sessions.Sessions("mysession", store))
-	router.Use(csrf.Middleware(csrf.Options{
-		Secret: "secret123",
-		ErrorFunc: func(c *gin.Context) {
-			c.String(400, "CSRF token mismatch")
-			c.Abort()
-		},
-	}))
+	// router.Use(gin.Logger())
+	// router.Use(gin.Recovery())
+	// store := cookie.NewStore([]byte("secret"))
+	// router.Use(sessions.Sessions("mysession", store))
+	// router.Use(csrf.Middleware(csrf.Options{
+	// 	Secret: "secret123",
+	// 	ErrorFunc: func(c *gin.Context) {
+	// 		c.String(400, "CSRF token mismatch")
+	// 		c.Abort()
+	// 	},
+	// }))
 	router.MaxMultipartMemory = 8 << 20 // 8 MiB
-
-	router.HTMLRender = loadTemplates("./templates")
+	router.HTMLRender = template.LoadTemplates()
 	router.Static("assets", "./assets")
 	site.SiteRegister(router.Group("/"))
-
 	err := router.Run(":8081")
 	if err != nil {
 		panic(err)
@@ -46,7 +37,7 @@ func main() {
 
 }
 
-func loadTemplates(templatesDir string) multitemplate.Renderer {
+/* func loadTemplates(templatesDir string) multitemplate.Renderer {
 	r := multitemplate.NewRenderer()
 	siteLayouts, err := filepath.Glob(templatesDir + "/site/layout/*.gohtml")
 	if err != nil {
@@ -97,7 +88,7 @@ func loadTemplates(templatesDir string) multitemplate.Renderer {
 	// }
 	return r
 }
-
+*/
 // func createTemplateNameFormPath(templatePath string) string {
 
 // 	fmt.Println(filepath.Clean(templatePath))
