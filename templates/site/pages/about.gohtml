@@ -12,18 +12,20 @@
 
     <div class="main-content">
         <div class="container">
-            <h1 class="main-heading">من نحن</h1>
+            <h1 class="main-heading"> {{Trans "about"}}</h1>
 
             <div class="text-center div-padding">
                 {{.commonData.settings.about }}
                 <a href="{{.commonData.settings.profile}}"
-                   target="_blank" class="btn btn-white margin"><span>تحميل بروفايل الشركة</span></a>
-                <a href="/gallery" class="btn btn-white margin"><span>عرض اعمالنا</span></a>
+                   target="_blank" class="btn btn-white margin"><span>
+                {{Trans "download profile"}}
+                   </span></a>
+                <a href="/gallery" class="btn btn-white margin"><span>{{Trans "our gallery"}}</span></a>
             </div>
 
 
             <div class="div-small-padding">
-                <h1 class="main-heading">عملائنا</h1>
+                <h1 class="main-heading">{{Trans "our Clients"}}</h1>
 
                 <div class="row">
                     <div class="col-xs-2 col-sm-1 no-padding text-center">
