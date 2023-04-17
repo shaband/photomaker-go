@@ -26,7 +26,14 @@
                     <ul class="nav navbar-nav navbar-left text-align-right">
                         <li><a href="/gallery">معرض الصور</a></li>
                         <li><a href="/contact">اتصل بنا</a></li>
-                        <li><a href="#">English</a></li>
+                    {{ if eq .commonData.locale  "ar"}}
+                        <li><a href="{{printf "%s%s" .commonData.currentPath "?lang=en"}}">English</a></li>
+                    
+                    {{end}}
+                    {{ if eq .commonData.locale  "en"}}
+                        <li><a href="{{printf "%s%s" .commonData.currentPath "?lang=ar"}}">العربية</a></li>
+                    
+                    {{end}}
                     </ul>
                 </div>
             </div>

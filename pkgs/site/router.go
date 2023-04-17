@@ -13,6 +13,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/database"
+	"github.com/shaband/photomaker-go/pkgs/modules/settings"
 	"golang.org/x/text/language"
 )
 
@@ -35,7 +36,8 @@ import (
 func SiteRegister(router *gin.RouterGroup) {
 
 	// router.Use(LoadSettings())
-	// router.Use(LoadLang())
+	router.Use(CommonDataMiddleware())
+	router.Use(LoadLang())
 
 	router.Use(loadLocalization())
 
@@ -67,19 +69,17 @@ func LoadLang() gin.HandlerFunc {
 		{
 			s := sessions.Default(c)
 			var lang string = "ar"
-			if s.Get("lang") != nil || s.Get("lang") != "" {
+			if s.Get("lang") != nil {
 				lang = s.Get("lang").(string)
-				fmt.Println("From Session =======================================")
-				fmt.Println(lang)
 			}
 			lang = c.DefaultQuery("lang", lang)
-			fmt.Print("final==============================================+")
-			fmt.Println(lang)
+
 			s.Set("lang", lang)
 			err := s.Save()
-			fmt.Println(err)
-			fmt.Print("from session  2 ===>   ")
-			fmt.Println(lang)
+			if err != nil {
+				fmt.Println(err)
+			}
+			addToCommonData(c, "locale", lang)
 			c.Next()
 		}
 	}
@@ -106,4 +106,32 @@ func loadLocalization() gin.HandlerFunc {
 			},
 		),
 	)
+}
+
+func CommonDataMiddleware() gin.HandlerFunc {
+	// Define common data to be added to the context for all requests
+
+	// Add the common data to the context
+	return func(c *gin.Context) {
+		c.Set("CommonData", gin.H{
+			"settings":     settings.NewSettingService(database.GetConnection()).GetAllValuesPluckedBy("Slug"),
+			"currentPath": c.FullPath(),
+		})
+		c.Next()
+	}
+}
+
+func addToCommonData[T any](c *gin.Context, key string, value T) {
+
+	CommonData := c.MustGet("CommonData").(gin.H)
+	CommonData[key] = value
+	c.Set("CommonData", CommonData)
+}
+
+func deleteFromCommonData(c *gin.Context, key string) {
+
+	CommonData := c.MustGet("CommonData").(gin.H)
+	delete(CommonData, key)
+
+	c.Set("CommonData", CommonData)
 }

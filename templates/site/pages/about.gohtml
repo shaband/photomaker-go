@@ -15,8 +15,8 @@
             <h1 class="main-heading">من نحن</h1>
 
             <div class="text-center div-padding">
-                {{getSetting "about" }}
-                <a href="{{getSetting "profile"}}"
+                {{.commonData.settings.about }}
+                <a href="{{.commonData.settings.profile}}"
                    target="_blank" class="btn btn-white margin"><span>تحميل بروفايل الشركة</span></a>
                 <a href="/gallery" class="btn btn-white margin"><span>عرض اعمالنا</span></a>
             </div>

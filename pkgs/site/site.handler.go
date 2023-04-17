@@ -1,6 +1,7 @@
 package site
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -17,6 +18,15 @@ type SiteHandler struct {
 	db *gorm.DB
 }
 
+func (SiteHandler) withCommonData(c *gin.Context, data gin.H) gin.H {
+
+	commonData := c.MustGet("CommonData").(gin.H)
+	// copy(data,commonData)
+	data["commonData"] = commonData
+	fmt.Println(data)
+	return data
+}
+
 func NewSiteHandler(db *gorm.DB) *SiteHandler {
 	return &SiteHandler{db: db}
 
@@ -24,47 +34,50 @@ func NewSiteHandler(db *gorm.DB) *SiteHandler {
 
 func (handler *SiteHandler) IndexPage(context *gin.Context) {
 
-	context.HTML(http.StatusOK, "site.index.gohtml", gin.H{
+	fmt.Println(handler.withCommonData(context, gin.H{
 		"sliders": sliders.NewSliderService(handler.db).GetSliders(),
-	})
+	}))
+	context.HTML(http.StatusOK, "site.index.gohtml", handler.withCommonData(context, gin.H{
+		"sliders": sliders.NewSliderService(handler.db).GetSliders(),
+	}))
 }
 
 func (handler *SiteHandler) AboutPage(context *gin.Context) {
 
-	context.HTML(http.StatusOK, "site.about.gohtml", gin.H{
+	context.HTML(http.StatusOK, "site.about.gohtml", handler.withCommonData(context, gin.H{
 		"clients": clients.NewClientSerive(handler.db).All(),
-	})
+	}))
 }
 
 func (handler *SiteHandler) CategoryPage(context *gin.Context) {
 
-	context.HTML(http.StatusOK, "site.category.gohtml", gin.H{
+	context.HTML(http.StatusOK, "site.category.gohtml", handler.withCommonData(context, gin.H{
 		"category": categories.NewContractService(handler.db).GetSingleCategoryWithImages(context.Param("id")),
-	})
+	}))
 }
 
 func (handler *SiteHandler) ContactPage(context *gin.Context) {
 
-	context.HTML(http.StatusOK, "site.contact.gohtml", gin.H{
+	context.HTML(http.StatusOK, "site.contact.gohtml", handler.withCommonData(context, gin.H{
 
 		"token":        csrf.GetToken(context),
 		"serviceTypes": contacts.NewContractService(handler.db).GetAll(),
-	})
+	}))
 }
 
 func (handler *SiteHandler) GalleryPage(context *gin.Context) {
 
-	context.HTML(http.StatusOK, "site.gallery.gohtml", gin.H{
+	context.HTML(http.StatusOK, "site.gallery.gohtml", handler.withCommonData(context, gin.H{
 		"categories": categories.NewContractService(handler.db).All(),
-	})
+	}))
 }
 
 func (handler *SiteHandler) ServicesPage(context *gin.Context) {
 
-	context.HTML(http.StatusOK, "site.services.gohtml", gin.H{
+	context.HTML(http.StatusOK, "site.services.gohtml", handler.withCommonData(context, gin.H{
 		"services": services.NewServicesSerive(handler.db).All(),
-	})
+	}))
 }
 func (handler *SiteHandler) PillPage(context *gin.Context) {
-	context.HTML(http.StatusOK, "site.pill.gohtml", gin.H{})
+	context.HTML(http.StatusOK, "site.pill.gohtml", handler.withCommonData(context, gin.H{}))
 }

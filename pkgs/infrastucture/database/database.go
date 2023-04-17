@@ -2,7 +2,9 @@ package database
 
 import (
 	"fmt"
+	"os"
 
+	_ "github.com/joho/godotenv/autoload"
 	"github.com/shaband/photomaker-go/pkgs/modules/categories"
 	"github.com/shaband/photomaker-go/pkgs/modules/clients"
 	"github.com/shaband/photomaker-go/pkgs/modules/contacts"
@@ -17,7 +19,7 @@ import (
 var db *gorm.DB
 
 func Init() {
-	DB, err := gorm.Open(sqlite.Open("./test.sqlite"), &gorm.Config{
+	DB, err := gorm.Open(sqlite.Open("./"+os.Getenv("DB_NAME")), &gorm.Config{
 		// Logger: logger.Default.LogMode(logger.Info),
 	})
 	if err != nil {
