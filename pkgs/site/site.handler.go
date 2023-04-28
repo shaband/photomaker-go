@@ -1,16 +1,17 @@
 package site
 
 import (
-	"fmt"
+	// "log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	// "github.com/gin-gonic/gin/binding"
 	"github.com/shaband/photomaker-go/pkgs/modules/categories"
 	"github.com/shaband/photomaker-go/pkgs/modules/clients"
 	"github.com/shaband/photomaker-go/pkgs/modules/contacts"
 	"github.com/shaband/photomaker-go/pkgs/modules/services"
 	"github.com/shaband/photomaker-go/pkgs/modules/sliders"
-	csrf "github.com/utrack/gin-csrf"
+	// csrf "github.com/utrack/gin-csrf"
 	"gorm.io/gorm"
 )
 
@@ -21,9 +22,8 @@ type SiteHandler struct {
 func (SiteHandler) withCommonData(c *gin.Context, data gin.H) gin.H {
 
 	commonData := c.MustGet("CommonData").(gin.H)
-	// copy(data,commonData)
 	data["commonData"] = commonData
-	fmt.Println(data)
+
 	return data
 }
 
@@ -34,9 +34,6 @@ func NewSiteHandler(db *gorm.DB) *SiteHandler {
 
 func (handler *SiteHandler) IndexPage(context *gin.Context) {
 
-	fmt.Println(handler.withCommonData(context, gin.H{
-		"sliders": sliders.NewSliderService(handler.db).GetSliders(),
-	}))
 	context.HTML(http.StatusOK, "site.index.gohtml", handler.withCommonData(context, gin.H{
 		"sliders": sliders.NewSliderService(handler.db).GetSliders(),
 	}))
@@ -60,7 +57,7 @@ func (handler *SiteHandler) ContactPage(context *gin.Context) {
 
 	context.HTML(http.StatusOK, "site.contact.gohtml", handler.withCommonData(context, gin.H{
 
-		"token":        csrf.GetToken(context),
+		"token":       "aaaaa",
 		"serviceTypes": contacts.NewContractService(handler.db).GetAll(),
 	}))
 }
@@ -72,6 +69,15 @@ func (handler *SiteHandler) GalleryPage(context *gin.Context) {
 	}))
 }
 
+func (hanlder *SiteHandler) SaveContactData(context *gin.Context) {
+	// b := binding.Default(context.Request.Method, context.ContentType())
+	context.MultipartForm()
+	m := make(map[string]any)
+	for key, value := range context.Request.PostForm {
+		m[key] = value
+	}
+	context.JSON(200, m)
+}
 func (handler *SiteHandler) ServicesPage(context *gin.Context) {
 
 	context.HTML(http.StatusOK, "site.services.gohtml", handler.withCommonData(context, gin.H{

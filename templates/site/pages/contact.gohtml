@@ -78,7 +78,7 @@
             <div class="col-xs-12 col-sm-8">
                 <form method="post" action="/contact" enctype="multipart/form-data">
                     <input type="hidden" name="csrf_token" value="{{.token}}">
-                    <input type="text" name="name" placeholder="{{Trans "name"}}>
+                    <input type="text" name="name" placeholder="{{Trans "name"}}">
                     <input type="text" name="subject" placeholder=" {{Trans "subject"}}">
                     <input type="tel" name="phone" placeholder="{{Trans "phone"}}">
                     <input type="email" name="email" placeholder="{{Trans "email"}}">
@@ -104,15 +104,20 @@
                                     <label class="checkbox-holder">
                                         <input type="{{.InputType}}" name="service_type_items[{{.ServiceTypeId}}][]" 
                                         
-                                        {{if or (eq  .InputType "checkbox") (eq  .InputType "radio") }}
-                                        value={{.NameAr}}
+                                        {{if  or (eq  .InputType "checkbox") (eq  .InputType "radio") }}
+                                            value={{.NameAr}}
+                                        {{end}}
+                                        {{if  or (ne  .InputType "checkbox") (ne  .InputType "radio") }}
+                                            placeholder={{.NameAr}}
                                         {{end}}
                                         >
+                                        {{if or (eq  .InputType "checkbox") (eq  .InputType "radio") }}
                                         <span class="checkbox-icon"></span>
                                         <span>{{.NameAr}}</span>
+                                        {{end}}
                                     </label>
                                 {{end}}
-                                    
+                            
                                 </div>
                             </div>
                         </div>  

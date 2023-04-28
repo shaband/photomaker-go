@@ -5,9 +5,8 @@
     "gallery": "معرض الصور ",
     "contact_us": "اتصل بنا",
     "copyrights": "جميع الحقوق محفوظة لمؤسسة صانع الصورة للتجارة",
-    "download_company_profile": "تحميل بروفايل الشركة",
-    "our clients": "عملائنا",
-    "our galley": "معرض اعمالنا",
+    "our Clients": "عملائنا",
+    "our Gallery": "معرض اعمالنا",
     "service type": "نوع الخدمة",
     "name": "الاسم",
     "subject": "نوع النشاط",
@@ -17,5 +16,6 @@
     "our work": "اعمالنا",
     "contact details": "تفاصيل التواصل",
     "subscribe": "اشترك معانا",
-    "send":"ارسال"
+    "download profile": "تحميل بروفايل الشركة",
+    "send": "ارسال"
 }
