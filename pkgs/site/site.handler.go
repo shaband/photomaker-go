@@ -11,6 +11,7 @@ import (
 	"github.com/shaband/photomaker-go/pkgs/modules/contacts"
 	"github.com/shaband/photomaker-go/pkgs/modules/services"
 	"github.com/shaband/photomaker-go/pkgs/modules/sliders"
+
 	// csrf "github.com/utrack/gin-csrf"
 	"gorm.io/gorm"
 )
@@ -57,7 +58,7 @@ func (handler *SiteHandler) ContactPage(context *gin.Context) {
 
 	context.HTML(http.StatusOK, "site.contact.gohtml", handler.withCommonData(context, gin.H{
 
-		"token":       "aaaaa",
+		"token":        "aaaaa",
 		"serviceTypes": contacts.NewContractService(handler.db).GetAll(),
 	}))
 }
@@ -70,13 +71,15 @@ func (handler *SiteHandler) GalleryPage(context *gin.Context) {
 }
 
 func (hanlder *SiteHandler) SaveContactData(context *gin.Context) {
-	// b := binding.Default(context.Request.Method, context.ContentType())
-	context.MultipartForm()
-	m := make(map[string]any)
-	for key, value := range context.Request.PostForm {
-		m[key] = value
+
+	var form contacts.ContactForm
+
+	if err := context.ShouldBind(&form); err != nil {
+		// handle error
+		return
 	}
-	context.JSON(200, m)
+
+	context.JSON(200, form)
 }
 func (handler *SiteHandler) ServicesPage(context *gin.Context) {
 
