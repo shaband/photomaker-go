@@ -84,7 +84,7 @@ func (hanlder *SiteHandler) SaveContactData(context *gin.Context) {
 func (handler *SiteHandler) ServicesPage(context *gin.Context) {
 
 	context.HTML(http.StatusOK, "site.services.gohtml", handler.withCommonData(context, gin.H{
-		"services": services.NewServicesSerive(handler.db).All(),
+		"services": services.NewServicesService(handler.db).All(),
 	}))
 }
 func (handler *SiteHandler) PillPage(context *gin.Context) {
