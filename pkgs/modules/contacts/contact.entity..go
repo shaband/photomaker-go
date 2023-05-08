@@ -1,7 +1,6 @@
 package contacts
 
 import (
-
 	"gorm.io/gorm"
 )
 
