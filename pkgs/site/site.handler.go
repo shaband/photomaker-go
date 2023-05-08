@@ -2,6 +2,7 @@ package site
 
 import (
 	// "log"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -76,9 +77,10 @@ func (hanlder *SiteHandler) SaveContactData(context *gin.Context) {
 
 	if err := context.ShouldBind(&form); err != nil {
 		// handle error
-		return
+		panic(err)
+		
 	}
-
+	fmt.Println(form)
 	context.JSON(200, form)
 }
 func (handler *SiteHandler) ServicesPage(context *gin.Context) {
