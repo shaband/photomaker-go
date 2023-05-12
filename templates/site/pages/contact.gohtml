@@ -77,7 +77,7 @@
         <div class="row">
             <div class="col-xs-12 col-sm-8">
                 <form method="post" action="/contact" enctype="multipart/form-data">
-                    <input type="hidden" name="csrf_token" value="{{.token}}">
+                    <input type="hidden" name="_csrf" value="{{.token}}">
                     <input type="text" name="name" placeholder="{{Trans "name"}}">
                     <input type="text" name="subject" placeholder=" {{Trans "subject"}}">
                     <input type="tel" name="phone" placeholder="{{Trans "phone"}}">
@@ -92,7 +92,7 @@
                             <div class="box black-box margin-bottom">
                                 <div class="main-label">
                                     <label class="checkbox-holder">
-                                        <input type="checkbox" name="service_types[]" value="{{.ID}}">
+                                        <input type="checkbox" name="service_types" value="{{.ID}}">
                                         <span class="checkbox-icon"></span>
                                         <span>{{.NameAr}}</span>
                                     </label>
@@ -105,9 +105,13 @@
                                 (eq  .InputType "checkbox")
                                 (eq  .InputType "radio")
                                  }}
-
-                                 <label class="checkbox-holder">
-                                        <input type="{{.InputType}}" name="service_type_items[{{.ServiceTypeId}}][]" value={{.NameAr}} >
+                                    <label class="checkbox-holder">
+                                        <input type="{{.InputType}}" name="service_type_items[{{.ServiceTypeId}}]" 
+                                        
+                                       
+                                            value={{.NameAr}}
+                                        
+                                        >
                                         <span class="checkbox-icon"></span>
                                     <span>{{.NameAr}}</span>
                                     </label>

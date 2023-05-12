@@ -3,7 +3,6 @@ package contacts
 import "mime/multipart"
 
 type ContactForm struct {
-	CsrfToken        string                `form:"csrf_token" binding:"required"`
 	Name             string                `form:"name" binding:"required"`
 	Subject          string                `form:"subject" binding:"required"`
 	Phone            string                `form:"phone" binding:"required"`

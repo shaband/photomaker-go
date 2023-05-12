@@ -10,7 +10,7 @@ import (
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/database"
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/template"
 	"github.com/shaband/photomaker-go/pkgs/site"
-	// csrf "github.com/utrack/gin-csrf"
+	csrf "github.com/utrack/gin-csrf"
 )
 
 func main() {
@@ -35,11 +35,11 @@ func loadmiddlewares(router *gin.Engine) {
 	router.Use(gin.Recovery())
 	store := cookie.NewStore([]byte(os.Getenv("SESSION_SECRET")))
 	router.Use(sessions.Sessions(os.Getenv("SESSION_NAME"), store))
-	// router.Use(csrf.Middleware(csrf.Options{
-	// 	Secret: os.Getenv("CSRF_SECRET"),
-	// 	ErrorFunc: func(c *gin.Context) {
-	// 		c.String(400, "CSRF token mismatch")
-	// 		c.Abort()
-	// 	},
-	// }))
+	router.Use(csrf.Middleware(csrf.Options{
+		Secret: os.Getenv("CSRF_SECRET"),
+		ErrorFunc: func(c *gin.Context) {
+			c.String(400, "CSRF token mismatch")
+			c.Abort()
+		},
+	}))
 }
