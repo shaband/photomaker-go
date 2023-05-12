@@ -9,6 +9,6 @@ type ContactForm struct {
 	Phone            string                `form:"phone" binding:"required"`
 	Email            string                `form:"email" binding:"required,email"`
 	ServiceTypes     []int                 `form:"service_types[]" binding:"required"`
-	ServiceTypeItems map[int][]string      `form:"service_type_items" binding:"required"`
-	Attachment       *multipart.FileHeader `form:"attachment"`
+	ServiceTypeItems map[int][]string      `form:"service_type_items"`
+	Attachment       *multipart.FileHeader `form:"attachment,omitempty"`
 }

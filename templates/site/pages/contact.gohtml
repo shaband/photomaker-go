@@ -105,21 +105,17 @@
                                 (eq  .InputType "checkbox")
                                 (eq  .InputType "radio")
                                  }}
-                                    <label class="checkbox-holder">
-                                        <input type="{{.InputType}}" name="service_type_items[{{.ServiceTypeId}}][]" 
-                                        
-                                       
-                                            value={{.NameAr}}
-                                        
-                                        >
+
+                                 <label class="checkbox-holder">
+                                        <input type="{{.InputType}}" name="service_type_items[{{.ServiceTypeId}}][]" value={{.NameAr}} >
                                         <span class="checkbox-icon"></span>
-                                        <span>{{.NameAr}}</span>
-                                       
+                                    <span>{{.NameAr}}</span>
                                     </label>
-                            {{end}}
-                             {{if or (ne  .InputType "checkbox") (ne  .InputType "radio") }}
-                                    {{/* <label>{{.NameAr}}</label> */}}
-                                    <input type="{{.InputType}}" placeholder="{{.NameAr}}">
+
+                            
+                             {{else }}
+                                   
+                                    <input type="{{.InputType}}" name="service_type_items[{{.ServiceTypeId}}][]" placeholder="{{.NameAr}}">
                              {{end}}
                                 {{end}}
                             
