@@ -77,17 +77,19 @@ func (hanlder *SiteHandler) SaveContactData(context *gin.Context) {
 
 	if err := context.ShouldBind(&form); err != nil {
 		// handle error
-		panic(err)
-
+		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 	services := form.ServiceTypes
-
 	for _, service := range services {
-	if form.ServiceTypeItems == nil{
-		form.ServiceTypeItems= make(map[int]string)
-	}	
-	form.ServiceTypeItems[service]=context.PostForm(fmt.Sprintf("service_type_items[%v]", service))
+		if form.ServiceTypeItems == nil {
+			form.ServiceTypeItems = make(map[int]string)
+		}
+
+		form.ServiceTypeItems[service] = context.PostForm(fmt.Sprintf("service_type_items[%v]", service))
 	}
+	form.Attachment,_= context.Copy().FormFile("attachment")
+
 	context.JSON(200, form)
 }
 func (handler *SiteHandler) ServicesPage(context *gin.Context) {

@@ -1,20 +1,18 @@
 {{define  "page"}}
 
-    <!--===============================
+<!--===============================
         SLIDER
     ===================================-->
 
-    <div id="owl-demo" class="owl-carousel owl-theme">
+<div id="owl-demo" class="owl-carousel owl-theme">
+  {{ range(.sliders)}}
+  <div class="item"><img src="{{.Image}}" alt="..." /></div>
+  {{ end }}
+</div>
 
- {{ range(.sliders)}}
-        <div class="item"><img src="{{.Image}}" alt="..."></div>
-{{end}}
-    </div>
+<div class="hidden">
+  <a class="btn owl-btn next"><span class="fa fa-angle-right"></span></a>
+  <a class="btn owl-btn prev"><span class="fa fa-angle-left"></span></a>
+</div>
 
-    <div class="hidden">
-        <a class="btn owl-btn next"><span class="fa fa-angle-right"></span></a>
-        <a class="btn owl-btn prev"><span class="fa fa-angle-left"></span></a>
-    </div>
-
-
-{{end}}
+{{ end }}
