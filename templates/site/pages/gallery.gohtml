@@ -5,29 +5,27 @@
 ===================================-->
 
 <div class="fixed-bg">
-    <img src="/assets/design/images/1.jpg">
+  <img src="/assets/design/images/1.jpg" />
 </div>
-
 
 <div class="main-content">
-    <div class="container-fluid">
-        <h1 class="main-heading">{{Trans "our work"}}</h1>
+  <div class="container-fluid">
+    <h1 class="main-heading">{{Trans "our work"}}</h1>
 
-        <div class="row">
-{{range .categories}}
-            <div class="col-xs-12 col-sm-6 col-md-4 no-padding">
-                <a href="/category/{{.ID}}" class="img-holder">
-                    <img src="{{.Cover}}" alt="...">
+    <div class="row">
+      {{ range.categories }}
+      <div class="col-xs-12 col-sm-6 col-md-4 no-padding">
+        <a href="/category/{{.ID}}" class="img-holder">
+          <img src="{{.Cover}}" alt="..." />
 
-                    <div class="hover-content">
-                        <h1>{{.NameAr}}</h1>
-                    </div>
-                </a>
-            </div>
-{{end}}
-        </div>
-
+          <div class="hover-content">
+            <h1>{{.NameAr}}</h1>
+          </div>
+        </a>
+      </div>
+      {{ end }}
     </div>
+  </div>
 </div>
 
-{{end}}
+{{ end }}

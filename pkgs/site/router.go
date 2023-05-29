@@ -6,12 +6,12 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/database"
-	"github.com/shaband/photomaker-go/pkgs/infrastucture/middlleware"
+	"github.com/shaband/photomaker-go/pkgs/infrastucture/middleware"
 )
 
 func SiteRegister(router *gin.RouterGroup) {
 
-	middlleware.LoadGlobleSiteMiddleware(router)
+	middleware.LoadGlobalSiteMiddleware(router)
 
 	handler := NewSiteHandler(database.GetConnection())
 

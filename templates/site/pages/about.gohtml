@@ -1,91 +1,105 @@
 {{template  "layout"}}
 
 {{define  "page"}}
-    <!--===============================
+<!--===============================
         CONTENT
     ===================================-->
 
-    <div class="fixed-bg">
-        <img src="/assets/design/images/1.jpg">
+<div class="fixed-bg">
+  <img src="/assets/design/images/1.jpg" />
+</div>
+
+<div class="main-content">
+  <div class="container">
+    <h1 class="main-heading">{{Trans "about"}}</h1>
+
+    <div class="text-center div-padding">
+      <p>
+        {{.commonData.settings.about }}
+      </p>
+      <a
+        href="{{.commonData.settings.profile}}"
+        target="_blank"
+        class="btn btn-white margin"
+        ><span>
+          {{Trans "download profile"}}
+        </span></a
+      >
+      <a href="/gallery" class="btn btn-white margin"
+        ><span>{{Trans "our Gallery"}}</span></a
+      >
     </div>
 
+    <div class="div-small-padding">
+      <h1 class="main-heading">{{Trans "our Clients"}}</h1>
 
-    <div class="main-content">
-        <div class="container">
-            <h1 class="main-heading"> {{Trans "about"}}</h1>
-
-            <div class="text-center div-padding">
-            <p>
-                {{.commonData.settings.about }}
-               </p>
-                <a href="{{.commonData.settings.profile}}"
-                   target="_blank" class="btn btn-white margin"><span>
-                {{Trans "download profile"}}
-                   </span></a>
-                <a href="/gallery" class="btn btn-white margin"><span>{{Trans "our Gallery"}}</span></a>
-            </div>
-
-
-            <div class="div-small-padding">
-                <h1 class="main-heading">{{Trans "our Clients"}}</h1>
-
-                <div class="row">
-                    <div class="col-xs-2 col-sm-1 no-padding text-center">
-                        <a class="owl-btn prev-pro margin"><span class="fa fa-angle-right"></span></a>
-                    </div>
-
-                    <div class="col-xs-8 col-sm-10 no-padding">
-                        <div id="owl-demo-products" class="owl-carousel-clients">
-                    {{range(.clients)}}
-                            <div class="item">
-                                <a class="fancybox-buttons" data-fancybox-group="button" href="{{.Image}}">
-                                    <img src="{{.Image}}" alt="img">
-                                </a>
-                            </div>
-                    {{end}}
-                        </div>
-                    </div>
-
-                    <div class="col-xs-2 col-sm-1 no-padding text-center">
-                        <a class="owl-btn next-pro margin"><span class="fa fa-angle-left"></span></a>
-                    </div>
-                </div>
-            </div>
-
+      <div class="row">
+        <div class="col-xs-2 col-sm-1 no-padding text-center">
+          <a class="owl-btn prev-pro margin"
+            ><span class="fa fa-angle-right"></span
+          ></a>
         </div>
+
+        <div class="col-xs-8 col-sm-10 no-padding">
+          <div id="owl-demo-products" class="owl-carousel-clients">
+            {{range(.clients)}}
+            <div class="item">
+              <a
+                class="fancybox-buttons"
+                data-fancybox-group="button"
+                href="{{.Image}}">
+                <img src="{{.Image}}" alt="img" />
+              </a>
+            </div>
+            {{ end }}
+          </div>
+        </div>
+
+        <div class="col-xs-2 col-sm-1 no-padding text-center">
+          <a class="owl-btn next-pro margin"
+            ><span class="fa fa-angle-left"></span
+          ></a>
+        </div>
+      </div>
     </div>
+  </div>
+</div>
 
-
-{{end}}
+{{ end }}
 
 <!--===============================
     SCRIPT
 ===================================-->
 {{define "scripts"}}
-     <script>
-        $(document).ready(function () {
-            /*Button helper. Disable animations, hide close button, change title type and content*/
+<script>
+  $(document).ready(function () {
+    /*Button helper. Disable animations, hide close button, change title type and content*/
 
-            $('.fancybox-buttons').fancybox({
-                openEffect: 'none',
-                closeEffect: 'none',
+    $('.fancybox-buttons').fancybox({
+      openEffect: 'none',
+      closeEffect: 'none',
 
-                prevEffect: 'none',
-                nextEffect: 'none',
+      prevEffect: 'none',
+      nextEffect: 'none',
 
-                closeBtn: false,
+      closeBtn: false,
 
-                helpers: {
-                    title: {
-                        type: 'inside'
-                    },
-                    buttons: {}
-                },
+      helpers: {
+        title: {
+          type: 'inside',
+        },
+        buttons: {},
+      },
 
-                afterLoad: function () {
-                    this.title = 'Image ' + (this.index + 1) + ' of ' + this.group.length + (this.title ? ' - ' + this.title : '');
-                }
-            });
-        });
-    </script>
-{{end}}
+      afterLoad: function () {
+        this.title =
+          'Image ' +
+          (this.index + 1) +
+          ' of ' +
+          this.group.length +
+          (this.title ? ' - ' + this.title : '');
+      },
+    });
+  });
+</script>
+{{ end }}

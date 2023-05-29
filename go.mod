@@ -16,6 +16,8 @@ require (
 )
 
 require (
+	github.com/ansel1/merry v1.7.0 // indirect
+	github.com/ansel1/merry/v2 v2.0.1 // indirect
 	github.com/bytedance/sonic v1.8.6 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20221115062448-fe3a3abad311 // indirect
 	github.com/dchest/uniuri v0.0.0-20160212164326-8902c56451e9 // indirect

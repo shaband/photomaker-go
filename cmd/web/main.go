@@ -9,6 +9,7 @@ import (
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/database"
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/template"
+	"github.com/shaband/photomaker-go/pkgs/infrastucture/middleware"
 	"github.com/shaband/photomaker-go/pkgs/site"
 	csrf "github.com/utrack/gin-csrf"
 )
@@ -18,7 +19,7 @@ func main() {
 	database.Init()
 	database.MakeMigration(database.GetConnection())
 	loadmiddlewares(router)
-
+	
 	router.MaxMultipartMemory = 8 << 20 // 8 MiB
 	router.HTMLRender = template.LoadTemplates()
 	router.Static("assets", "./assets")
@@ -33,6 +34,7 @@ func main() {
 func loadmiddlewares(router *gin.Engine) {
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
+	router.Use(middleware.ErrorHandler())
 	store := cookie.NewStore([]byte(os.Getenv("SESSION_SECRET")))
 	router.Use(sessions.Sessions(os.Getenv("SESSION_NAME"), store))
 	router.Use(csrf.Middleware(csrf.Options{
@@ -42,4 +44,6 @@ func loadmiddlewares(router *gin.Engine) {
 			c.Abort()
 		},
 	}))
+
+	
 }

@@ -5,24 +5,22 @@
 ===================================-->
 
 <div class="fixed-bg">
-    <img src="images/1.jpg">
+  <img src="images/1.jpg" />
 </div>
-
 
 <div class="main-content">
-    <div class="container">
-        <h1 class="main-heading">{{Trans "services"}}</h1>
+  <div class="container">
+    <h1 class="main-heading">{{Trans "services"}}</h1>
 
-
-{{range(.services)}}
-        <div class="border-bottom">
-            <h1><strong>{{.TitleAr}}</strong></h1>
-          <p>  {{.DescriptionAr}}</p>
-        </div>
-{{end}}
-        
-
+    {{range(.services)}}
+    <div class="border-bottom">
+      <h1>
+        <strong>{{.TitleAr}}</strong>
+      </h1>
+      <p>{{.DescriptionAr}}</p>
     </div>
+    {{ end }}
+  </div>
 </div>
 
-{{end}}
+{{ end }}
