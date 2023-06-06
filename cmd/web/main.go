@@ -8,19 +8,20 @@ import (
 	"github.com/gin-gonic/gin"
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/database"
-	"github.com/shaband/photomaker-go/pkgs/infrastucture/template"
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/middleware"
+	"github.com/shaband/photomaker-go/pkgs/infrastucture/template"
 	"github.com/shaband/photomaker-go/pkgs/site"
 	csrf "github.com/utrack/gin-csrf"
 )
 
 func main() {
 	router := gin.Default()
+	gin.SetMode(os.Getenv("APP_MODE"))
 	database.Init()
 	database.MakeMigration(database.GetConnection())
 	loadmiddlewares(router)
-	
-	router.MaxMultipartMemory = 8 << 20 // 8 MiB
+
+	router.MaxMultipartMemory = 8	 << 20 // 8 MiB
 	router.HTMLRender = template.LoadTemplates()
 	router.Static("assets", "./assets")
 	site.SiteRegister(router.Group("/"))
@@ -45,5 +46,4 @@ func loadmiddlewares(router *gin.Engine) {
 		},
 	}))
 
-	
 }

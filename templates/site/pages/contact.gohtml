@@ -1,103 +1,91 @@
 {{define "style"}}
-<style>
-  input[type='file'] {
-    padding: 0;
-  }
+    <style>
+        input[type="file"] {
+            padding: 0;
+        }
 
-  .black-box.margin-bottom {
-    margin: 0 0 15px;
-  }
+        .black-box.margin-bottom {
+            margin: 0 0 15px;
+        }
 
-  .checkbox-holder {
-    font-weight: 100;
-    position: relative;
-    cursor: pointer;
-    margin-bottom: 10px;
-    display: block;
-  }
+        .checkbox-holder {
+            font-weight: 100;
+            position: relative;
+            cursor: pointer;
+            margin-bottom: 10px;
+            display: block;
+        }
 
-  .checkbox-holder span {
-    vertical-align: middle;
-  }
+        .checkbox-holder span {
+            vertical-align: middle;
+        }
 
-  .checkbox-holder .checkbox-icon {
-    width: 13px;
-    height: 13px;
-    line-height: 7px;
-    display: inline-block;
-    border: 1px solid #000;
-    background: #000;
-    text-align: center;
-    margin: 0 4px;
-  }
+        .checkbox-holder .checkbox-icon {
+            width: 13px;
+            height: 13px;
+            line-height: 7px;
+            display: inline-block;
+            border: 1px solid #000;
+            background: #000;
+            text-align: center;
+            margin: 0 4px;
+        }
 
-  .checkbox-holder input[type='checkbox'] {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-  }
+        .checkbox-holder input[type="checkbox"] {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
 
-  .checkbox-holder .checkbox-icon:after {
-    content: '';
-    background: #000;
-    width: 7px;
-    height: 7px;
-    display: block;
-    margin: 2px;
-  }
+        .checkbox-holder .checkbox-icon:after {
+            content: '';
+            background: #000;
+            width: 7px;
+            height: 7px;
+            display: block;
+            margin: 2px;
+        }
 
-  .checkbox-holder input[type='checkbox']:checked + .checkbox-icon {
-    border-color: #00bcd4;
-  }
+        .checkbox-holder input[type="checkbox"]:checked + .checkbox-icon {
+            border-color: #00bcd4;
+        }
 
-  .checkbox-holder input[type='checkbox']:checked + .checkbox-icon:after {
-    background: #00bcd4;
-  }
+        .checkbox-holder input[type="checkbox"]:checked + .checkbox-icon:after {
+            background: #00bcd4;
+        }
 
-  .main-label {
-    border-bottom: 1px dashed #00bcd4;
-  }
+        .main-label {
+            border-bottom: 1px dashed #00bcd4;
+        }
 
-  .check-open {
-    margin-top: 10px;
-  }
-</style>
-{{ end }}
+        .check-open {
+            margin-top: 10px;
+        }
+    </style>
+    {{end}}
 
 {{define "page"}}
 <div class="fixed-bg">
-  <img src="/assets/design/images/1.jpg" />
+    <img src="/assets/design/images/1.jpg">
 </div>
 
+
 <div class="main-content">
-  <div class="container">
-    <h1 class="main-heading">{{Trans "contact_us"}}</h1>
+    <div class="container">
+        <h1 class="main-heading">{{Trans "contact_us"}}</h1>
 
-    <div class="row">
-      <div class="col-xs-12 col-sm-8">
-        <form method="post" action="/contact" enctype="multipart/form-data">
-          <input type="hidden" name="_csrf" value="{{.token}}" />
-          <input type="text" name="name" placeholder="{{Trans "name"}}"/> <input
-          type="text" name="subject" placeholder=" {{Trans "subject"}}"/> <input
-          type="tel" name="phone" placeholder="{{Trans "phone"}}"/> <input
-          type="email" name="email" placeholder="{{Trans "email"}}"/>
+        <div class="row">
+            <div class="col-xs-12 col-sm-8">
+                <form method="post" action="/contact" enctype="multipart/form-data">
+                    <input type="hidden" name="_csrf" value="{{.token}}">
+                    <input type="text" name="name" placeholder="{{Trans "name"}}">
+                    <input type="text" name="subject" placeholder=" {{Trans "subject"}}">
+                    <input type="tel" name="phone" placeholder="{{Trans "phone"}}">
+                    <input type="email" name="email" placeholder="{{Trans "email"}}">
 
-          <label>{{Trans "service type"}}</label>
+                <label>{{Trans "service type"}}</label>
 
-          <div class="row">
-            {{ range.serviceTypes }}
-            <div class="col-xs-12 col-sm-6 col-md-4">
-              <div class="box black-box margin-bottom">
-                <div class="main-label">
-                  <label class="checkbox-holder">
-                    <input
-                      type="checkbox"
-                      name="service_types[]"
-                      value="{{.ID}}" />
-                    <span class="checkbox-icon"></span>
-                    <span>{{.NameAr}}</span>
-                  </label>
-                </div>
+                    <div class="row">
 
                     {{range .serviceTypes}}
                         <div class="col-xs-12 col-sm-6 col-md-4">
@@ -116,78 +104,80 @@
                                 {{if  or 
                                 (eq  .InputType "checkbox")
                                 (eq  .InputType "radio")
-                  }}
-                  <label class="checkbox-holder">
-                    <input
-                      type="{{.InputType}}"
-                      name="service_type_items[{{.ServiceTypeId}}][]"
-                      value="{{.NameAr}}" />
-                    <span class="checkbox-icon"></span>
-                    <span>{{.NameAr}}</span>
-                  </label>
+                                 }}
+                                    <label class="checkbox-holder">
+                                        <input type="{{.InputType}}" name="service_type_items[{{.ServiceTypeId}}]" 
+                                        
+                                       
+                                            value={{.NameAr}}
+                                        
+                                        >
+                                        <span class="checkbox-icon"></span>
+                                        <span>{{.NameAr}}</span>
+                                        
+                                    </label>
+                                     {{else }}
+                                    {{/* <label>{{.NameAr}}</label> */}}
+                                    <input type="{{.InputType}}" name="service_type_items[{{.ServiceTypeId}}]" 
+                                    placeholder="{{.NameAr}}">
+                             
+                            {{end}}
+                            
+                                {{end}}
+                            
+                                </div>
+                            </div>
+                        </div>  
+                    {{end}}
 
-                  {{else }}
 
-                  <input
-                    type="{{.InputType}}"
-                    name="service_type_items[{{.ServiceTypeId}}][]"
-                    placeholder="{{.NameAr}}" />
-                  {{ end }}
-                  {{ end }}
+                    </div>
+
+
+                    <label>{{Trans "attach file"}}</label>
+                    <input type="file" name="attachment" placeholder="{{Trans "attach file"}}">
+                    <div class="btn btn-white btn-block">
+                        <span><input type="submit" value="{{Trans "send"}}"></span>
+                    </div>
+                </form>
+            </div>
+
+            <div class="col-xs-12 col-sm-4">
+                <div class="box black-box text-center">
+                    <h3 class="main-heading">{{Trans "contact details"}}</h3>
+
+                    <p><i class="fa fa-envelope-o right-fa"></i> {{.commonData.settings.email}}</p>
+                    <p><i class="fa fa-phone right-fa"></i> {{.commonData.settings.phone}}</p>
                 </div>
-              </div>
+                <div class="box black-box text-center">
+                    <h3 class="main-heading"> {{Trans "subscribe"}}</h3>
+
+                    <form>
+                        <input type="email" placeholder="{{Trans "email"}}">
+                        <div class="btn btn-white btn-block">
+                            <span><input type="submit" value="{{Trans "subscribe"}}"></span>
+                        </div>
+                    </form>
+                </div>
             </div>
-            {{ end }}
-          </div>
-
-          <label>{{Trans "attach file"}}</label>
-          <input type="file" name="attachment" placeholder="{{Trans "attach file"}}" >
-          <div class="btn btn-white btn-block">
-            <span><input type="submit" value="{{Trans "send"}}"></span>
-          </div>
-        </form>
-      </div>
-
-      <div class="col-xs-12 col-sm-4">
-        <div class="box black-box text-center">
-          <h3 class="main-heading">{{Trans "contact details"}}</h3>
-
-          <p>
-            <i class="fa fa-envelope-o right-fa"></i>
-            {{.commonData.settings.email}}
-          </p>
-          <p>
-            <i class="fa fa-phone right-fa"></i> {{.commonData.settings.phone}}
-          </p>
         </div>
-        <div class="box black-box text-center">
-          <h3 class="main-heading">{{Trans "subscribe"}}</h3>
 
-          <form>
-            <input type="email" placeholder="{{Trans "email"}}">
-            <div class="btn btn-white btn-block">
-              <span><input type="submit" value="{{Trans "subscribe"}}"></span>
-            </div>
-          </form>
-        </div>
-      </div>
     </div>
-  </div>
 </div>
 
-{{ end }}
+{{end}}
 {{define "scripts"}}
 <script>
-  $(document).ready(function () {
-    $('.check-open').slideUp(0);
+    $(document).ready(function (){
+        $('.check-open').slideUp(0);
 
-    $('.main-label .checkbox-holder').click(function () {
-      if ($(this).find('input').is(':checked')) {
-        $(this).parents('.main-label').next('.check-open').stop().slideDown();
-      } else {
-        $(this).parents('.main-label').next('.check-open').stop().slideUp();
-      }
+        $('.main-label .checkbox-holder').click(function (){
+            if($(this).find('input').is(':checked')) {
+                $(this).parents('.main-label').next('.check-open').stop().slideDown();
+            } else {
+                $(this).parents('.main-label').next('.check-open').stop().slideUp();
+            }
+        });
     });
-  });
 </script>
-{{ end }}
+{{end}}

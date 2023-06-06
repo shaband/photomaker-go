@@ -77,7 +77,7 @@ func (hanlder *SiteHandler) SaveContactData(context *gin.Context) {
 	form := contacts.NewContractService(hanlder.db).BindForm(context)
 	err := validator.Validate(form)
 	if err != nil {
-		fmt.Println(err.Error())
+		fmt.Println(err)
 
 	} else {
 		context.JSON(200, form)

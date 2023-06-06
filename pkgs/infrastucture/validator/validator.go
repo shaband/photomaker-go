@@ -14,7 +14,8 @@ import (
 
 var (
 	validate *validator.Validate
-	uni      *ut.UniversalTranslator
+	ar_uni   *ut.UniversalTranslator
+	en_uni   *ut.UniversalTranslator
 )
 
 func Validate[T any](data T) error {
@@ -22,11 +23,12 @@ func Validate[T any](data T) error {
 
 	en := en.New()
 	ar := ar.New()
-	uni = ut.New(en, en, ar)
+	en_uni = ut.New(en, en)
+	ar_uni = ut.New(ar, ar)
 	// this is usually know or extracted from http 'Accept-Language' header
-	// also see uni.FindTranslator(...)
-	en_trans, _ := uni.GetTranslator("ar")
-	ar_trans, _ := uni.GetTranslator("en")
+
+	en_trans, _ := en_uni.GetTranslator("ar")
+	ar_trans, _ := ar_uni.GetTranslator("en")
 
 	validate = validator.New()
 	ar_translations.RegisterDefaultTranslations(validate, ar_trans)
@@ -39,4 +41,14 @@ func val[T any](data T) error {
 
 	err := validate.Struct(data)
 	return err
+}
+
+func enTranslationFunc(ut ut.Translator, fe validator.FieldError) string {
+	t, _ := ut.T(fe.Tag(), fe.Field())
+	return t
+}
+
+func arTranslationFunc(ut ut.Translator, fe validator.FieldError) string {
+	t, _ := ut.T(fe.Tag(), fe.Field())
+	return t
 }
