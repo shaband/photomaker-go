@@ -2,11 +2,12 @@ package site
 
 import (
 	// "log"
-	"fmt"
+	// "fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 	// "github.com/gin-gonic/gin/binding"
+	"github.com/shaband/photomaker-go/pkgs/infrastucture/validator"
 	"github.com/shaband/photomaker-go/pkgs/modules/categories"
 	"github.com/shaband/photomaker-go/pkgs/modules/clients"
 	"github.com/shaband/photomaker-go/pkgs/modules/contacts"
@@ -73,24 +74,13 @@ func (handler *SiteHandler) GalleryPage(context *gin.Context) {
 
 func (hanlder *SiteHandler) SaveContactData(context *gin.Context) {
 
-	var form contacts.ContactForm
+	form := contacts.NewContractService(hanlder.db).BindForm(context)
+	err := validator.Validate(form)
+	if err != nil {
 
-	if err := context.ShouldBind(&form); err != nil {
-		// handle error
-		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
+	} else {
+		context.JSON(200, form)
 	}
-	services := form.ServiceTypes
-	for _, service := range services {
-		if form.ServiceTypeItems == nil {
-			form.ServiceTypeItems = make(map[int]string)
-		}
-
-		form.ServiceTypeItems[service] = context.PostForm(fmt.Sprintf("service_type_items[%v]", service))
-	}
-	form.Attachment,_= context.Copy().FormFile("attachment")
-
-	context.JSON(200, form)
 }
 func (handler *SiteHandler) ServicesPage(context *gin.Context) {
 

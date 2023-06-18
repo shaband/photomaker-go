@@ -38,6 +38,9 @@ func loadLangMiddleware() gin.HandlerFunc {
 				fmt.Println(err)
 			}
 			AddToTemplateCommonData(c, commonDataLocaleKey, lang)
+			c.Header("Accept-Language", lang)
+			c.Request.Header.Set("Accept-Language", lang)
+			fmt.Println(lang)
 			c.Next()
 		}
 	}
