@@ -41,3 +41,12 @@ func newSiteResolver() *TemplateResolver {
 		sitePages,
 	)
 }
+
+func newAdmnResolver() *TemplateResolver {
+
+	return newResolver(
+		templateDir,
+		siteLayout,
+		sitePages,
+	)
+}
