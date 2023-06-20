@@ -14,11 +14,15 @@ import (
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	// "gorm.io/gorm/logger"
+	// "gorm.io/driver/postgres"
 )
 
 var db *gorm.DB
 
 func Init() {
+	
+	//   dsn := "host=localhost user=postgres password=secret dbname=postgres port=5432 sslmode=disable TimeZone=Asia/Shanghai"
+	//   db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	DB, err := gorm.Open(sqlite.Open("./"+os.Getenv("DB_NAME")), &gorm.Config{
 		// Logger: logger.Default.LogMode(logger.Info),
 	})

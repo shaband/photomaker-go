@@ -19,6 +19,7 @@ const commonDataLocaleKey = "locale"
 
 var AcceptLanguage []language.Tag = []language.Tag{language.English, language.Arabic}
 var DefaultLanguage = language.Arabic
+var CurrentLanguage= "ar"
 
 var localizationPath string = "pkgs/infrastucture/localize"
 
@@ -40,6 +41,7 @@ func loadLangMiddleware() gin.HandlerFunc {
 			AddToTemplateCommonData(c, commonDataLocaleKey, lang)
 			c.Header("Accept-Language", lang)
 			c.Request.Header.Set("Accept-Language", lang)
+			CurrentLanguage=lang
 			fmt.Println(lang)
 			c.Next()
 		}

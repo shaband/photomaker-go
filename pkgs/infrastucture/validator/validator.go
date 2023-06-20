@@ -9,15 +9,16 @@ import (
 	"github.com/go-playground/locales/ar"
 	ar_translations "github.com/go-playground/validator/v10/translations/ar"
 	en_translations "github.com/go-playground/validator/v10/translations/en"
+	"github.com/shaband/photomaker-go/pkgs/infrastucture/middleware"
 
 	ut "github.com/go-playground/universal-translator"
 )
 
 var (
 	validate *validator.Validate
-	// ar_uni   *ut.UniversalTranslator
-	// en_uni   *ut.UniversalTranslator
-	uni      *ut.UniversalTranslator
+	ar_uni   *ut.UniversalTranslator
+	en_uni   *ut.UniversalTranslator
+	// uni      *ut.UniversalTranslator
 )
 
 func Validate[T any](data T) error {
@@ -25,18 +26,18 @@ func Validate[T any](data T) error {
 
 	en := en.New()
 	ar := ar.New()
-	// en_uni = ut.New(en, en)
-	// ar_uni = ut.New(ar, ar)
-	uni = ut.New( en,ar)
-	// this is usually know or extracted from http 'Accept-Language' header
-	trans, _:= uni.FindTranslator()
-
-	// en_trans, _ := en_uni.GetTranslator("ar")
-	// ar_trans, _ := ar_uni.GetTranslator("en")
-	validate = validator.New()
-	// validate.RegisterTagNameFunc()
-	en_translations.RegisterDefaultTranslations(validate, trans)
+	en_uni = ut.New(en, en)
+	ar_uni = ut.New(ar, ar)
+	var trans ut.Translator;
+	if middleware.CurrentLanguage=="ar" {
+	trans, _ = ar_uni.GetTranslator("ar")
 	ar_translations.RegisterDefaultTranslations(validate, trans)
+	} else{
+
+	trans, _ = en_uni.GetTranslator("en")
+	en_translations.RegisterDefaultTranslations(validate, trans)
+	}
+
 
 	err := val(data)
 	if err == nil {
