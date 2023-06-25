@@ -21,32 +21,30 @@ var (
 	// uni      *ut.UniversalTranslator
 )
 
-func Validate[T any](data T) error {
+func Validate[T any](data T) map[string]string {
 	validate = validator.New()
 
 	en := en.New()
 	ar := ar.New()
 	en_uni = ut.New(en, en)
 	ar_uni = ut.New(ar, ar)
-	var trans ut.Translator;
-	if middleware.CurrentLanguage=="ar" {
-	trans, _ = ar_uni.GetTranslator("ar")
-	ar_translations.RegisterDefaultTranslations(validate, trans)
-	} else{
+	var trans ut.Translator
+	if middleware.CurrentLanguage == "ar" {
+		trans, _ = ar_uni.GetTranslator("ar")
+		ar_translations.RegisterDefaultTranslations(validate, trans)
+	} else {
 
-	trans, _ = en_uni.GetTranslator("en")
-	en_translations.RegisterDefaultTranslations(validate, trans)
+		trans, _ = en_uni.GetTranslator("en")
+		en_translations.RegisterDefaultTranslations(validate, trans)
 	}
-
 
 	err := val(data)
 	if err == nil {
 		return nil
 	}
 	errs := err.(validator.ValidationErrors)
-	// fmt.Println(errs.Translate(en_trans))
 	fmt.Println(errs.Translate(trans))
-	return errs
+	return errs.Translate(trans)
 }
 
 func val[T any](data T) error {

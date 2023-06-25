@@ -2,7 +2,8 @@ package database
 
 import (
 	"errors"
-	"fmt"
+	"os"
+
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/shaband/photomaker-go/pkgs/modules/categories"
 	"github.com/shaband/photomaker-go/pkgs/modules/clients"
@@ -12,7 +13,6 @@ import (
 	"github.com/shaband/photomaker-go/pkgs/modules/sliders"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
-	"os"
 )
 
 var db *gorm.DB
@@ -31,7 +31,6 @@ func Init() {
 	if err != nil {
 		panic("failed to connect database")
 	}
-	fmt.Println(err)
 	db = DB
 }
 

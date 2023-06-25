@@ -42,7 +42,6 @@ func loadLangMiddleware() gin.HandlerFunc {
 			c.Header("Accept-Language", lang)
 			c.Request.Header.Set("Accept-Language", lang)
 			CurrentLanguage=lang
-			fmt.Println(lang)
 			c.Next()
 		}
 	}

@@ -1,17 +1,18 @@
 package middleware
 
 import (
+	"fmt"
 	"sync"
 
 	"github.com/gin-gonic/gin"
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/database"
+	"github.com/shaband/photomaker-go/pkgs/infrastucture/helpers"
 	"github.com/shaband/photomaker-go/pkgs/modules/settings"
 )
 
 type commonData struct {
 	gin.H
 }
-
 
 const commonDataKey = "CommonData"
 
@@ -47,8 +48,16 @@ func commonDataMiddleware() gin.HandlerFunc {
 	// Add the common data to the context
 	return func(c *gin.Context) {
 		data := ResolveCommonData()
+		errors, _ := helpers.GetCookieAsMap(c, "errors")
+		inputs, _ := helpers.GetCookieAsMap(c, "inputs")
+		helpers.RemoveCookie(c, "errors")
+		helpers.RemoveCookie(c, "inputs")
 		data.H["currentPath"] = c.FullPath()
+		data.H["old_inputs"] = inputs
+		data.H["errors"] = errors
+
 		c.Set(commonDataKey, data.H)
+
 		c.Next()
 	}
 }
