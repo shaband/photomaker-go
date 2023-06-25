@@ -1,9 +1,8 @@
 package database
 
 import (
+	"errors"
 	"fmt"
-	"os"
-
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/shaband/photomaker-go/pkgs/modules/categories"
 	"github.com/shaband/photomaker-go/pkgs/modules/clients"
@@ -11,21 +10,24 @@ import (
 	"github.com/shaband/photomaker-go/pkgs/modules/services"
 	"github.com/shaband/photomaker-go/pkgs/modules/settings"
 	"github.com/shaband/photomaker-go/pkgs/modules/sliders"
-	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
-	// "gorm.io/gorm/logger"
-	// "gorm.io/driver/postgres"
+	"gorm.io/gorm/logger"
+	"os"
 )
 
 var db *gorm.DB
 
 func Init() {
-	
-	//   dsn := "host=localhost user=postgres password=secret dbname=postgres port=5432 sslmode=disable TimeZone=Asia/Shanghai"
-	//   db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
-	DB, err := gorm.Open(sqlite.Open("./"+os.Getenv("DB_NAME")), &gorm.Config{
-		// Logger: logger.Default.LogMode(logger.Info),
-	})
+
+	config := &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Info),
+	}
+
+	connection, err := connectionFactory(os.Getenv("DB_CONNECTION"))
+	if err != nil {
+		panic(err)
+	}
+	DB, err := connection.Connect(config)
 	if err != nil {
 		panic("failed to connect database")
 	}
@@ -51,4 +53,15 @@ func MakeMigration(db *gorm.DB) {
 		&settings.Setting{},
 		&sliders.Slider{},
 	)
+}
+
+func connectionFactory(factory string) (connection, error) {
+
+	if factory == "postgres" {
+		return NewPostgresConnection(), nil
+		// } else if factory == "sqlite" {
+		// 	return NewsqliteConnection(), nil
+	} else {
+		return nil, errors.New("Invalid Connection")
+	}
 }

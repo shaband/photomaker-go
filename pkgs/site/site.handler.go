@@ -5,6 +5,7 @@ import (
 	// "fmt"
 	"net/http"
 
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	// "github.com/gin-gonic/gin/binding"
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/validator"
@@ -77,7 +78,10 @@ func (hanlder *SiteHandler) SaveContactData(context *gin.Context) {
 	form := contacts.NewContractService(hanlder.db).BindForm(context)
 	err := validator.Validate(form)
 	if err != nil {
-
+		s := sessions.Default(context)
+		s.Set("old_inputs", form)
+		s.Set("errors", err)
+		context.Redirect(http.StatusUnprocessableEntity, "/contact")
 	} else {
 		context.JSON(200, form)
 	}
