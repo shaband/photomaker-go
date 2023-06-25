@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	
 	"sync"
 
 	"github.com/gin-gonic/gin"
