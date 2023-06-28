@@ -16,20 +16,19 @@ import (
 
 var (
 	validate *validator.Validate
-	// ar_uni   *ut.UniversalTranslator
-	// en_uni   *ut.UniversalTranslator
-	uni *ut.UniversalTranslator
+	ar_uni   *ut.UniversalTranslator
+	en_uni   *ut.UniversalTranslator
 )
 
-func Validate[T any](data T) error {
+func Validate[T any](data T) map[string]string {
 	validate = validator.New()
 
 	en := en.New()
 	ar := ar.New()
-	uni = ut.New(en, ar)
-	// ar_uni = ut.New(ar, ar)
-	// var trans ut.Translator
-	trans, _ := uni.GetTranslator(middleware.CurrentLanguage)
+	en_uni = ut.New(en, en)
+	ar_uni = ut.New(ar, ar)
+	var trans ut.Translator
+	trans, _ = ar_uni.GetTranslator(middleware.CurrentLanguage)
 	if middleware.CurrentLanguage == "ar" {
 		ar_translations.RegisterDefaultTranslations(validate, trans)
 	} else {
@@ -42,7 +41,7 @@ func Validate[T any](data T) error {
 	}
 	errs := err.(validator.ValidationErrors)
 	fmt.Println(errs.Translate(trans))
-	return errs
+	return errs.Translate(trans)
 }
 
 func val[T any](data T) error {

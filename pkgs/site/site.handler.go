@@ -1,12 +1,9 @@
 package site
 
 import (
-	// "log"
-	// "fmt"
 	"net/http"
-
 	"github.com/gin-gonic/gin"
-	// "github.com/gin-gonic/gin/binding"
+	"github.com/shaband/photomaker-go/pkgs/infrastucture/helpers"
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/validator"
 	"github.com/shaband/photomaker-go/pkgs/modules/categories"
 	"github.com/shaband/photomaker-go/pkgs/modules/clients"
@@ -77,7 +74,8 @@ func (hanlder *SiteHandler) SaveContactData(context *gin.Context) {
 	form := contacts.NewContractService(hanlder.db).BindForm(context)
 	err := validator.Validate(form)
 	if err != nil {
-
+		helpers.RedirectWithErrorsAndInputs(context, "/contact", err, form)
+		return
 	} else {
 		context.JSON(200, form)
 	}

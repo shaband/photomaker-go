@@ -1,6 +1,8 @@
 package contacts
 
-import "mime/multipart"
+import (
+	"mime/multipart"
+)
 
 type ContactForm struct {
 	Name             string                `form:"name" validate:"required"`
