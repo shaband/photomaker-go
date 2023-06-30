@@ -2,6 +2,7 @@ package site
 
 import (
 	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/helpers"
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/validator"
@@ -10,7 +11,6 @@ import (
 	"github.com/shaband/photomaker-go/pkgs/modules/contacts"
 	"github.com/shaband/photomaker-go/pkgs/modules/services"
 	"github.com/shaband/photomaker-go/pkgs/modules/sliders"
-
 	csrf "github.com/utrack/gin-csrf"
 	"gorm.io/gorm"
 )
@@ -69,15 +69,17 @@ func (handler *SiteHandler) GalleryPage(context *gin.Context) {
 	}))
 }
 
-func (hanlder *SiteHandler) SaveContactData(context *gin.Context) {
+func (handler *SiteHandler) SaveContactData(context *gin.Context) {
 
-	form := contacts.NewContractService(hanlder.db).BindForm(context)
+	form := contacts.NewContractService(handler.db).BindForm(context)
 	err := validator.Validate(form)
 	if err != nil {
-		helpers.RedirectWithErrorsAndInputs(context, "/contact", err, form)
+		helpers.RedirectFailedWithValidation(context, "/contact", err, form)
 		return
 	} else {
-		context.JSON(200, form)
+
+		contacts.NewContractService(handler.db).SaveContactData(context, form)
+		context.JSON(200, "success")
 	}
 }
 func (handler *SiteHandler) ServicesPage(context *gin.Context) {

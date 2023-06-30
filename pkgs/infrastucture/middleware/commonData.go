@@ -47,10 +47,13 @@ func commonDataMiddleware() gin.HandlerFunc {
 	// Add the common data to the context
 	return func(c *gin.Context) {
 		data := ResolveCommonData()
+	
 		errors, _ := helpers.GetCookieAsMap(c, "errors")
-		inputs, _ := helpers.GetCookieAsMap(c, "inputs")
 		helpers.RemoveCookie(c, "errors")
+	
+		inputs, _ := helpers.GetCookieAsMap(c, "inputs")
 		helpers.RemoveCookie(c, "inputs")
+	
 		data.H["currentPath"] = c.FullPath()
 		data.H["old_inputs"] = inputs
 		data.H["errors"] = errors
