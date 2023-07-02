@@ -1,7 +1,6 @@
 package contacts
 
 import (
-	"errors"
 	"fmt"
 
 	"github.com/gin-gonic/gin"
@@ -65,6 +64,6 @@ func (service *contractService) SaveContactData(c *gin.Context, data ContactForm
 		ServiceTypes: data.ServiceTypeItems,
 	}
 	result := service.db.Create(&contact)
-
+	fmt.Println(result)
 	return &contact
 }
