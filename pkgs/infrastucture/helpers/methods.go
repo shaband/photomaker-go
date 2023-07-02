@@ -3,16 +3,18 @@ package helpers
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"mime/multipart"
+	"time"
+
+	"github.com/gin-gonic/gin"
 )
 
 func SaveFile(c *gin.Context, dest string, file *multipart.FileHeader) string {
-	AbortError(c.SaveUploadedFile(file, fmt.Sprintf(
-		dest,
-		"/",
-		file.Filename)))
-	return dest
+
+	fullPath := dest + "/" + fmt.Sprint(time.Now().Unix()) + "/" + file.Filename
+	fmt.Println(fullPath)
+	AbortError(c.SaveUploadedFile(file, fullPath))
+	return fullPath
 }
 
 func ToJson(val any) ([]byte, error) {

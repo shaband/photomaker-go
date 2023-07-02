@@ -7,6 +7,8 @@ import (
 
 const ErrorCode = "error"
 const SuccessCode = "success"
+
+
 const InputsKey = "inputs"
 const StatusKey = "status"
 const MessageKey = "message"

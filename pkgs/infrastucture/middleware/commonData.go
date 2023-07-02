@@ -47,19 +47,9 @@ func commonDataMiddleware() gin.HandlerFunc {
 	// Add the common data to the context
 	return func(c *gin.Context) {
 		data := ResolveCommonData()
-	
-		errors, _ := helpers.GetCookieAsMap(c, "errors")
-		helpers.RemoveCookie(c, "errors")
-	
-		inputs, _ := helpers.GetCookieAsMap(c, "inputs")
-		helpers.RemoveCookie(c, "inputs")
-	
 		data.H["currentPath"] = c.FullPath()
-		data.H["old_inputs"] = inputs
-		data.H["errors"] = errors
-
+		loadOldData(c, &data)
 		c.Set(commonDataKey, data.H)
-
 		c.Next()
 	}
 }
@@ -71,4 +61,29 @@ func AddToCommonData[T any](key string, value T) gin.H {
 
 func AddToTemplateCommonData[T any](c *gin.Context, key string, value T) {
 	c.Set(commonDataKey, AddToCommonData(key, value))
+}
+
+func loadOldData(c *gin.Context, data *commonData) {
+
+	errors, _ := helpers.GetCookieAsMap(c, helpers.ErrorsKey)
+	helpers.RemoveCookie(c, helpers.ErrorsKey)
+
+	inputs, _ := helpers.GetCookieAsMap(c, helpers.InputsKey)
+	helpers.RemoveCookie(c, helpers.InputsKey)
+
+	old_data, _ := helpers.GetCookieAsMap(c, helpers.DataKey)
+	helpers.RemoveCookie(c, helpers.DataKey)
+
+	status, _ := helpers.GetCookie(c, helpers.StatusKey)
+	helpers.RemoveCookie(c, helpers.StatusKey)
+
+	message, _ := helpers.GetCookie(c, helpers.MessageKey)
+	helpers.RemoveCookie(c, helpers.MessageKey)
+
+	data.H["__inputs"] = inputs
+	data.H["__errors"] = errors
+	data.H["__errors"] = errors
+	data.H["__status"] = status
+	data.H["__data"] = old_data
+	data.H["__message"] = message
 }

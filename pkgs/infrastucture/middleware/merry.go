@@ -12,10 +12,11 @@ func ErrorHandler() gin.HandlerFunc {
             if err := recover(); err != nil {
                 // Create a Merry error from the recovered panic
                 merryErr := merry.Wrap(err.(error))
-
                 // Log the error, you can replace this with your preferred logging mechanism
                 log.Println(merryErr)
 
+
+                
                 // Set the response status code
                 c.JSON(http.StatusInternalServerError, gin.H{
                     "error": "Internal Server Error",
