@@ -15,7 +15,7 @@ func LoadTemplates() multitemplate.Renderer {
 	r := Must(renderFilesAsTemplatesWithLayouts(multitemplate.NewRenderer(), "site.", siteLayouts, sitePages))
 
 	fmt.Println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=")
-	adminLayouts, err := filepath.Glob("./templates/admin/layouts/*.gohtml")
+	adminLayouts, err := filepath.Glob("./templates/admin/layout/*.gohtml")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -25,16 +25,24 @@ func LoadTemplates() multitemplate.Renderer {
 		panic(err.Error())
 	}
 
+	fmt.Println("========================adminLayouts===================")
+	fmt.Println(adminLayouts)
+
 	// // Generate our templates map from our adminLayouts/ and admins/ directories
 	for _, admin := range admins {
 		layoutCopy := make([]string, len(adminLayouts))
 		copy(layoutCopy, adminLayouts)
+		fmt.Println("========================layoutCopy===================")
+		fmt.Println(layoutCopy)
 		files := append(layoutCopy, admin)
+		fmt.Println("========================admin page===================")
+		fmt.Println(admin)
+
+		fmt.Println("========================files(layout+ pages)===================")
 		fmt.Println(files)
 		fmt.Println("================================================")
 		fmt.Println(filepath.FromSlash(admin))
-
-		// r.AddFromFiles(filepath.Base(admin), files...)
+		r.AddFromFilesFuncs(filepath.Base(admin), templateFuncs, files...)
 	}
 	return r
 }
