@@ -39,10 +39,10 @@ func LoadTemplates() multitemplate.Renderer {
 		fmt.Println(admin)
 
 		fmt.Println("========================files(layout+ pages)===================")
-		fmt.Println(files)
 		fmt.Println("================================================")
-		fmt.Println(filepath.FromSlash(admin))
-		r.AddFromFilesFuncs(filepath.Base(admin), templateFuncs, files...)
+		dir_name := filepath.Base(filepath.Dir(admin))
+		fmt.Println("admin."+dir_name+"."+filepath.Base(admin))
+		r.AddFromFilesFuncs("admin."+dir_name+"."+filepath.Base(admin), templateFuncs, files...)
 	}
 	return r
 }
