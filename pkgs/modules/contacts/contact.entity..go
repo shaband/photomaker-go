@@ -13,3 +13,4 @@ type Contact struct {
 	Category     string
 	ServiceTypes interface{} `gorm:"serializer:json"`
 }
+

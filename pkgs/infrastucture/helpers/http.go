@@ -2,20 +2,25 @@ package helpers
 
 import (
 	"fmt"
-	"net/http"
 
-	"github.com/gin-gonic/gin"
 )
 
-func RedirectWithErrorsAndInputs[T any](c *gin.Context, url string, errors map[string]string, inputs T) {
-	errJson, _ := ToJson(errors)
-	fmt.Println(string(errJson))
-	SetCookie(c, "errors", string(errJson))
+func AbortError(err error) {
 
-	inputsJson, _ := ToJson(inputs)
-	SetCookie(c, "inputs", string(inputsJson))
+	if err != nil {
+		fmt.Println(err)
+		// c.AbortWithStatus(http.StatusInternalServerError, err)
 
-	fmt.Println(string(errJson), string(inputsJson))
-	c.Redirect(http.StatusMovedPermanently, url)
+		// panic(err)
+	}
+}
 
+func SecondMustBeNull[T any](data T, err error) T {
+	AbortError(err)
+	return data
+}
+
+func FirstMustBeNull[T any](data T, err error) T {
+	AbortError(err)
+	return data
 }
