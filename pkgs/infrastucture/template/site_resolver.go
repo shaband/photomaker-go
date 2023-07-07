@@ -1,10 +1,12 @@
 package template
 
-import "path/filepath"
+import "github.com/mattn/go-zglob"
 
 const templateDir = "./templates"
 const siteLayout = "/site/layout/*.gohtml"
 const sitePages = "/site/pages/*.gohtml"
+const adminLayout = "/admin/layout/*.gohtml"
+const adminPages = "/admin/pages/**/*.gohtml"
 
 type TemplateResolver struct {
 	templatesDir string
@@ -13,7 +15,7 @@ type TemplateResolver struct {
 }
 
 func (loader TemplateResolver) GetFromPath(pattern string) (matches []string, err error) {
-	return filepath.Glob(loader.templatesDir + pattern)
+	return zglob.Glob(loader.templatesDir + pattern)
 }
 
 func (loader TemplateResolver) GetLayoutPath() (matches []string, err error) {
@@ -46,7 +48,7 @@ func newAdmnResolver() *TemplateResolver {
 
 	return newResolver(
 		templateDir,
-		siteLayout,
-		sitePages,
+		adminLayout,
+		adminPages,
 	)
 }

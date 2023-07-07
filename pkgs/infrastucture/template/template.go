@@ -5,45 +5,14 @@ import (
 	"path/filepath"
 
 	"github.com/gin-contrib/multitemplate"
-	"github.com/mattn/go-zglob"
 )
 
 func LoadTemplates() multitemplate.Renderer {
+	r:=multitemplate.NewRenderer()
 	siteResolver := newSiteResolver()
-	siteLayouts := Must(siteResolver.GetLayoutPath())
-	sitePages := Must(siteResolver.GetPagesPath())
-	r := Must(renderFilesAsTemplatesWithLayouts(multitemplate.NewRenderer(), "site.", siteLayouts, sitePages))
-
-	fmt.Println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=")
-	adminLayouts, err := filepath.Glob("./templates/admin/layout/*.gohtml")
-	if err != nil {
-		panic(err.Error())
-	}
-
-	admins, err := zglob.Glob(`./templates/admin/pages/**/*.gohtml`)
-	if err != nil {
-		panic(err.Error())
-	}
-
-	fmt.Println("========================adminLayouts===================")
-	fmt.Println(adminLayouts)
-
-	// // Generate our templates map from our adminLayouts/ and admins/ directories
-	for _, admin := range admins {
-		layoutCopy := make([]string, len(adminLayouts))
-		copy(layoutCopy, adminLayouts)
-		fmt.Println("========================layoutCopy===================")
-		fmt.Println(layoutCopy)
-		files := append(layoutCopy, admin)
-		fmt.Println("========================admin page===================")
-		fmt.Println(admin)
-
-		fmt.Println("========================files(layout+ pages)===================")
-		fmt.Println(files)
-		fmt.Println("================================================")
-		fmt.Println(filepath.FromSlash(admin))
-		r.AddFromFilesFuncs(filepath.Base(admin), templateFuncs, files...)
-	}
+	r = Must(renderFilesAsTemplatesWithLayouts(r, "site.", Must(siteResolver.GetLayoutPath()), Must(siteResolver.GetPagesPath())))
+	adminResolver := newAdmnResolver()
+	r = Must(renderFilesAsTemplatesWithLayouts(r, "admin.", Must(adminResolver.GetLayoutPath()), Must(adminResolver.GetPagesPath())))
 	return r
 }
 
@@ -52,7 +21,10 @@ func renderFilesAsTemplatesWithLayouts(renderer multitemplate.Renderer, prefix s
 		LayoutCopy := make([]string, len(layouts))
 		copy(LayoutCopy, layouts)
 		files := append(LayoutCopy, page)
-		renderer.AddFromFilesFuncs(prefix+filepath.Base(page), templateFuncs, files...)
+		Must(adminResolver.GetPagesPath())Must(adminResolver.GetPagesPath())Must(adminResolver.GetPagesPath())
+		pageName := prefix + filepath.Base(filepath.Dir(page)) + "." + filepath.Base(page)
+		fmt.Println(pageName)
+		renderer.AddFromFilesFuncs(pageName, templateFuncs, files...)
 
 	}
 	return renderer, nil
@@ -60,8 +32,7 @@ func renderFilesAsTemplatesWithLayouts(renderer multitemplate.Renderer, prefix s
 
 func Must[Result any](ok Result, err error) Result {
 
-	if err != nil {
-		panic(err)
+	if err != nil {Must(adminResolver.GetPagesPath()) panic(err)
 	}
 	return ok
 }
