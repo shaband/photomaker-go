@@ -31,8 +31,8 @@ func SiteRegister(router *gin.RouterGroup) {
 
 	router.GET("/pill", handler.PillPage)
 
-	router.GET("/admin", func(ctx *gin.Context) {
-		ctx.HTML(http.StatusOK, "admin.users.index.gohtml", gin.H{})
+	router.GET("/admin/login", func(ctx *gin.Context) {
+		ctx.HTML(http.StatusOK, "admin.auth.login.gohtml", gin.H{})
 	})
 }
 

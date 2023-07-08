@@ -27,7 +27,7 @@ func (loader TemplateResolver) GetPagesPath() (matches []string, err error) {
 	return loader.GetFromPath(loader.pagePath)
 }
 
-func newResolver(templateDir string, layoutPath string, pagePath string) *TemplateResolver {
+func newResolver(templateDir string, layoutPath string, pagePath string) resolver {
 
 	return &TemplateResolver{
 		templatesDir: templateDir,
@@ -35,7 +35,7 @@ func newResolver(templateDir string, layoutPath string, pagePath string) *Templa
 		pagePath:     pagePath,
 	}
 }
-func newSiteResolver() *TemplateResolver {
+func newSiteResolver() resolver {
 
 	return newResolver(
 		templateDir,
@@ -44,11 +44,12 @@ func newSiteResolver() *TemplateResolver {
 	)
 }
 
-func newAdmnResolver() *TemplateResolver {
+func newAdmnResolver() resolver {
 
 	return newResolver(
 		templateDir,
 		adminLayout,
 		adminPages,
 	)
+
 }
