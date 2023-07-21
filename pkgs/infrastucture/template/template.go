@@ -1,7 +1,6 @@
 package template
 
 import (
-	"fmt"
 	"path/filepath"
 
 	"github.com/gin-contrib/multitemplate"
@@ -40,7 +39,6 @@ func renderFilesAsTemplatesWithLayouts(renderer multitemplate.Renderer, prefix s
 		copy(LayoutCopy, layouts)
 		files := append(LayoutCopy, page)
 		pageName := prefix + filepath.Base(filepath.Dir(page)) + "." + filepath.Base(page)
-		fmt.Println(pageName)
 		renderer.AddFromFilesFuncs(pageName, templateFuncs, files...)
 
 	}

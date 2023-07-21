@@ -10,7 +10,6 @@ import (
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/database"
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/middleware"
 	"github.com/gin-contrib/sessions"
-	"github.com/gin-contrib/sessions/cookie"
 )
 
 func SiteRegister(router *gin.RouterGroup) {
@@ -36,6 +35,7 @@ func SiteRegister(router *gin.RouterGroup) {
 	router.GET("/admin/login", func(ctx *gin.Context) {
 		ctx.HTML(http.StatusOK, "admin.auth.login.gohtml", gin.H{})
 	})
+	
 
 	authMiddleware := func() gin.HandlerFunc {
 		return func(c *gin.Context) {

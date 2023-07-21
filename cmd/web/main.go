@@ -7,6 +7,7 @@ import (
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
 	_ "github.com/joho/godotenv/autoload"
+	"github.com/shaband/photomaker-go/pkgs/admin"
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/database"
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/middleware"
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/template"
@@ -25,6 +26,7 @@ func main() {
 	router.HTMLRender = template.LoadTemplates()
 	router.Static("assets", "./assets")
 	site.SiteRegister(router.Group("/"))
+	admin.AdminRegister(router.Group("/admin"))
 	err := router.Run(":" + os.Getenv("SERVER_PORT"))
 	if err != nil {
 		panic(err)
