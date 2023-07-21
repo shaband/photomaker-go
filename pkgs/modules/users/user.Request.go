@@ -1,11 +1,8 @@
 package users
 
 type UserRequest struct {
-	ID int	`gorm:"index;unique"`
-	Username string `gorm:"index;unique"`
-	Email    string `gorm:"index;unique"`
-	Password string
-	Phone    string 
-	Image    string ``
-
+	Username string `form:"username" validate:"required"`
+	Email    string `form:"email" validate:"required,email"`
+	Password string `form:"password" validate:"required"`
+	Phone    string `form:"password" validate:"required"`
 }
