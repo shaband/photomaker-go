@@ -1,11 +1,16 @@
 package admin
 
 import (
+	"fmt"
+	"net/http"
+
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/database"
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/middleware"
-	"net/http"
+	"github.com/shaband/photomaker-go/pkgs/infrastucture/validator"
+	"github.com/shaband/photomaker-go/pkgs/modules/users"
+	csrf "github.com/utrack/gin-csrf"
 )
 
 const userkey = "user"
@@ -20,13 +25,30 @@ func AdminRegister(router *gin.RouterGroup) {
 
 		c.HTML(http.StatusOK, "admin.users.index.gohtml", gin.H{})
 	})
+	router.GET("/users/create", func(ctx *gin.Context) {
+		ctx.HTML(http.StatusOK, "admin.users.create.gohtml", gin.H{
+			"token": csrf.GetToken(ctx),
+		})
+	})
+	router.POST("/users", func(ctx *gin.Context) {
+		UserRequest := users.UserRequest{}
+		ctx.ShouldBind(&UserRequest)
+		err := validator.Validate(UserRequest)
+		if err != nil {
+			fmt.Println("error=================================================================================")
+			fmt.Println(err)
+		}
+		fmt.Println(UserRequest)
+		ctx.JSON(http.StatusOK, UserRequest)
+	})
+
 	guest := router.Group("/auth")
 	// Login and logout routes
 	guest.GET("/login", authHandler.GetLoginPage)
 	guest.POST("/login", authHandler.Login)
 	guest.GET("/logout", authHandler.Logout)
 	// Private group, require authentication to access
-	private := router.Group("/admin")
+	private := router.Group("/")
 	private.Use(AuthRequired)
 	{
 		private.GET("/me", authHandler.Me)
