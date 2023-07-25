@@ -1,12 +1,12 @@
 package admin
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/database"
+	"github.com/shaband/photomaker-go/pkgs/infrastucture/helpers"
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/middleware"
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/validator"
 	"github.com/shaband/photomaker-go/pkgs/modules/users"
@@ -23,23 +23,27 @@ func AdminRegister(router *gin.RouterGroup) {
 
 	router.GET("users", func(c *gin.Context) {
 
-		c.HTML(http.StatusOK, "admin.users.index.gohtml", gin.H{})
+		
+		c.HTML(http.StatusOK, "admin.users.index.gohtml", withCommonData(c, gin.H{}))
 	})
 	router.GET("/users/create", func(ctx *gin.Context) {
-		ctx.HTML(http.StatusOK, "admin.users.create.gohtml", gin.H{
+		ctx.HTML(http.StatusOK, "admin.users.create.gohtml", withCommonData(ctx, gin.H{
 			"token": csrf.GetToken(ctx),
-		})
+		}))
 	})
 	router.POST("/users", func(ctx *gin.Context) {
 		UserRequest := users.UserRequest{}
 		ctx.ShouldBind(&UserRequest)
-		err := validator.Validate(UserRequest)
-		if err != nil {
-			fmt.Println("error=================================================================================")
-			fmt.Println(err)
+		errs := validator.Validate(UserRequest)
+		if errs != nil {
+
+			helpers.RedirectFailedWithValidation(ctx, "/admin/users/create", errs, UserRequest)
+			return
 		}
-		fmt.Println(UserRequest)
-		ctx.JSON(http.StatusOK, UserRequest)
+		user := UserRequest.ToEntity()
+		database.GetConnection().Create(user)
+		helpers.RedirectSuccessWithMessage(ctx, "/admin/users", "User created successfully")
+
 	})
 
 	guest := router.Group("/auth")
@@ -76,4 +80,12 @@ func AuthRequired(c *gin.Context) {
 	}
 	// Continue down the chain to handler etc
 	c.Next()
+}
+
+func withCommonData(c *gin.Context, data gin.H) gin.H {
+
+	commonData := c.MustGet("CommonData").(gin.H)
+	data["commonData"] = commonData
+
+	return data
 }

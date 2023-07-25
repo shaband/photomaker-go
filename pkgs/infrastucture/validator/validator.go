@@ -1,7 +1,6 @@
 package validator
 
 import (
-	"fmt"
 
 	"github.com/go-playground/locales/en"
 	"github.com/go-playground/validator/v10"
@@ -20,9 +19,19 @@ var (
 	en_uni   *ut.UniversalTranslator
 )
 
+
+// type myDBAbstraction struct {
+// 	db string
+// }
+
+// func (a *myDBAbstraction) ValidateUser(fl validator.FieldLevel) bool {
+// 	return fl.Field().String() == a.db
+// }
 func Validate[T any](data T) map[string]string {
 	validate = validator.New()
-
+	// validate.RegisterValidation("is-awesome", func(fl validator.FieldLevel) bool {
+	// 	return fl.Field().String() == myDBHandle
+	// })
 	en := en.New()
 	ar := ar.New()
 	en_uni = ut.New(en, en)
@@ -40,7 +49,6 @@ func Validate[T any](data T) map[string]string {
 		return nil
 	}
 	errs := err.(validator.ValidationErrors)
-	fmt.Println(errs.Translate(trans))
 	return errs.Translate(trans)
 }
 

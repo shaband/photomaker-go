@@ -9,3 +9,9 @@ func LoadGlobalSiteMiddleware(r *gin.RouterGroup) {
 	r.Use(loadLocalizationMiddleware())
 	r.Use(loadLangMiddleware())
 }
+func LoadGlobalAdminMiddleware(r *gin.RouterGroup) {
+	
+	r.Use(commonDataMiddleware())
+	// r.Use(loadLocalizationMiddleware())
+	// r.Use(loadLangMiddleware())
+}

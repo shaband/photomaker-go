@@ -3,9 +3,7 @@
 <div class="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
     <!-- Breadcrumb Start -->
     <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <h2 class="text-title-md2 font-bold text-black dark:text-white">
-            Form Layout
-        </h2>
+
     </div>
     <!-- Breadcrumb End -->
 
@@ -22,21 +20,9 @@
                         Create User
                     </h3>
                 </div>
+            {{template "alerts" .}}
                 <form action="/admin/users" method="post">
-                    <div
-                    class="flex w-full border-l-6 border-[#F87171] bg-[#F87171] bg-opacity-[15%] dark:bg-[#1B1B24] px-7 py-8 shadow-md dark:bg-opacity-30 md:p-9">
                    
-                    <div class="w-full">
-                      <h5 class="mb-3 font-bold text-[#B45454]">
-                        There were  errors with your submission
-                      </h5>
-                      <ul>
-                        <li class="leading-relaxed text-[#CD5D5D]">
-                          Lorem Ipsum is simply dummy text of the printing
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
                     <input type="hidden" name="_csrf" value="{{.token}}">
 
                     <div class="p-6.5">

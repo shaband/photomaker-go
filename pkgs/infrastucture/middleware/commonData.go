@@ -82,8 +82,14 @@ func loadOldData(c *gin.Context, data *commonData) {
 
 	data.H["__inputs"] = inputs
 	data.H["__errors"] = errors
-	data.H["__errors"] = errors
 	data.H["__status"] = status
 	data.H["__data"] = old_data
 	data.H["__message"] = message
+}
+
+func ParsePointer(data *interface{}) interface{} {
+	if data == nil {
+		return nil
+	}
+	return *data
 }

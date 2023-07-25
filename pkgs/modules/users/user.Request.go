@@ -3,7 +3,7 @@ package users
 type UserRequest struct {
 	Username string `form:"username" validate:"required,alphanum"`
 	Email    string `form:"email" validate:"required,email"`
-	Password string `form:"password" validate:"required,eqfield=confirm_password"`
+	Password string `form:"password" validate:"required"`
 	Phone    string `form:"phone" validate:"required"`
 }
 
