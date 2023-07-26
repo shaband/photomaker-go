@@ -6,7 +6,7 @@ import (
 
 type Contact struct {
 	gorm.Model
-	Name         string
+	Name         string 
 	Phone        string
 	Email        string
 	File         string

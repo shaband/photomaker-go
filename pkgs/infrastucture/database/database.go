@@ -11,6 +11,7 @@ import (
 	"github.com/shaband/photomaker-go/pkgs/modules/services"
 	"github.com/shaband/photomaker-go/pkgs/modules/settings"
 	"github.com/shaband/photomaker-go/pkgs/modules/sliders"
+	"github.com/shaband/photomaker-go/pkgs/modules/users"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
@@ -51,6 +52,7 @@ func MakeMigration(db *gorm.DB) {
 		&contacts.ServiceTypeItem{},
 		&settings.Setting{},
 		&sliders.Slider{},
+		&users.User{},
 	)
 }
 

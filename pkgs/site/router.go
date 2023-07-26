@@ -1,7 +1,6 @@
 package site
 
 import (
-	"net/http"
 
 	ginI18n "github.com/gin-contrib/i18n"
 	"github.com/nicksnyder/go-i18n/v2/i18n"
@@ -31,15 +30,9 @@ func SiteRegister(router *gin.RouterGroup) {
 
 	router.GET("/pill", handler.PillPage)
 
-	router.GET("/admin/users", func(ctx *gin.Context) {
-		ctx.HTML(http.StatusOK, "admin.users.index.gohtml", gin.H{})
-	})
-	router.GET("/admin/users/create", func(ctx *gin.Context) {
-		ctx.HTML(http.StatusOK, "admin.users.create.gohtml", gin.H{})
-	})
-	router.GET("/admin/categories", func(ctx *gin.Context) {
-		ctx.HTML(http.StatusOK, "admin.categories.index.gohtml", gin.H{})
-	})
+	// router.GET("/admin/login", func(ctx *gin.Context) {
+	// 	ctx.HTML(http.StatusOK, "admin.auth.login.gohtml", gin.H{})
+	// })
 
 }
 

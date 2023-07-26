@@ -34,28 +34,28 @@ func NewSiteHandler(db *gorm.DB) *SiteHandler {
 
 func (handler *SiteHandler) IndexPage(context *gin.Context) {
 
-	context.HTML(http.StatusOK, "site.index.gohtml", handler.withCommonData(context, gin.H{
+	context.HTML(http.StatusOK, "site.pages.index.gohtml", handler.withCommonData(context, gin.H{
 		"sliders": sliders.NewSliderService(handler.db).GetSliders(),
 	}))
 }
 
 func (handler *SiteHandler) AboutPage(context *gin.Context) {
 
-	context.HTML(http.StatusOK, "site.about.gohtml", handler.withCommonData(context, gin.H{
+	context.HTML(http.StatusOK, "site.pages.about.gohtml", handler.withCommonData(context, gin.H{
 		"clients": clients.NewClientSerive(handler.db).All(),
 	}))
 }
 
 func (handler *SiteHandler) CategoryPage(context *gin.Context) {
 
-	context.HTML(http.StatusOK, "site.category.gohtml", handler.withCommonData(context, gin.H{
+	context.HTML(http.StatusOK, "site.pages.category.gohtml", handler.withCommonData(context, gin.H{
 		"category": categories.NewContractService(handler.db).GetSingleCategoryWithImages(context.Param("id")),
 	}))
 }
 
 func (handler *SiteHandler) ContactPage(context *gin.Context) {
 
-	context.HTML(http.StatusOK, "site.contact.gohtml", handler.withCommonData(context, gin.H{
+	context.HTML(http.StatusOK, "site.pages.contact.gohtml", handler.withCommonData(context, gin.H{
 
 		"token":        csrf.GetToken(context),
 		"serviceTypes": contacts.NewContractService(handler.db).GetAll(),
@@ -64,7 +64,7 @@ func (handler *SiteHandler) ContactPage(context *gin.Context) {
 
 func (handler *SiteHandler) GalleryPage(context *gin.Context) {
 
-	context.HTML(http.StatusOK, "site.gallery.gohtml", handler.withCommonData(context, gin.H{
+	context.HTML(http.StatusOK, "site.pages.gallery.gohtml", handler.withCommonData(context, gin.H{
 		"categories": categories.NewContractService(handler.db).All(),
 	}))
 }
@@ -84,10 +84,10 @@ func (handler *SiteHandler) SaveContactData(context *gin.Context) {
 }
 func (handler *SiteHandler) ServicesPage(context *gin.Context) {
 
-	context.HTML(http.StatusOK, "site.services.gohtml", handler.withCommonData(context, gin.H{
+	context.HTML(http.StatusOK, "site.pages.services.gohtml", handler.withCommonData(context, gin.H{
 		"services": services.NewServicesService(handler.db).All(),
 	}))
 }
 func (handler *SiteHandler) PillPage(context *gin.Context) {
-	context.HTML(http.StatusOK, "site.pill.gohtml", handler.withCommonData(context, gin.H{}))
+	context.HTML(http.StatusOK, "site.pages.pill.gohtml", handler.withCommonData(context, gin.H{}))
 }

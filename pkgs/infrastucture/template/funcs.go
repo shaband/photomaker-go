@@ -1,9 +1,10 @@
 package template
 
 import (
-	"github.com/shaband/photomaker-go/pkgs/site"
 	"html/template"
 	"time"
+
+	"github.com/shaband/photomaker-go/pkgs/site"
 )
 
 var templateFuncs template.FuncMap = template.FuncMap{
@@ -13,4 +14,5 @@ var templateFuncs template.FuncMap = template.FuncMap{
 	},
 	"Trans": func(MessageID string) string {
 		return site.Trans(MessageID, make(map[string]string))
-	}}
+	},
+}

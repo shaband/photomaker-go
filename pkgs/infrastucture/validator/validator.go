@@ -1,7 +1,6 @@
 package validator
 
 import (
-	"fmt"
 
 	"github.com/go-playground/locales/en"
 	"github.com/go-playground/validator/v10"
@@ -18,23 +17,30 @@ var (
 	validate *validator.Validate
 	ar_uni   *ut.UniversalTranslator
 	en_uni   *ut.UniversalTranslator
-	// uni      *ut.UniversalTranslator
 )
 
+
+// type myDBAbstraction struct {
+// 	db string
+// }
+
+// func (a *myDBAbstraction) ValidateUser(fl validator.FieldLevel) bool {
+// 	return fl.Field().String() == a.db
+// }
 func Validate[T any](data T) map[string]string {
 	validate = validator.New()
-
+	// validate.RegisterValidation("is-awesome", func(fl validator.FieldLevel) bool {
+	// 	return fl.Field().String() == myDBHandle
+	// })
 	en := en.New()
 	ar := ar.New()
 	en_uni = ut.New(en, en)
 	ar_uni = ut.New(ar, ar)
 	var trans ut.Translator
+	trans, _ = ar_uni.GetTranslator(middleware.CurrentLanguage)
 	if middleware.CurrentLanguage == "ar" {
-		trans, _ = ar_uni.GetTranslator("ar")
 		ar_translations.RegisterDefaultTranslations(validate, trans)
 	} else {
-
-		trans, _ = en_uni.GetTranslator("en")
 		en_translations.RegisterDefaultTranslations(validate, trans)
 	}
 
@@ -43,7 +49,6 @@ func Validate[T any](data T) map[string]string {
 		return nil
 	}
 	errs := err.(validator.ValidationErrors)
-	fmt.Println(errs.Translate(trans))
 	return errs.Translate(trans)
 }
 

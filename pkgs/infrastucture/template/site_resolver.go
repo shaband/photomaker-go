@@ -1,10 +1,12 @@
 package template
 
-import "path/filepath"
+import "github.com/mattn/go-zglob"
 
 const templateDir = "./templates"
 const siteLayout = "/site/layout/*.gohtml"
 const sitePages = "/site/pages/*.gohtml"
+const adminLayout = "/admin/layout/*.gohtml"
+const adminPages = "/admin/pages/**/*.gohtml"
 
 type TemplateResolver struct {
 	templatesDir string
@@ -13,7 +15,7 @@ type TemplateResolver struct {
 }
 
 func (loader TemplateResolver) GetFromPath(pattern string) (matches []string, err error) {
-	return filepath.Glob(loader.templatesDir + pattern)
+	return zglob.Glob(loader.templatesDir + pattern)
 }
 
 func (loader TemplateResolver) GetLayoutPath() (matches []string, err error) {
@@ -25,7 +27,7 @@ func (loader TemplateResolver) GetPagesPath() (matches []string, err error) {
 	return loader.GetFromPath(loader.pagePath)
 }
 
-func newResolver(templateDir string, layoutPath string, pagePath string) *TemplateResolver {
+func newResolver(templateDir string, layoutPath string, pagePath string) resolver {
 
 	return &TemplateResolver{
 		templatesDir: templateDir,
@@ -33,7 +35,7 @@ func newResolver(templateDir string, layoutPath string, pagePath string) *Templa
 		pagePath:     pagePath,
 	}
 }
-func newSiteResolver() *TemplateResolver {
+func newSiteResolver() resolver {
 
 	return newResolver(
 		templateDir,
@@ -42,11 +44,12 @@ func newSiteResolver() *TemplateResolver {
 	)
 }
 
-func newAdmnResolver() *TemplateResolver {
+func newAdmnResolver() resolver {
 
 	return newResolver(
 		templateDir,
-		siteLayout,
-		sitePages,
+		adminLayout,
+		adminPages,
 	)
+
 }
