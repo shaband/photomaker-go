@@ -1,8 +1,8 @@
-        {{define "alerts"}}
+{{define "alerts"}}
         
-          {{with .commonData}}
+    {{with .commonData}}
                 <!-- Alerts Item -->
-                {{if .__message }}
+            {{if .__message }}
                 {{if eq .__status "success"}}
                 <div
                     class="flex w-full border-l-6 border-[#34D399] bg-[#34D399] bg-opacity-[15%] dark:bg-[#1B1B24] px-7 py-8 shadow-md dark:bg-opacity-30 md:p-9">
@@ -38,7 +38,7 @@
                         </div>
                 
                 </div>
-                {{end}}
-                {{end}}
+            {{end}}
+    {{end}}
 
-                {{end}}
+{{end}}
