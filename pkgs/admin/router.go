@@ -24,7 +24,9 @@ func AdminRegister(router *gin.RouterGroup) {
 	router.GET("users", func(c *gin.Context) {
 
 		
-		c.HTML(http.StatusOK, "admin.users.index.gohtml", withCommonData(c, gin.H{}))
+		c.HTML(http.StatusOK, "admin.users.index.gohtml", withCommonData(c, gin.H{
+			"users": users.NewUserService(database.GetConnection()).GetAll(),
+		}))
 	})
 	router.GET("/users/create", func(ctx *gin.Context) {
 		ctx.HTML(http.StatusOK, "admin.users.create.gohtml", withCommonData(ctx, gin.H{
