@@ -1,6 +1,9 @@
 package middleware
 
 import (
+	"fmt"
+	"regexp"
+	"strings"
 	"sync"
 
 	"github.com/gin-gonic/gin"
@@ -80,11 +83,12 @@ func loadOldData(c *gin.Context, data *commonData) {
 	message, _ := helpers.GetCookie(c, helpers.MessageKey)
 	helpers.RemoveCookie(c, helpers.MessageKey)
 
-	data.H["__inputs"] = inputs
-	data.H["__errors"] = errors
+	data.H["__inputs"] = removeMapPrefix(inputs)
+	data.H["__errors"] = removeMapPrefix(errors)
 	data.H["__status"] = status
-	data.H["__data"] = old_data
+	data.H["__data"] = removeMapPrefix(old_data)
 	data.H["__message"] = message
+	fmt.Println(data.H)
 }
 
 func ParsePointer(data *interface{}) interface{} {
@@ -92,4 +96,20 @@ func ParsePointer(data *interface{}) interface{} {
 		return nil
 	}
 	return *data
+}
+
+func removeMapPrefix(m *map[string]interface{}) *map[string]interface{} {
+	newM := make(map[string]interface{})
+	if m == nil {
+		return m
+	}
+	for k, v := range *m {
+		regx, _ := regexp.Compile(`[A-Za-z]*\.`)
+		prefix := regx.FindString(k)
+		if prefix != "" {
+			k = strings.Trim(k, prefix)
+		}
+		newM[k] = v
+	}
+	return &newM
 }

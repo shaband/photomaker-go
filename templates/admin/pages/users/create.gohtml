@@ -28,9 +28,17 @@
                     <div class="p-6.5">
                         <div class="mb-4.5">
                             <label class="mb-2.5 block text-black dark:text-white">
-                                usename
+                                usename 
+                            
                             </label>
-                            <input type="text" name="username" placeholder="Enter your full name"
+                            <input type="text" name="username"
+
+                            {{with .commonData.__inputs}}
+                                    {{with .Username}}
+                                        {{.}}
+                                    {{end}}
+                            {{end}}
+                             placeholder="Enter your full name"
                                 class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary" />
                         </div>
                         <div class="mb-4.5">
