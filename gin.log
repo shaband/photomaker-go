@@ -1,0 +1,21 @@
+[GIN-debug] GET    /assets/*filepath         --> github.com/gin-gonic/gin.(*RouterGroup).createStaticHandler.func1 (7 handlers)
+[GIN-debug] HEAD   /assets/*filepath         --> github.com/gin-gonic/gin.(*RouterGroup).createStaticHandler.func1 (7 handlers)
+[GIN-debug] GET    /                         --> github.com/shaband/photomaker-go/pkgs/site.(*SiteHandler).IndexPage-fm (10 handlers)
+[GIN-debug] GET    /about                    --> github.com/shaband/photomaker-go/pkgs/site.(*SiteHandler).AboutPage-fm (10 handlers)
+[GIN-debug] GET    /category/:id             --> github.com/shaband/photomaker-go/pkgs/site.(*SiteHandler).CategoryPage-fm (10 handlers)
+[GIN-debug] GET    /contact                  --> github.com/shaband/photomaker-go/pkgs/site.(*SiteHandler).ContactPage-fm (10 handlers)
+[GIN-debug] POST   /contact                  --> github.com/shaband/photomaker-go/pkgs/site.(*SiteHandler).SaveContactData-fm (10 handlers)
+[GIN-debug] GET    /gallery                  --> github.com/shaband/photomaker-go/pkgs/site.(*SiteHandler).GalleryPage-fm (10 handlers)
+[GIN-debug] GET    /services                 --> github.com/shaband/photomaker-go/pkgs/site.(*SiteHandler).ServicesPage-fm (10 handlers)
+[GIN-debug] GET    /pill                     --> github.com/shaband/photomaker-go/pkgs/site.(*SiteHandler).PillPage-fm (10 handlers)
+[GIN-debug] GET    /admin/users              --> github.com/shaband/photomaker-go/pkgs/modules/users.UserHandler.Index-fm (11 handlers)
+[GIN-debug] GET    /admin/users/create       --> github.com/shaband/photomaker-go/pkgs/modules/users.UserHandler.Create-fm (11 handlers)
+[GIN-debug] POST   /admin/users              --> github.com/shaband/photomaker-go/pkgs/modules/users.UserHandler.Store-fm (11 handlers)
+[GIN-debug] GET    /admin/auth/login         --> github.com/shaband/photomaker-go/pkgs/admin.(*AuthHandler).GetLoginPage-fm (11 handlers)
+[GIN-debug] POST   /admin/auth/login         --> github.com/shaband/photomaker-go/pkgs/admin.(*AuthHandler).Login-fm (11 handlers)
+[GIN-debug] GET    /admin/auth/logout        --> github.com/shaband/photomaker-go/pkgs/admin.(*AuthHandler).Logout-fm (11 handlers)
+[GIN-debug] GET    /admin/me                 --> github.com/shaband/photomaker-go/pkgs/admin.(*AuthHandler).Me-fm (12 handlers)
+[GIN-debug] GET    /admin/status             --> github.com/shaband/photomaker-go/pkgs/admin.(*AuthHandler).Status-fm (12 handlers)
+[GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
+Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
+[GIN-debug] Listening and serving HTTP on :8888

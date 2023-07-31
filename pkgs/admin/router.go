@@ -6,47 +6,25 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/database"
-	"github.com/shaband/photomaker-go/pkgs/infrastucture/helpers"
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/middleware"
-	"github.com/shaband/photomaker-go/pkgs/infrastucture/validator"
 	"github.com/shaband/photomaker-go/pkgs/modules/users"
-	csrf "github.com/utrack/gin-csrf"
 )
 
 const userkey = "user"
 
 func AdminRegister(router *gin.RouterGroup) {
 
-	middleware.LoadGlobalSiteMiddleware(router)
+	userHandler := users.NewUserHandler(database.GetConnection(), withCommonData)
+	middleware.LoadGlobalAdminMiddleware(router)
 
 	authHandler := newAuthHandler(database.GetConnection())
 
-	router.GET("users", func(c *gin.Context) {
-
-		
-		c.HTML(http.StatusOK, "admin.users.index.gohtml", withCommonData(c, gin.H{
-			"users": users.NewUserService(database.GetConnection()).GetAll(),
-		}))
-	})
-	router.GET("/users/create", func(ctx *gin.Context) {
-		ctx.HTML(http.StatusOK, "admin.users.create.gohtml", withCommonData(ctx, gin.H{
-			"token": csrf.GetToken(ctx),
-		}))
-	})
-	router.POST("/users", func(ctx *gin.Context) {
-		UserRequest := users.UserRequest{}
-		ctx.ShouldBind(&UserRequest)
-		errs := validator.Validate(UserRequest)
-		if errs != nil {
-
-			helpers.RedirectFailedWithValidation(ctx, "/admin/users/create", errs, UserRequest)
-			return
-		}
-		user := UserRequest.ToEntity()
-		database.GetConnection().Create(user)
-		helpers.RedirectSuccessWithMessage(ctx, "/admin/users", "User created successfully")
-
-	})
+	router.GET("users", userHandler.Index)
+	router.GET("/users/create", userHandler.Create)
+	router.POST("/users", userHandler.Store)
+	router.GET("/users/:user/edit", userHandler.Edit)
+	router.Match([]string{http.MethodPut, http.MethodPatch}, "/users/:user", userHandler.Edit)
+	router.DELETE("/users/:user", userHandler.Delete)
 
 	guest := router.Group("/auth")
 	// Login and logout routes
@@ -64,11 +42,11 @@ func AdminRegister(router *gin.RouterGroup) {
 }
 
 type CurdContract interface {
-	Index()
-	Create()
-	Store()
-	Edit()
-	Update()
+	Index(ctx *gin.Context)
+	Create(ctx *gin.Context)
+	Store(ctx *gin.Context)
+	Edit(ctx *gin.Context)
+	Update(ctx *gin.Context)
 }
 
 // AuthRequired is a simple middleware to check the session.

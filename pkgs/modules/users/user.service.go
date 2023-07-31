@@ -1,7 +1,6 @@
 package users
 
 import (
-	// "github.com/shaband/photomaker-go/pkgs/infrastucture/validator"
 	"gorm.io/gorm"
 )
 
@@ -9,10 +8,10 @@ type UserService struct {
 	db *gorm.DB
 }
 
-func (service *UserService) GetAll() []User {
+func (service *UserService) GetAll() *[]User {
 	Users := []User{}
 	service.db.Find(&Users)
-	return Users
+	return &Users
 }
 func (service *UserService) FindUserByEmail(Email string) *User {
 	User := User{}
@@ -36,18 +35,13 @@ func (service *UserService) DeleteById(ID int) *User {
 	return nil
 }
 
-// func (service *UserService) ValidateAndStore(userRequest *UserRequest) (*User, *map[string]string) {
+func (service *UserService) Store(userRequest *UserRequest) *User {
 
-// 	errs := validator.Validate(userRequest)
-// 	if errs != nil {
+	user := userRequest.ToEntity()
+	service.db.Create(user)
 
-// 		return nil, &errs
-// 	}
-// 	user := userRequest.ToEntity()
-// 	service.db.Create(user)
-
-// 	return user, nil
-// }
+	return user
+}
 
 func NewUserService(db *gorm.DB) *UserService {
 
