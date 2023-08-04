@@ -14,18 +14,9 @@ const userkey = "user"
 
 func AdminRegister(router *gin.RouterGroup) {
 
-	userHandler := users.NewUserHandler(database.GetConnection(), withCommonData)
 	middleware.LoadGlobalAdminMiddleware(router)
-
 	authHandler := newAuthHandler(database.GetConnection())
-
-	router.GET("users", userHandler.Index)
-	router.GET("/users/create", userHandler.Create)
-	router.POST("/users", userHandler.Store)
-	router.GET("/users/:user/edit", userHandler.Edit)
-	router.Match([]string{http.MethodPut, http.MethodPatch}, "/users/:user", userHandler.Update)
-	router.DELETE("/users/:user", userHandler.Delete)
-
+	AddCrud(router.Group("/users"), users.NewUserHandler(database.GetConnection(), withCommonData))
 	guest := router.Group("/auth")
 	// Login and logout routes
 	guest.GET("/login", authHandler.GetLoginPage)
@@ -47,6 +38,7 @@ type CurdContract interface {
 	Store(ctx *gin.Context)
 	Edit(ctx *gin.Context)
 	Update(ctx *gin.Context)
+	Delete(ctx *gin.Context)
 }
 
 // AuthRequired is a simple middleware to check the session.
@@ -68,4 +60,13 @@ func withCommonData(c *gin.Context, data gin.H) gin.H {
 	data["commonData"] = commonData
 
 	return data
+}
+
+func AddCrud(router *gin.RouterGroup, crud CurdContract) {
+	router.GET("/", crud.Index)
+	router.GET("/create", crud.Create)
+	router.POST("/", crud.Store)
+	router.GET("/:id/edit", crud.Edit)
+	router.Match([]string{http.MethodPut, http.MethodPatch}, "/:id", crud.Update)
+	router.DELETE("/:id", crud.Delete)
 }
