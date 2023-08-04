@@ -61,27 +61,24 @@ func (handler UserHandler) Edit(ctx *gin.Context) {
 }
 
 func (handler UserHandler) Update(ctx *gin.Context) {
+	id, err := strconv.ParseUint(ctx.Param("user"), 10, 32)
 
-	id, err := strconv.Atoi(ctx.Param("user"))
 	if err != nil {
 		helpers.RedirectFailedWithMessage(ctx, fmt.Sprintf("/admin/users/%s/edit", ctx.Param("user")), "Invalid User ")
-		return 
-	}
-	if err != nil {
-		panic(err)
+		return
 	}
 	UserRequest := UserRequest{}
 	ctx.ShouldBind(&UserRequest)
 
 	errs := validator.Validate(UserRequest)
 	if errs != nil {
+		fmt.Println(errs)
+
 		helpers.RedirectFailedWithValidation(ctx, fmt.Sprintf("/admin/users/%s/edit", ctx.Param("user")), errs, UserRequest)
 		return
 	}
-	handler.service.Update(id, UserRequest.ToEntity())
+	handler.service.Update(uint(id), UserRequest.ToEntity())
 	helpers.RedirectSuccessWithMessage(ctx, "/admin/users", "User Updated successfully")
-
-	helpers.RedirectSuccessWithMessage(ctx, "admin/users", "Updated Successfully")
 
 }
 func (handler UserHandler) Delete(ctx *gin.Context) {
@@ -92,7 +89,7 @@ func (handler UserHandler) Delete(ctx *gin.Context) {
 		return
 	}
 	handler.service.DeleteById(id)
-	helpers.RedirectSuccessWithMessage(ctx, "/users/index", "Deleted Successfully")
+	helpers.RedirectSuccessWithMessage(ctx, "/admin/users", "Deleted Successfully")
 
 }
 

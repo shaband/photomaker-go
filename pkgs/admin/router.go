@@ -23,7 +23,7 @@ func AdminRegister(router *gin.RouterGroup) {
 	router.GET("/users/create", userHandler.Create)
 	router.POST("/users", userHandler.Store)
 	router.GET("/users/:user/edit", userHandler.Edit)
-	router.Match([]string{http.MethodPut, http.MethodPatch}, "/users/:user", userHandler.Edit)
+	router.Match([]string{http.MethodPut, http.MethodPatch}, "/users/:user", userHandler.Update)
 	router.DELETE("/users/:user", userHandler.Delete)
 
 	guest := router.Group("/auth")

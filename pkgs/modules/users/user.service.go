@@ -1,6 +1,8 @@
 package users
 
 import (
+	"fmt"
+
 	"gorm.io/gorm"
 )
 
@@ -24,9 +26,10 @@ func (service *UserService) Find(ID int) *User {
 	service.db.Find(&User, ID)
 	return &User
 }
-func (service UserService) Update(ID int, user *User) {
-
-	service.db.Save(user)
+func (service UserService) Update(ID uint, user *User) {
+	user.ID = ID
+	result := service.db.Save(user)
+	fmt.Println(result)
 }
 
 func (service *UserService) DeleteById(ID int) *User {

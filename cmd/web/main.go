@@ -11,17 +11,20 @@ import (
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/shaband/photomaker-go/pkgs/admin"
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/database"
-	"github.com/shaband/photomaker-go/pkgs/infrastucture/middleware"
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/template"
 
 	// "github.com/shaband/photomaker-go/pkgs/infrastucture/validator"
+	method "github.com/bu/gin-method-override"
 	"github.com/shaband/photomaker-go/pkgs/site"
+
 	csrf "github.com/utrack/gin-csrf"
 )
 
 func main() {
 	// binding.Validator = new(validator.DefaultValidator)
 	router := gin.Default()
+	router.Use(method.ProcessMethodOverride(router))
+
 	gin.SetMode(os.Getenv("APP_MODE"))
 	// f, _ := os.Create("gin.log")
 	// gin.DefaultWriter = io.MultiWriter(f)
@@ -43,8 +46,7 @@ func main() {
 
 func loadmiddlewares(router *gin.Engine) {
 	router.Use(gin.Logger())
-	// router.Use(gin.Recovery())
-	router.Use(middleware.ErrorHandler())
+	router.Use(gin.Recovery())
 	store := cookie.NewStore([]byte(os.Getenv("SESSION_SECRET")))
 	router.Use(sessions.Sessions(os.Getenv("SESSION_NAME"), store))
 	router.Use(csrf.Middleware(csrf.Options{

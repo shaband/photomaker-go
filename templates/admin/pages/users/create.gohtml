@@ -32,12 +32,8 @@
                             
                             </label>
                             <input type="text" name="username"
-
-                            {{with .commonData.__inputs}}
-                                    {{with .Username}}
-                                        {{.}}
-                                    {{end}}
-                            {{end}}
+                           value="{{old .commonData.__inputs "Username"}}"
+                            
                              placeholder="Enter your full name"
                                 class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary" />
                         </div>
@@ -45,7 +41,10 @@
                             <label class="mb-2.5 block text-black dark:text-white">
                                 Phone
                             </label>
-                            <input type="text" name="phone" placeholder="Enter your full name"
+                            <input type="text" name="phone"
+                              value="{{old .commonData.__inputs "Phone"}}"
+                            
+                             placeholder="Enter your full name"
                                 class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary" />
                         </div>
 
@@ -53,7 +52,9 @@
                             <label class="mb-2.5 block text-black dark:text-white">
                                 Email
                             </label>
-                            <input type="email" name="email" placeholder="Enter your email address"
+                            <input type="email" name="email"
+                                                          value="{{old .commonData.__inputs "Email"}}"
+                             placeholder="Enter your email address"
                                 class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary" />
                         </div>
 

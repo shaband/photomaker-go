@@ -12,7 +12,7 @@ import (
 func SaveFile(c *gin.Context, dest string, file *multipart.FileHeader) string {
 
 	fullPath := dest + "/" + fmt.Sprint(time.Now().Unix()) + "/" + file.Filename
-	fmt.Println(fullPath)
+	// fmt.Println(fullPath)
 	AbortError(c.SaveUploadedFile(file, fullPath))
 	return fullPath
 }

@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"fmt"
+	// "fmt"
 	"regexp"
 	"strings"
 	"sync"
@@ -88,7 +88,7 @@ func loadOldData(c *gin.Context, data *commonData) {
 	data.H["__status"] = status
 	data.H["__data"] = removeMapPrefix(old_data)
 	data.H["__message"] = message
-	fmt.Println(data.H)
+	// fmt.Println(data.H)
 }
 
 func ParsePointer(data *interface{}) interface{} {
