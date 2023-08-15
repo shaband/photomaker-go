@@ -27,7 +27,7 @@ func TestMain(t *testing.T) {
 	main()
 
 	// Check the results
-	// TODO: Check the results
+	assert.True(t, mock.ExpectationsWereMet())
 
 	// Close the mock database
 	mock.ExpectClose()
@@ -45,7 +45,7 @@ func TestSettingsSeeder(t *testing.T) {
 	settingsSeeder(db)
 
 	// Check the results
-	// TODO: Check the results
+	assert.True(t, mock.ExpectationsWereMet())
 
 	// Close the mock database
 	mock.ExpectClose()
@@ -74,7 +74,7 @@ func TestStoreEntityFakeDataForEntity(t *testing.T) {
 	StoreEntityFakeDataForEntity(db, entity)
 
 	// Check the results
-	// TODO: Check the results
+	assert.True(t, mock.ExpectationsWereMet())
 
 	// Close the mock database
 	mock.ExpectClose()
@@ -89,7 +89,7 @@ func TestStoreDataForEntities(t *testing.T) {
 	StoreDataForEntities(db)
 
 	// Check the results
-	// TODO: Check the results
+	assert.True(t, mock.ExpectationsWereMet())
 
 	// Close the mock database
 	mock.ExpectClose()
