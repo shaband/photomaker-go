@@ -15,7 +15,7 @@ const userkey = "user"
 func AdminRegister(router *gin.RouterGroup) {
 
 	middleware.LoadGlobalAdminMiddleware(router)
-	authHandler := newAuthHandler(database.GetConnection())
+	authHandler := users.NewAuthHandler(database.GetConnection())
 	AddCrud(router.Group("/users"), users.NewUserHandler(database.GetConnection(), withCommonData))
 	guest := router.Group("/auth")
 	// Login and logout routes
