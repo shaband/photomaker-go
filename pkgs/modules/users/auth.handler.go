@@ -45,7 +45,7 @@ func (handler *AuthHandler) Login(ctx *gin.Context) {
 		return
 	}
 
-	helpers.RedirectSuccessWithMessage(ctx, "admin/users", "Successfully logged in")
+	helpers.RedirectSuccessWithMessage(ctx, "/admin/users", "Successfully logged in")
 
 }
 

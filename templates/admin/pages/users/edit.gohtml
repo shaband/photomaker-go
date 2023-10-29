@@ -22,7 +22,7 @@
                 </div>
                     {{template "alerts" .}}
                 <form action="/admin/users/{{.user.ID}}" method="post">
-`   1                        <input type="hidden" name="_method" value="PUT">
+               <input type="hidden" name="_method" value="PUT">
 
                     <input type="hidden" name="_csrf" value="{{.token}}">
 
