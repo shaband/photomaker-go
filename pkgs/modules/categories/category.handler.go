@@ -1,4 +1,4 @@
-package users
+package categories
 
 import (
 	"fmt"
@@ -12,46 +12,46 @@ import (
 	"gorm.io/gorm"
 )
 
-type UserHandler struct {
-	service    *UserService
+type CategoryHandler struct {
+	service    *CategoriesService
 	commonData func(c *gin.Context, data gin.H) gin.H
 }
 
-func (handler UserHandler) Index(ctx *gin.Context) {
+func (handler CategoryHandler) Index(ctx *gin.Context) {
 
-	ctx.HTML(http.StatusOK, "admin.users.index.gohtml", withCommonData(ctx, gin.H{
+	ctx.HTML(http.StatusOK, "admin.Categories.index.gohtml", withCommonData(ctx, gin.H{
 		"token": csrf.GetToken(ctx),
-		"users": handler.service.GetAll(),
+		"Categories": handler.service.GetAll(),
 	}))
 
 }
 
-// func (handler UserHandler) Show(c *gin.Context)   {
+// func (handler CategoryHandler) Show(c *gin.Context)   {
 
 // }
-func (handler UserHandler) Create(ctx *gin.Context) {
-	ctx.HTML(http.StatusOK, "admin.users.create.gohtml", withCommonData(ctx, gin.H{
+func (handler CategoryHandler) Create(ctx *gin.Context) {
+	ctx.HTML(http.StatusOK, "admin.Categories.create.gohtml", withCommonData(ctx, gin.H{
 		"token": csrf.GetToken(ctx),
 	}))
 }
-func (handler UserHandler) Store(ctx *gin.Context) {
-	UserRequest := UserRequest{}
-	ctx.ShouldBind(&UserRequest)
-	errs := validator.Validate(UserRequest)
+func (handler CategoryHandler) Store(ctx *gin.Context) {
+	CategoryRequest := CategoryRequest{}
+	ctx.ShouldBind(&CategoryRequest)
+	errs := validator.Validate(CategoryRequest)
 	if errs != nil {
-		helpers.RedirectFailedWithValidation(ctx, "/admin/users/create", errs, UserRequest)
+		helpers.RedirectFailedWithValidation(ctx, "/admin/Categories/create", errs, CategoryRequest)
 		return
 	}
-	handler.service.Store(&UserRequest)
-	helpers.RedirectSuccessWithMessage(ctx, "/admin/users", "User created successfully")
+	handler.service.Store(&CategoryRequest)
+	helpers.RedirectSuccessWithMessage(ctx, "/admin/Categories", "Category created successfully")
 
 }
-func (handler UserHandler) Edit(ctx *gin.Context) {
+func (handler CategoryHandler) Edit(ctx *gin.Context) {
 
 	id, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
 
-		helpers.RedirectFailedWithMessage(ctx, "/admin/users", "Invalid User ")
+		helpers.RedirectFailedWithMessage(ctx, "/admin/Categories", "Invalid User ")
 		return
 	}
 	ctx.HTML(http.StatusOK, "admin.users.edit.gohtml", gin.H{
