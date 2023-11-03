@@ -3,6 +3,7 @@ package template
 import (
 	"html/template"
 	"time"
+	//"github.com/Masterminds/sprig/v3"
 
 	"github.com/shaband/photomaker-go/pkgs/site"
 )

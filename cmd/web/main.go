@@ -31,7 +31,7 @@ func main() {
 	database.Init()
 	database.MakeMigration(database.GetConnection())
 
-	loadmiddlewares(router)
+	middlewares(router)
 	router.MaxMultipartMemory = 8 << 20 // 8 MiB
 	router.HTMLRender = template.LoadTemplates()
 	router.Static("assets", "./assets")
@@ -44,7 +44,7 @@ func main() {
 
 }
 
-func loadmiddlewares(router *gin.Engine) {
+func middlewares(router *gin.Engine) {
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
 	store := cookie.NewStore([]byte(os.Getenv("SESSION_SECRET")))

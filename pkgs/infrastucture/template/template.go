@@ -13,14 +13,14 @@ func LoadTemplates() multitemplate.Renderer {
 		"site.",
 		Must(siteResolver.GetLayoutPath()),
 		Must(siteResolver.GetPagesPath()),
-		))
+	))
 	adminResolver := newAdmnResolver()
 	r = Must(renderFilesAsTemplatesWithLayouts(
 		r,
 		"admin.",
 		Must(adminResolver.GetLayoutPath()),
 		Must(adminResolver.GetPagesPath()),
-		))
+	))
 	r = Must(renderFilesAsTemplatesWithLayouts(
 		r,
 		"admin.",

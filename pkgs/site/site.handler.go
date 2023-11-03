@@ -49,7 +49,7 @@ func (handler *SiteHandler) AboutPage(context *gin.Context) {
 func (handler *SiteHandler) CategoryPage(context *gin.Context) {
 
 	context.HTML(http.StatusOK, "site.pages.category.gohtml", handler.withCommonData(context, gin.H{
-		"category": categories.NewContractService(handler.db).GetSingleCategoryWithImages(context.Param("id")),
+		"category": categories.NewCategoryService(handler.db).GetSingleCategoryWithImages(context.Param("id")),
 	}))
 }
 
@@ -65,7 +65,7 @@ func (handler *SiteHandler) ContactPage(context *gin.Context) {
 func (handler *SiteHandler) GalleryPage(context *gin.Context) {
 
 	context.HTML(http.StatusOK, "site.pages.gallery.gohtml", handler.withCommonData(context, gin.H{
-		"categories": categories.NewContractService(handler.db).All(),
+		"categories": categories.NewCategoryService(handler.db).All(),
 	}))
 }
 

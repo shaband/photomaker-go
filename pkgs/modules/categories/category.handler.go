@@ -13,14 +13,14 @@ import (
 )
 
 type CategoryHandler struct {
-	service    *CategoriesService
+	service    *Service
 	commonData func(c *gin.Context, data gin.H) gin.H
 }
 
 func (handler CategoryHandler) Index(ctx *gin.Context) {
 
 	ctx.HTML(http.StatusOK, "admin.Categories.index.gohtml", withCommonData(ctx, gin.H{
-		"token": csrf.GetToken(ctx),
+		"token":      csrf.GetToken(ctx),
 		"Categories": handler.service.GetAll(),
 	}))
 
@@ -35,8 +35,11 @@ func (handler CategoryHandler) Create(ctx *gin.Context) {
 	}))
 }
 func (handler CategoryHandler) Store(ctx *gin.Context) {
-	CategoryRequest := CategoryRequest{}
-	ctx.ShouldBind(&CategoryRequest)
+	CategoryRequest := CreateCategoryRequest{}
+	err := ctx.ShouldBind(&CategoryRequest)
+	if err != nil {
+
+	}
 	errs := validator.Validate(CategoryRequest)
 	if errs != nil {
 		helpers.RedirectFailedWithValidation(ctx, "/admin/Categories/create", errs, CategoryRequest)
@@ -51,53 +54,55 @@ func (handler CategoryHandler) Edit(ctx *gin.Context) {
 	id, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
 
-		helpers.RedirectFailedWithMessage(ctx, "/admin/Categories", "Invalid User ")
+		helpers.RedirectFailedWithMessage(ctx, "/admin/Categories", "Invalid Category ")
 		return
 	}
-	ctx.HTML(http.StatusOK, "admin.users.edit.gohtml", gin.H{
+	ctx.HTML(http.StatusOK, "admin.categories.edit.gohtml", gin.H{
 		"token": csrf.GetToken(ctx),
 		"user":  handler.service.Find(id),
 	})
 }
 
-func (handler UserHandler) Update(ctx *gin.Context) {
+func (handler CategoryHandler) Update(ctx *gin.Context) {
 	id, err := strconv.Atoi(ctx.Param("id"))
 
 	fmt.Println(id)
 	if err != nil {
-		helpers.RedirectFailedWithMessage(ctx, fmt.Sprintf("/admin/users/%s/edit", ctx.Param("id")), "Invalid User ")
+		helpers.RedirectFailedWithMessage(ctx, fmt.Sprintf("/admin/categories/%s/edit", ctx.Param("id")), "Invalid Category ")
 		return
 	}
-	UserRequest := UserRequest{}
-	ctx.ShouldBind(&UserRequest)
+	CategoryRequest := UpdateCategoryRequest{}
+	err = ctx.ShouldBind(&CategoryRequest)
+	if err != nil {
 
-	errs := validator.Validate(UserRequest)
+	}
+	errs := validator.Validate(CategoryRequest)
 	if errs != nil {
 		fmt.Println(errs)
 
-		helpers.RedirectFailedWithValidation(ctx, fmt.Sprintf("/admin/users/%s/edit", ctx.Param("id")), errs, UserRequest)
+		helpers.RedirectFailedWithValidation(ctx, fmt.Sprintf("/admin/categories/%s/edit", ctx.Param("id")), errs, CategoryRequest)
 		return
 	}
-	handler.service.Update(uint(id), UserRequest.ToEntity())
-	helpers.RedirectSuccessWithMessage(ctx, "/admin/users", "User Updated successfully")
+	handler.service.Update(uint(id), CategoryRequest.ToEntity())
+	helpers.RedirectSuccessWithMessage(ctx, "/admin/categories", "Category Updated successfully")
 
 }
-func (handler UserHandler) Delete(ctx *gin.Context) {
+func (handler CategoryHandler) Delete(ctx *gin.Context) {
 	id, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
 
-		helpers.RedirectFailedWithMessage(ctx, "/admin/users", "Invalid User ")
+		helpers.RedirectFailedWithMessage(ctx, "/admin/categories", "Invalid Category ")
 		return
 	}
 	handler.service.DeleteById(id)
-	helpers.RedirectSuccessWithMessage(ctx, "/admin/users", "Deleted Successfully")
+	helpers.RedirectSuccessWithMessage(ctx, "/admin/categories", "Deleted Successfully")
 
 }
 
-func NewUserHandler(DB *gorm.DB, commonData func(c *gin.Context, data gin.H) gin.H) *UserHandler {
+func NewCategoryHandler(DB *gorm.DB, commonData func(c *gin.Context, data gin.H) gin.H) *CategoryHandler {
 
-	return &UserHandler{
-		service:    NewUserService(DB),
+	return &CategoryHandler{
+		service:    NewCategoryService(DB),
 		commonData: commonData,
 	}
 }

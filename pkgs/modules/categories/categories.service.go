@@ -4,18 +4,18 @@ import (
 	"gorm.io/gorm"
 )
 
-type CategoriesService struct {
+type Service struct {
 	db *gorm.DB
 }
 
-func NewContractService(db *gorm.DB) CategoriesService {
+func NewCategoryService(db *gorm.DB) *Service {
 
-	return CategoriesService{
+	return &Service{
 		db: db,
 	}
 }
 
-func (s CategoriesService) All(conds ...interface{}) []*Category {
+func (s Service) All(conds ...interface{}) []*Category {
 
 	Categories := []*Category{}
 
@@ -24,7 +24,7 @@ func (s CategoriesService) All(conds ...interface{}) []*Category {
 	return Categories
 }
 
-func (s CategoriesService) GetSingleCategoryWithImages(conds ...interface{}) *Category {
+func (s Service) GetSingleCategoryWithImages(conds ...interface{}) *Category {
 
 	category := Category{}
 
@@ -33,31 +33,30 @@ func (s CategoriesService) GetSingleCategoryWithImages(conds ...interface{}) *Ca
 	return &category
 }
 
-
-func (service *CategoriesService) GetAll() *[]Category {
+func (service *Service) GetAll() *[]Category {
 	Categorys := []Category{}
 	service.db.Find(&Categorys)
 	return &Categorys
 }
 
-func (service *CategoriesService) Find(ID int) *Category {
+func (service *Service) Find(ID int) *Category {
 	Category := Category{}
 	service.db.Find(&Category, ID)
 
 	return &Category
 }
-func (service CategoriesService) Update(ID uint, Category *Category) {
+func (service Service) Update(ID uint, Category *Category) {
 	Category.ID = ID
 	_ = service.db.Save(Category)
 }
 
-func (service *CategoriesService) DeleteById(ID int) *Category {
+func (service *Service) DeleteById(ID int) *Category {
 	// Category:=service.Find(ID)
 	service.db.Delete(&Category{}, ID)
 	return nil
 }
 
-func (service *CategoriesService) Store(CategoryRequest *CategoryRequest) *Category {
+func (service *Service) Store(CategoryRequest *CreateCategoryRequest) *Category {
 
 	Category := CategoryRequest.ToEntity()
 	service.db.Create(Category)
