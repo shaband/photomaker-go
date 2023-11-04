@@ -2,6 +2,7 @@ package categories
 
 import (
 	"testing"
+	"github.com/stretchr/testify/assert"
 	// Similar test functions for other methods in the Service struct...
 	// Test for GetSingleCategoryWithImages method
 	func TestService_GetSingleCategoryWithImages(t *testing.T) {
