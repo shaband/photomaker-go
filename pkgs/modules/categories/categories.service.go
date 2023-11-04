@@ -1,12 +1,19 @@
 package categories
 
 import (
+	"fmt"
+	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
+	"log"
+	"mime/multipart"
+	"time"
 )
 
 type Service struct {
 	db *gorm.DB
 }
+
+const filePath = "assets/uploads/categories"
 
 func NewCategoryService(db *gorm.DB) *Service {
 
@@ -15,28 +22,28 @@ func NewCategoryService(db *gorm.DB) *Service {
 	}
 }
 
-func (s Service) All(conds ...interface{}) []*Category {
+func (service Service) All(conds ...interface{}) []*Category {
 
 	Categories := []*Category{}
 
-	s.db.Find(&Categories, conds...)
+	service.db.Find(&Categories, conds...)
 
 	return Categories
 }
 
-func (s Service) GetSingleCategoryWithImages(conds ...interface{}) *Category {
+func (service Service) GetSingleCategoryWithImages(conds ...interface{}) *Category {
 
 	category := Category{}
 
-	s.db.Preload("Images").Find(&category, conds)
+	service.db.Preload("Images").Find(&category, conds)
 
 	return &category
 }
 
 func (service *Service) GetAll() *[]Category {
-	Categorys := []Category{}
-	service.db.Find(&Categorys)
-	return &Categorys
+	Categories := []Category{}
+	service.db.Preload("Images").Find(&Categories)
+	return &Categories
 }
 
 func (service *Service) Find(ID int) *Category {
@@ -56,10 +63,32 @@ func (service *Service) DeleteById(ID int) *Category {
 	return nil
 }
 
-func (service *Service) Store(CategoryRequest *CreateCategoryRequest) *Category {
+func (service *Service) Store(c *gin.Context, CategoryRequest *CreateCategoryRequest) *Category {
+	category := CategoryRequest.ToEntity(c)
+	service.db.Create(category)
+	return category
+}
 
-	Category := CategoryRequest.ToEntity()
-	service.db.Create(Category)
+func SaveImage(c *gin.Context, dest string, image *multipart.FileHeader) string {
+	path := dest + "/" + fmt.Sprint(time.Now().Unix()) + "/" + image.Filename
 
-	return Category
+	err := c.SaveUploadedFile(image, path)
+	if err != nil {
+		log.Println(err)
+		return ""
+	}
+	return "/" + path
+}
+func handleCategoryImages(ctx *gin.Context, images []*multipart.FileHeader) []CategoryImage {
+
+	var categoryImages []CategoryImage
+	for order, image := range images {
+		categoryImages = append(
+			categoryImages,
+			CategoryImage{
+				Order: uint(order),
+				Image: SaveImage(ctx, filePath, image),
+			})
+	}
+	return categoryImages
 }

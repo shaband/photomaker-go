@@ -12,7 +12,7 @@ type contractService struct {
 	db *gorm.DB
 }
 
-const filePath = "/assets/uploads/contacts"
+const filePath = "assets/uploads/contacts"
 
 func (service *contractService) GetAll() *[]*ServiceType {
 	ServiceTypes := []*ServiceType{}

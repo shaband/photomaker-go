@@ -35,8 +35,8 @@ func main() {
 	router.MaxMultipartMemory = 8 << 20 // 8 MiB
 	router.HTMLRender = template.LoadTemplates()
 	router.Static("assets", "./assets")
-	site.SiteRegister(router.Group("/"))
-	admin.AdminRegister(router.Group("/admin"))
+	site.Register(router.Group("/"))
+	admin.Register(router.Group("/admin"))
 	err := router.Run(":" + os.Getenv("SERVER_PORT"))
 	if err != nil {
 		panic(err)

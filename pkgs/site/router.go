@@ -1,7 +1,6 @@
 package site
 
 import (
-
 	ginI18n "github.com/gin-contrib/i18n"
 	"github.com/nicksnyder/go-i18n/v2/i18n"
 
@@ -10,7 +9,7 @@ import (
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/middleware"
 )
 
-func SiteRegister(router *gin.RouterGroup) {
+func Register(router *gin.RouterGroup) {
 
 	middleware.LoadGlobalSiteMiddleware(router)
 
