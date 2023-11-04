@@ -33,8 +33,9 @@
                                     Arabic name
 
                                 </label>
+
                                 <input type="text" name="name_ar"
-{{/*                                       value="{{oldWithDefault .commonData.__inputs "nameAr" .category.nameAr}}"*/}}
+                                       value="{{oldWithDefault .commonData.__inputs "nameAr" .category.NameAr}}"
                                        id="name_ar"
                                        placeholder="Enter your full name"
                                        class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"/>
@@ -44,36 +45,51 @@
                                     en name
                                 </label>
                                 <input id="name_en" type="text" name="name_en"
-{{/*                                       value="{{oldWithDefault .commonData.__inputs "nameEn" .category.nameEn}}"*/}}
+                                       value="{{oldWithDefault .commonData.__inputs "nameEn" .category.NameEn}}"
 
                                        placeholder="Enter your full name"
                                        class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"/>
                             </div>
 
+
                             <div class="mb-4.5">
+
                                 <label for="cover" class="mb-2.5 block text-black dark:text-white">
                                     Cover
                                 </label>
+
+                                <a href="{{.category.Cover}}" target="_blank" class="flex items-center justify-center p-2.5">
+                                    <img
+                                            src="{{.category.Cover}}"
+                                            loading="lazy"
+                                            width="250"
+                                            alt="{{.category.Cover}}"
+                                            class="rounded"
+                                    />
+                                </a>
                                 <input id="cover" type="file" name="cover"
                                        class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"/>
+
+                            </div>
+                                <div class="mb-4.5">
+                                    <label for="images" class="mb-2.5 block text-black dark:text-white">
+                                        Images
+                                    </label>
+                                    <input id="images" type="file" name="images[]"
+                                           class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                                    />
+                                </div>
+
+                                <button class="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray">
+                                    Save
+                                </button>
                             </div>
 
-                            <div class="mb-4.5">
-                                <label for="images" class="mb-2.5 block text-black dark:text-white">
-                                    Images
-                                </label>
-                                <input id="images" type="file" name="images[]"
-                                       class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                                />
-                            </div>
 
-                            <button class="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray">
-                                Save
-                            </button>
-                        </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+
 {{end }}

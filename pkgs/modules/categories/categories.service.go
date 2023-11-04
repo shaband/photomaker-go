@@ -48,7 +48,7 @@ func (service *Service) GetAll() *[]Category {
 
 func (service *Service) Find(ID int) *Category {
 	Category := Category{}
-	service.db.Find(&Category, ID)
+	service.db.Preload("Images").Find(&Category, ID)
 
 	return &Category
 }
