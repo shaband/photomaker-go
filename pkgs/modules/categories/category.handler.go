@@ -56,8 +56,8 @@ func (handler CategoryHandler) Edit(ctx *gin.Context) {
 		return
 	}
 	ctx.HTML(http.StatusOK, "admin.categories.edit.gohtml", gin.H{
-		"token": csrf.GetToken(ctx),
-		"user":  handler.service.Find(id),
+		"token":    csrf.GetToken(ctx),
+		"category": handler.service.Find(id),
 	})
 }
 
@@ -69,7 +69,7 @@ func (handler CategoryHandler) Update(ctx *gin.Context) {
 		helpers.RedirectFailedWithMessage(ctx, fmt.Sprintf("/admin/categories/%s/edit", ctx.Param("id")), "Invalid Category ")
 		return
 	}
-	CategoryRequest := UpdateCategoryRequest{}
+	CategoryRequest := &UpdateCategoryRequest{}
 	err = ctx.ShouldBind(&CategoryRequest)
 	if err != nil {
 
@@ -77,11 +77,10 @@ func (handler CategoryHandler) Update(ctx *gin.Context) {
 	errs := validator.Validate(CategoryRequest)
 	if errs != nil {
 		fmt.Println(errs)
-
 		helpers.RedirectFailedWithValidation(ctx, fmt.Sprintf("/admin/categories/%s/edit", ctx.Param("id")), errs, CategoryRequest)
 		return
 	}
-	handler.service.Update(uint(id), CategoryRequest.ToEntity())
+	handler.service.Update(ctx, uint(id), CategoryRequest)
 	helpers.RedirectSuccessWithMessage(ctx, "/admin/categories", "Category Updated successfully")
 
 }
@@ -94,6 +93,17 @@ func (handler CategoryHandler) Delete(ctx *gin.Context) {
 	}
 	handler.service.DeleteById(id)
 	helpers.RedirectSuccessWithMessage(ctx, "/admin/categories", "Deleted Successfully")
+
+}
+
+func (handler CategoryHandler) DeleteCategoryImage(ctx *gin.Context) {
+	id, err := strconv.Atoi(ctx.Param("id"))
+	if err != nil {
+		helpers.RedirectFailedWithMessage(ctx, "/admin/categories", "Invalid Category ")
+		return
+	}
+	categoryId := handler.service.DeleteImageByCategoryId(id)
+	helpers.RedirectSuccessWithMessage(ctx, "/admin/categories", fmt.Sprintf("/admin/categories/%v/edit", categoryId))
 
 }
 

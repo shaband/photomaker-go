@@ -52,9 +52,10 @@ func (service *Service) Find(ID int) *Category {
 
 	return &Category
 }
-func (service Service) Update(ID uint, Category *Category) {
-	Category.ID = ID
-	_ = service.db.Save(Category)
+func (service Service) Update(ctx *gin.Context, ID uint, CategoryRequest *UpdateCategoryRequest) {
+	category := CategoryRequest.ToEntity(ctx)
+	category.ID = ID
+	_ = service.db.Save(category)
 }
 
 func (service *Service) DeleteById(ID int) *Category {
@@ -67,6 +68,14 @@ func (service *Service) Store(c *gin.Context, CategoryRequest *CreateCategoryReq
 	category := CategoryRequest.ToEntity(c)
 	service.db.Create(category)
 	return category
+}
+
+func (service Service) DeleteImageByCategoryId(id int) int {
+	categoryImage := &CategoryImage{}
+	service.db.Find(categoryImage, id)
+	categoryID := categoryImage.CategoryId
+	service.db.Delete(categoryImage)
+	return categoryID
 }
 
 func SaveImage(c *gin.Context, dest string, image *multipart.FileHeader) string {

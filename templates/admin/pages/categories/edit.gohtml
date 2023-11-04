@@ -22,19 +22,20 @@
                     </div>
                     {{template "alerts" .}}
                     <form action="/admin/categories/{{.category.ID}}" method="post" enctype="multipart/form-data">
-                        <input type="hidden" name="_method" value="PUT">
+                        <input type="hidden" name="_method" value="PUT"/>
 
-                        <input type="hidden" name="_csrf" value="{{.token}}">
+                        <input type="hidden" name="_csrf" value="{{.token}}"/>
 
                         <div class="p-6.5">
                             <div class="mb-4.5">
-                                <label for="name_ar" class="mb-2.5 block text-black dark:text-white">
-                                    Ar name
+                                <label for="name_ar"
+                                       class="mb-2.5 block text-black dark:text-white">
+                                    Arabic name
 
                                 </label>
-                                <input id="name_ar" type="text" name="name_ar"
-                                       value="{{oldWithDefault .commonData.__inputs "nameAr" .category.nameAr}}"
-
+                                <input type="text" name="name_ar"
+{{/*                                       value="{{oldWithDefault .commonData.__inputs "nameAr" .category.nameAr}}"*/}}
+                                       id="name_ar"
                                        placeholder="Enter your full name"
                                        class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"/>
                             </div>
@@ -43,7 +44,7 @@
                                     en name
                                 </label>
                                 <input id="name_en" type="text" name="name_en"
-                                       value="{{oldWithDefault .commonData.__inputs "nameEn" .category.nameEn}}"
+{{/*                                       value="{{oldWithDefault .commonData.__inputs "nameEn" .category.nameEn}}"*/}}
 
                                        placeholder="Enter your full name"
                                        class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"/>

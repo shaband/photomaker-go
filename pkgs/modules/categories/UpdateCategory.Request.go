@@ -1,21 +1,27 @@
 package categories
 
-import "mime/multipart"
+import (
+	"github.com/gin-gonic/gin"
+	"mime/multipart"
+)
 
 type UpdateCategoryRequest struct {
-	NameAr string                  `form:"name_ar" validate:"required,alphanum"`
-	NameEn string                  `form:"name_en" validate:"required,alphanum"`
+	NameAr string                  `form:"name_ar" validate:"required"`
+	NameEn string                  `form:"name_en" validate:"required"`
 	Cover  *multipart.FileHeader   `form:"cover"`
 	Images []*multipart.FileHeader `form:"images[]"`
 }
 
-func (c *UpdateCategoryRequest) ToEntity() *Category {
+func (UpdateCategoryRequest *UpdateCategoryRequest) ToEntity(c *gin.Context) *Category {
 
-	return &Category{
-		NameAr: c.NameAr,
-		NameEn: c.NameEn,
-		//Cover:  c.Cover,
-		//Images: c.Images,
+	category := &Category{
+		NameAr: UpdateCategoryRequest.NameAr,
+		NameEn: UpdateCategoryRequest.NameEn,
+		//Cover:  SaveImage(c, filePath, UpdateCategoryRequest.Cover),
+		Images: handleCategoryImages(c, UpdateCategoryRequest.Images),
 	}
-
+	if UpdateCategoryRequest.Cover != nil {
+		category.Cover = SaveImage(c, filePath, UpdateCategoryRequest.Cover)
+	}
+	return category
 }
