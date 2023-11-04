@@ -1,8 +1,8 @@
 package categories
 
 import (
-	"testing"
 	"github.com/brianvoe/gofakeit/v6"
+	"testing"
 )
 
 func TestCategoryFake(t *testing.T) {
