@@ -1,9 +1,6 @@
 package database
 
 import (
-	"errors"
-	"os"
-
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/shaband/photomaker-go/pkgs/modules/categories"
 	"github.com/shaband/photomaker-go/pkgs/modules/clients"
@@ -21,8 +18,6 @@ var db *gorm.DB
 type ConfigLoader interface {
 	GetEnv(key string) string
 }
-
-func Init(configLoader ConfigLoader) {
 
 	config := &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Info),
@@ -60,17 +55,6 @@ func MakeMigration(db *gorm.DB) {
 	)
 }
 
-func connectionFactory(factory string) (connection, error) {
-
-	if factory == "postgres" {
-		return NewPostgresConnection(), nil
-		// } else if factory == "sqlite" {
-		func Init(configLoader ConfigLoader) {
-		
-			config := &gorm.Config{
-				Logger: logger.Default.LogMode(logger.Info),
-			}
-		
 			connection, err := connectionFactory(configLoader.GetEnv("DB_CONNECTION"))
 			if err != nil {
 				panic(err)
@@ -87,27 +71,6 @@ func connectionFactory(factory string) (connection, error) {
 			return db
 		}
 		
-		func MakeMigration(db *gorm.DB) {
-		
-			db.AutoMigrate(
-				&categories.Category{},
-				&categories.CategoryImage{},
-				&clients.Client{},
-				&contacts.Contact{},
-				&services.Service{},
-				&contacts.ServiceType{},
-				&contacts.ServiceTypeItem{},
-				&settings.Setting{},
-				&sliders.Slider{},
-				&users.User{},
-			)
-		}
-		
-		type ConnectionFactory interface {
-			Connect(config *gorm.Config) (*gorm.DB, error)
-		}
-		
-		func connectionFactory(factory string) (ConnectionFactory, error) {
 		
 			if factory == "postgres" {
 				return NewPostgresConnection(), nil
