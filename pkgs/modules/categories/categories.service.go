@@ -70,12 +70,12 @@ func (service *Service) Store(c *gin.Context, CategoryRequest *CreateCategoryReq
 	return category
 }
 
-func (service Service) DeleteImageByCategoryId(id int) int {
+func (service Service) DeleteImageByCategoryId(id int)  {
 	categoryImage := &CategoryImage{}
 	service.db.Find(categoryImage, id)
-	categoryID := categoryImage.CategoryId
+	// categoryID := categoryImage.CategoryId
 	service.db.Delete(categoryImage)
-	return categoryID
+	// return categoryID
 }
 
 func SaveImage(c *gin.Context, dest string, image *multipart.FileHeader) string {

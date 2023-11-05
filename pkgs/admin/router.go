@@ -1,8 +1,9 @@
 package admin
 
 import (
-	"github.com/shaband/photomaker-go/pkgs/modules/categories"
 	"net/http"
+
+	"github.com/shaband/photomaker-go/pkgs/modules/categories"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -17,8 +18,12 @@ func Register(router *gin.RouterGroup) {
 
 	middleware.LoadGlobalAdminMiddleware(router)
 	authHandler := users.NewAuthHandler(database.GetConnection())
+
+	categoriesHandler := categories.NewCategoryHandler(database.GetConnection(), withCommonData)
 	AddCrud(router.Group("/users"), users.NewUserHandler(database.GetConnection(), withCommonData))
-	AddCrud(router.Group("/categories"), categories.NewCategoryHandler(database.GetConnection(), withCommonData))
+	AddCrud(router.Group("/categories"), categoriesHandler)
+	router.DELETE("/category-images/:id", categoriesHandler.DeleteCategoryImage)
+
 	guest := router.Group("/auth")
 	// Login and logout routes
 	guest.GET("/login", authHandler.GetLoginPage)

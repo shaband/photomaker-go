@@ -2,13 +2,15 @@ package categories
 
 import (
 	"fmt"
+	"log"
+	"net/http"
+	"strconv"
+
 	"github.com/gin-gonic/gin"
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/helpers"
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/validator"
 	csrf "github.com/utrack/gin-csrf"
 	"gorm.io/gorm"
-	"net/http"
-	"strconv"
 )
 
 type CategoryHandler struct {
@@ -99,11 +101,16 @@ func (handler CategoryHandler) Delete(ctx *gin.Context) {
 func (handler CategoryHandler) DeleteCategoryImage(ctx *gin.Context) {
 	id, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
-		helpers.RedirectFailedWithMessage(ctx, "/admin/categories", "Invalid Category ")
+		log.Println(err)
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"message": "error",
+		})
 		return
 	}
-	categoryId := handler.service.DeleteImageByCategoryId(id)
-	helpers.RedirectSuccessWithMessage(ctx, "/admin/categories", fmt.Sprintf("/admin/categories/%v/edit", categoryId))
+	handler.service.DeleteImageByCategoryId(id)
+	ctx.JSON(http.StatusOK, gin.H{
+		"message": "Deleted Successfully",
+	})
 
 }
 

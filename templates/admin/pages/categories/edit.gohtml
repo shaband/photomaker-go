@@ -78,7 +78,7 @@
                                 </label>
                                 <div class="flex items-center justify-center p-2.5">
                                     {{ range .category.Images}}
-                                        <div class="flex flex-col p-2.5">
+                                        <div class="flex flex-col p-2.5" id="image-{{.ID}}">
                                             <a href="{{.Image}}" target="_blank" class=""
                                             >
                                                 <img
@@ -91,18 +91,11 @@
                                                 />
                                             </a>
 
-                                            <form action="/admin/category-images/{{.ID}}" method="POST">
-                                                <input type="hidden" name="_method" value="DELETE"/>
-                                                <input type="hidden" name="_csrf" value="{{$.token}}"/>
-                                                <button type="button" x-data="{
-                                                ID:{{.ID}},
-                                                
-                                                }"
+                                      
+                                                <button type="button" onClick="deleteImage({{.ID}})" 
                                                         class="bg-danger  !text-white  hover:text-primary rounded-b-sm">
                                                     Delete
                                                 </button>
-
-                                                {{/*                                            </form>*/}}
                                         </div>
                                     {{end}}
                                 </div>
@@ -123,10 +116,11 @@
         </div>
     </div>
 
-{{end }}
+
 
     <script defer >
         function deleteImage(ID) {
+
             fetch(`/admin/category-images/${ID}`, {
                 method: 'DELETE',
                 headers: {
@@ -134,34 +128,13 @@
                     'X-CSRF-TOKEN': '{{.token}}'
                 },
             }).then(res => {
+                        
+
                 if (res.ok) {
-                    window.location.reload()
+                    document.getElementById(`image-${ID}`).remove()
                 }
             })
         }
-
-    document.addEventListener('alpine:init', () => {
-        Alpine.data('dropdown', () => ({
-            open: false,
-    deleteImage(){
-           function deleteImage(ID) {
-            fetch(`/admin/category-images/${ID}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{.token}}'
-                },
-            }).then(res => {
-                if (res.ok) {
-                    window.location.reload()
-                }
-            })
-    },
-            toggle() {
-                this.open = ! this.open
-            }
-        }))
-    })
 
     </script>
 
