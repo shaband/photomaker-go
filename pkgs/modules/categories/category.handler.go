@@ -14,7 +14,7 @@ import (
 )
 
 type CategoryHandler struct {
-	service    *Service
+	service    ServiceInterface
 	commonData func(c *gin.Context, data gin.H) gin.H
 }
 
@@ -114,10 +114,10 @@ func (handler CategoryHandler) DeleteCategoryImage(ctx *gin.Context) {
 
 }
 
-func NewCategoryHandler(DB *gorm.DB, commonData func(c *gin.Context, data gin.H) gin.H) *CategoryHandler {
+func NewCategoryHandler(service ServiceInterface, commonData func(c *gin.Context, data gin.H) gin.H) *CategoryHandler {
 
 	return &CategoryHandler{
-		service:    NewCategoryService(DB),
+		service:    service,
 		commonData: commonData,
 	}
 }

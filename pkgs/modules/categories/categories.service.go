@@ -9,8 +9,23 @@ import (
 	"time"
 )
 
+type DB interface {
+	Find(dest interface{}, conds ...interface{}) *gorm.DB
+	Preload(column string, conditions ...interface{}) *gorm.DB
+	Save(value interface{}) *gorm.DB
+	Delete(value interface{}, conds ...interface{}) *gorm.DB
+	Create(value interface{}) *gorm.DB
+}
+
 type Service struct {
-	db *gorm.DB
+	db DB
+}
+
+func NewCategoryService(db DB) *Service {
+
+	return &Service{
+		db: db,
+	}
 }
 
 const filePath = "assets/uploads/categories"

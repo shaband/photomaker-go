@@ -21,3 +21,16 @@ func TestCategoryFake(t *testing.T) {
 		t.Error("Expected Cover to be non-empty, got empty string")
 	}
 }
+
+func TestCategoryImageFake(t *testing.T) {
+	categoryImage := CategoryImage{}
+	categoryImage.Fake()
+
+	if categoryImage.Image == "" {
+		t.Error("Expected Image to be non-empty, got empty string")
+	}
+
+	if categoryImage.CategoryID == 0 {
+		t.Error("Expected CategoryID to be non-zero, got zero")
+	}
+}

@@ -18,7 +18,11 @@ import (
 
 var db *gorm.DB
 
-func Init() {
+type ConfigLoader interface {
+	GetEnv(key string) string
+}
+
+func Init(configLoader ConfigLoader) {
 
 	config := &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Info),
@@ -61,7 +65,58 @@ func connectionFactory(factory string) (connection, error) {
 	if factory == "postgres" {
 		return NewPostgresConnection(), nil
 		// } else if factory == "sqlite" {
-		// 	return NewsqliteConnection(), nil
+		func Init(configLoader ConfigLoader) {
+		
+			config := &gorm.Config{
+				Logger: logger.Default.LogMode(logger.Info),
+			}
+		
+			connection, err := connectionFactory(configLoader.GetEnv("DB_CONNECTION"))
+			if err != nil {
+				panic(err)
+			}
+			DB, err := connection.Connect(config)
+			if err != nil {
+				panic("failed to connect database")
+			}
+			db = DB
+		}
+		
+		func GetConnection() *gorm.DB {
+		
+			return db
+		}
+		
+		func MakeMigration(db *gorm.DB) {
+		
+			db.AutoMigrate(
+				&categories.Category{},
+				&categories.CategoryImage{},
+				&clients.Client{},
+				&contacts.Contact{},
+				&services.Service{},
+				&contacts.ServiceType{},
+				&contacts.ServiceTypeItem{},
+				&settings.Setting{},
+				&sliders.Slider{},
+				&users.User{},
+			)
+		}
+		
+		type ConnectionFactory interface {
+			Connect(config *gorm.Config) (*gorm.DB, error)
+		}
+		
+		func connectionFactory(factory string) (ConnectionFactory, error) {
+		
+			if factory == "postgres" {
+				return NewPostgresConnection(), nil
+				// } else if factory == "sqlite" {
+				// 	return NewsqliteConnection(), nil
+			} else {
+				return nil, errors.New("Invalid Connection")
+			}
+		}
 	} else {
 		return nil, errors.New("Invalid Connection")
 	}
