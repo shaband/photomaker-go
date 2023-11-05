@@ -58,7 +58,8 @@
                                     Cover
                                 </label>
 
-                                <a href="{{.category.Cover}}" target="_blank" class="flex items-center justify-center p-2.5">
+                                <a href="{{.category.Cover}}" target="_blank"
+                                   class="flex items-center justify-center p-2.5">
                                     <img
                                             src="{{.category.Cover}}"
                                             loading="lazy"
@@ -71,19 +72,49 @@
                                        class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"/>
 
                             </div>
-                                <div class="mb-4.5">
-                                    <label for="images" class="mb-2.5 block text-black dark:text-white">
-                                        Images
-                                    </label>
-                                    <input id="images" type="file" name="images[]"
-                                           class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                                    />
-                                </div>
+                            <div class="mb-4.5">
+                                <label for="images" class="mb-2.5 block text-black dark:text-white">
+                                    Images
+                                </label>
+                                <div class="flex items-center justify-center p-2.5">
+                                    {{ range .category.Images}}
+                                        <div class="flex flex-col p-2.5">
+                                            <a href="{{.Image}}" target="_blank" class=""
+                                            >
+                                                <img
+                                                        src="{{.Image}}"
+                                                        loading="lazy"
+                                                        width="250"
+                                                        height="250"
+                                                        alt="{{.Image}}"
+                                                        class="rounded-t-sm object-cover"
+                                                />
+                                            </a>
 
-                                <button class="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray">
-                                    Save
-                                </button>
+                                            <form action="/admin/category-images/{{.ID}}" method="POST">
+                                                <input type="hidden" name="_method" value="DELETE"/>
+                                                <input type="hidden" name="_csrf" value="{{$.token}}"/>
+                                                <button type="button" x-data="{
+                                                ID:{{.ID}},
+                                                
+                                                }"
+                                                        class="bg-danger  !text-white  hover:text-primary rounded-b-sm">
+                                                    Delete
+                                                </button>
+
+                                                {{/*                                            </form>*/}}
+                                        </div>
+                                    {{end}}
+                                </div>
+                                <input id="images" type="file" name="images[]"
+                                       class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                                />
                             </div>
+
+                            <button class="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray">
+                                Save
+                            </button>
+                        </div>
 
 
                     </form>
@@ -93,3 +124,45 @@
     </div>
 
 {{end }}
+
+    <script defer >
+        function deleteImage(ID) {
+            fetch(`/admin/category-images/${ID}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{.token}}'
+                },
+            }).then(res => {
+                if (res.ok) {
+                    window.location.reload()
+                }
+            })
+        }
+
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('dropdown', () => ({
+            open: false,
+    deleteImage(){
+           function deleteImage(ID) {
+            fetch(`/admin/category-images/${ID}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{.token}}'
+                },
+            }).then(res => {
+                if (res.ok) {
+                    window.location.reload()
+                }
+            })
+    },
+            toggle() {
+                this.open = ! this.open
+            }
+        }))
+    })
+
+    </script>
+
+{{end}}

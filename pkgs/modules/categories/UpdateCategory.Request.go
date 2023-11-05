@@ -17,7 +17,6 @@ func (UpdateCategoryRequest *UpdateCategoryRequest) ToEntity(c *gin.Context) *Ca
 	category := &Category{
 		NameAr: UpdateCategoryRequest.NameAr,
 		NameEn: UpdateCategoryRequest.NameEn,
-		//Cover:  SaveImage(c, filePath, UpdateCategoryRequest.Cover),
 		Images: handleCategoryImages(c, UpdateCategoryRequest.Images),
 	}
 	if UpdateCategoryRequest.Cover != nil {
