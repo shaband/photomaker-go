@@ -11,6 +11,11 @@ type Config struct {
 	DSN string
 	EnvLoader EnvLoader
 }
+func (c *Config) GetEnv(key string) string {
+
+	return c.EnvLoader.GetEnv(key)
+
+}
 
 func LoadConfig() (*Config, error) {
 	if err := godotenv.Load(); err != nil {

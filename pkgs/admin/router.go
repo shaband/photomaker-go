@@ -18,8 +18,8 @@ func Register(router *gin.RouterGroup) {
 
 	middleware.LoadGlobalAdminMiddleware(router)
 	authHandler := users.NewAuthHandler(database.GetConnection())
-
-	categoriesHandler := categories.NewCategoryHandler(database.GetConnection(), withCommonData)
+ 
+	categoriesHandler := categories.NewCategoryHandler( categories.NewCategoryService(database.GetConnection()), withCommonData)
 	AddCrud(router.Group("/users"), users.NewUserHandler(database.GetConnection(), withCommonData))
 	AddCrud(router.Group("/categories"), categoriesHandler)
 	router.DELETE("/category-images/:id", categoriesHandler.DeleteCategoryImage)

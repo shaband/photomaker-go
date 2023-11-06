@@ -29,7 +29,10 @@ func main() {
 	gin.SetMode(os.Getenv("APP_MODE"))
 	// f, _ := os.Create("gin.log")
 	// gin.DefaultWriter = io.MultiWriter(f)
-	cfg := config.LoadConfig()
+	cfg, err := config.LoadConfig()
+	if err != nil {
+		panic(err)
+	}
 	database.Init(cfg)
 	database.MakeMigration(database.GetConnection())
 
@@ -39,7 +42,7 @@ func main() {
 	router.Static("assets", "./assets")
 	site.Register(router.Group("/"))
 	admin.Register(router.Group("/admin"))
-	err := router.Run(":" + os.Getenv("SERVER_PORT"))
+	err = router.Run(":" + os.Getenv("SERVER_PORT"))
 	if err != nil {
 		panic(err)
 	} // listen and serve on 0.0.0.0:8080
