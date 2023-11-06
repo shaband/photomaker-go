@@ -17,16 +17,21 @@ type DB interface {
 	Create(value interface{}) *gorm.DB
 }
 
+type ServiceInterface interface {
+	All(conds ...interface{}) []*Category
+	GetSingleCategoryWithImages(conds ...interface{}) *Category
+	GetAll() *[]Category
+	Find(ID int) *Category
+	Update(ctx *gin.Context, ID uint, CategoryRequest *UpdateCategoryRequest)
+	DeleteById(ID int) *Category
+	Store(c *gin.Context, CategoryRequest *CreateCategoryRequest) *Category
+	DeleteImageByCategoryId(id int)
+
+}
 type Service struct {
 	db DB
 }
 
-func NewCategoryService(db DB) *Service {
-
-	return &Service{
-		db: db,
-	}
-}
 
 const filePath = "assets/uploads/categories"
 

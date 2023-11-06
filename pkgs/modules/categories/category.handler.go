@@ -10,7 +10,6 @@ import (
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/helpers"
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/validator"
 	csrf "github.com/utrack/gin-csrf"
-	"gorm.io/gorm"
 )
 
 type CategoryHandler struct {

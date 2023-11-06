@@ -29,13 +29,3 @@ func LoadConfig() (*Config, error) {
 type EnvLoader interface {
 	GetEnv(key string) string
 }
-
-func LoadConfig(envLoader EnvLoader) (*Config, error) {
-	if err := godotenv.Load(); err != nil {
-		return nil, fmt.Errorf("failed to load .env file: %w", err)
-	}
-
-	dbname := envLoader.GetEnv("DB_NAME")
-
-	return &Config{DSN: dbname}, nil
-}

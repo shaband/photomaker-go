@@ -10,6 +10,7 @@ import (
 	// "github.com/gin-gonic/gin/binding"
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/shaband/photomaker-go/pkgs/admin"
+	"github.com/shaband/photomaker-go/pkgs/infrastucture/config"
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/database"
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/template"
 
@@ -28,7 +29,8 @@ func main() {
 	gin.SetMode(os.Getenv("APP_MODE"))
 	// f, _ := os.Create("gin.log")
 	// gin.DefaultWriter = io.MultiWriter(f)
-	database.Init()
+	cfg := config.LoadConfig()
+	database.Init(cfg)
 	database.MakeMigration(database.GetConnection())
 
 	middlewares(router)
