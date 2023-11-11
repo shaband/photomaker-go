@@ -20,13 +20,11 @@ type DB interface {
 
 type ServiceInterface interface {
 	All(conds ...interface{}) []*Client
-	GetSingleClientWithImages(conds ...interface{}) *Client
 	GetAll() *[]Client
 	Find(ID int) *Client
 	Update(ctx *gin.Context, ID uint, ClientRequest *UpdateClientRequest) *gorm.DB
 	DeleteById(ID int) *gorm.DB
 	Store(c *gin.Context, ClientRequest *CreateClientRequest) *Client
-	DeleteImageByClientId(id int) *gorm.DB
 }
 type Service struct {
 	db DB
@@ -83,3 +81,4 @@ func (service *Service) Store(c *gin.Context, ClientRequest *CreateClientRequest
 	service.db.Create(category)
 	return category
 }
+

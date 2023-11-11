@@ -34,7 +34,7 @@ func ResolveCommonData() commonData {
 	once.Do(func() {
 		commonDataInstance = commonData{
 			gin.H{
-				"settings": settings.NewSettingService(database.GetConnection()).GetAllValuesPluckedBy("Slug"),
+				"settings": settings.NewService(database.GetConnection()).GetAllValuesPluckedBy("Slug"),
 			},
 		}
 	})

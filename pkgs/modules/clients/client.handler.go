@@ -98,21 +98,6 @@ func (handler Handler) Delete(ctx *gin.Context) {
 
 }
 
-func (handler Handler) DeleteClientImage(ctx *gin.Context) {
-	id, err := strconv.Atoi(ctx.Param("id"))
-	if err != nil {
-		log.Println(err)
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"message": "error",
-		})
-		return
-	}
-	handler.service.DeleteImageByClientId(id)
-	ctx.JSON(http.StatusOK, gin.H{
-		"message": "Deleted Successfully",
-	})
-
-}
 
 func NewHandler(service ServiceInterface, commonData func(c *gin.Context, data gin.H) gin.H) *Handler {
 

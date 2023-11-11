@@ -6,16 +6,16 @@ import (
 	"gorm.io/gorm"
 )
 
-type SettingService struct {
+type Service struct {
 	db *gorm.DB
 }
 
-func (service *SettingService) GetAll() []Setting {
+func (service *Service) GetAll() []Setting {
 	Settings := []Setting{}
 	service.db.Find(&Settings)
 	return Settings
 }
-func (service *SettingService) GetAllValuesPluckedBy(key string) map[string]string {
+func (service *Service) GetAllValuesPluckedBy(key string) map[string]string {
 	Settings := []Setting{}
 	service.db.Find(&Settings)
 	pluckedSettings := make(map[string]string)
@@ -25,14 +25,14 @@ func (service *SettingService) GetAllValuesPluckedBy(key string) map[string]stri
 	return pluckedSettings
 }
 
-func (service *SettingService) FindValue(slug string) *string {
+func (service *Service) FindValue(slug string) *string {
 	Setting := Setting{}
 	service.db.Select("value").Where("slug = ?", slug).Find(&Setting)
 	return &(Setting.Value)
 }
-func NewSettingService(db *gorm.DB) *SettingService {
+func NewService(db *gorm.DB) *Service {
 
-	return &SettingService{
+	return &Service{
 		db: db,
 	}
 }
