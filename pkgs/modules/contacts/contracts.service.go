@@ -8,19 +8,19 @@ import (
 	"gorm.io/gorm"
 )
 
-type contractService struct {
+type Service struct {
 	db *gorm.DB
 }
 
 const filePath = "assets/uploads/contacts"
 
-func (service *contractService) GetAll() *[]*ServiceType {
+func (service *Service) GetAll() *[]*ServiceType {
 	ServiceTypes := []*ServiceType{}
 	service.db.Preload("Items").Find(&ServiceTypes)
 	return &ServiceTypes
 }
 
-func (service *contractService) BindForm(context *gin.Context) ContactForm {
+func (service *Service) BindForm(context *gin.Context) ContactForm {
 
 	var form ContactForm
 
@@ -43,14 +43,14 @@ func (service *contractService) BindForm(context *gin.Context) ContactForm {
 	return form
 }
 
-func NewService(db *gorm.DB) *contractService {
+func NewService(db *gorm.DB) *Service {
 
-	return &contractService{
+	return &Service{
 		db: db,
 	}
 }
 
-func (service *contractService) SaveContactData(c *gin.Context, data ContactForm) *Contact {
+func (service *Service) SaveContactData(c *gin.Context, data ContactForm) *Contact {
 	var dest string
 	if data.Attachment != nil {
 		dest = helpers.SaveFile(c, filePath, data.Attachment)
@@ -66,4 +66,17 @@ func (service *contractService) SaveContactData(c *gin.Context, data ContactForm
 	result := service.db.Create(&contact)
 	fmt.Println(result)
 	return &contact
+}
+func (service Service) Update(ctx *gin.Context, ID uint, Request *ContactRequest) *gorm.DB {
+	category := Request.ToEntity()
+	category.ID = ID
+	return service.db.Save(category)
+}
+
+
+func (service *Service) Find(ID int) *Contact {
+	Contact := Contact{}
+	service.db.Preload("Images").Find(&Contact, ID)
+
+	return &Contact
 }
