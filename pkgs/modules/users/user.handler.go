@@ -12,12 +12,12 @@ import (
 	"gorm.io/gorm"
 )
 
-type UserHandler struct {
+type Handler struct {
 	service    *UserService
 	commonData func(c *gin.Context, data gin.H) gin.H
 }
 
-func (handler UserHandler) Index(ctx *gin.Context) {
+func (handler Handler) Index(ctx *gin.Context) {
 
 	ctx.HTML(http.StatusOK, "admin.users.index.gohtml", withCommonData(ctx, gin.H{
 		"token": csrf.GetToken(ctx),
@@ -26,15 +26,15 @@ func (handler UserHandler) Index(ctx *gin.Context) {
 
 }
 
-// func (handler UserHandler) Show(c *gin.Context)   {
+// func (handler Handler) Show(c *gin.Context)   {
 
 // }
-func (handler UserHandler) Create(ctx *gin.Context) {
+func (handler Handler) Create(ctx *gin.Context) {
 	ctx.HTML(http.StatusOK, "admin.users.create.gohtml", withCommonData(ctx, gin.H{
 		"token": csrf.GetToken(ctx),
 	}))
 }
-func (handler UserHandler) Store(ctx *gin.Context) {
+func (handler Handler) Store(ctx *gin.Context) {
 	UserRequest := UserRequest{}
 	ctx.ShouldBind(&UserRequest)
 	errs := validator.Validate(UserRequest)
@@ -46,7 +46,7 @@ func (handler UserHandler) Store(ctx *gin.Context) {
 	helpers.RedirectSuccessWithMessage(ctx, "/admin/users", "User created successfully")
 
 }
-func (handler UserHandler) Edit(ctx *gin.Context) {
+func (handler Handler) Edit(ctx *gin.Context) {
 
 	id, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
@@ -60,7 +60,7 @@ func (handler UserHandler) Edit(ctx *gin.Context) {
 	})
 }
 
-func (handler UserHandler) Update(ctx *gin.Context) {
+func (handler Handler) Update(ctx *gin.Context) {
 	id, err := strconv.Atoi(ctx.Param("id"))
 
 	fmt.Println(id)
@@ -82,7 +82,7 @@ func (handler UserHandler) Update(ctx *gin.Context) {
 	helpers.RedirectSuccessWithMessage(ctx, "/admin/users", "User Updated successfully")
 
 }
-func (handler UserHandler) Delete(ctx *gin.Context) {
+func (handler Handler) Delete(ctx *gin.Context) {
 	id, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
 
@@ -94,9 +94,9 @@ func (handler UserHandler) Delete(ctx *gin.Context) {
 
 }
 
-func NewUserHandler(DB *gorm.DB, commonData func(c *gin.Context, data gin.H) gin.H) *UserHandler {
+func NewHandler(DB *gorm.DB, commonData func(c *gin.Context, data gin.H) gin.H) *Handler {
 
-	return &UserHandler{
+	return &Handler{
 		service:    NewUserService(DB),
 		commonData: commonData,
 	}

@@ -102,26 +102,3 @@ func encrypt(plaintext string) string {
 	return string(ciphertext)
 }
 
-// func decrypt(ciphertext string) string {
-// 	aes, err := aes.NewCipher([]byte("secretKey"))
-// 	if err != nil {
-// 		panic(err)
-// 	}
-
-// 	gcm, err := cipher.NewGCM(aes)
-// 	if err != nil {
-// 		panic(err)
-// 	}
-
-// 	// Since we know the ciphertext is actually nonce+ciphertext
-// 	// And len(nonce) == NonceSize(). We can separate the two.
-// 	nonceSize := gcm.NonceSize()
-// 	nonce, ciphertext := ciphertext[:nonceSize], ciphertext[nonceSize:]
-
-// 	plaintext, err := gcm.Open(nil, []byte(nonce), []byte(ciphertext), nil)
-// 	if err != nil {
-// 		panic(err)
-// 	}
-
-// 	return string(plaintext)
-// }

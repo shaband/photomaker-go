@@ -35,21 +35,21 @@ func NewSiteHandler(db *gorm.DB) *SiteHandler {
 func (handler *SiteHandler) IndexPage(context *gin.Context) {
 
 	context.HTML(http.StatusOK, "site.pages.index.gohtml", handler.withCommonData(context, gin.H{
-		"sliders": sliders.NewSliderService(handler.db).GetSliders(),
+		"sliders": sliders.NewService(handler.db).GetSliders(),
 	}))
 }
 
 func (handler *SiteHandler) AboutPage(context *gin.Context) {
 
 	context.HTML(http.StatusOK, "site.pages.about.gohtml", handler.withCommonData(context, gin.H{
-		"clients": clients.NewClientSerive(handler.db).All(),
+		"clients": clients.NewService(handler.db).All(),
 	}))
 }
 
 func (handler *SiteHandler) CategoryPage(context *gin.Context) {
 
 	context.HTML(http.StatusOK, "site.pages.category.gohtml", handler.withCommonData(context, gin.H{
-		"category": categories.NewCategoryService(handler.db).GetSingleCategoryWithImages(context.Param("id")),
+		"category": categories.NewService(handler.db).GetSingleCategoryWithImages(context.Param("id")),
 	}))
 }
 
@@ -58,34 +58,34 @@ func (handler *SiteHandler) ContactPage(context *gin.Context) {
 	context.HTML(http.StatusOK, "site.pages.contact.gohtml", handler.withCommonData(context, gin.H{
 
 		"token":        csrf.GetToken(context),
-		"serviceTypes": contacts.NewContractService(handler.db).GetAll(),
+		"serviceTypes": contacts.NewService(handler.db).GetAll(),
 	}))
 }
 
 func (handler *SiteHandler) GalleryPage(context *gin.Context) {
 
 	context.HTML(http.StatusOK, "site.pages.gallery.gohtml", handler.withCommonData(context, gin.H{
-		"categories": categories.NewCategoryService(handler.db).All(),
+		"categories": categories.NewService(handler.db).All(),
 	}))
 }
 
 func (handler *SiteHandler) SaveContactData(context *gin.Context) {
 
-	form := contacts.NewContractService(handler.db).BindForm(context)
+	form := contacts.NewService(handler.db).BindForm(context)
 	err := validator.Validate(form)
 	if err != nil {
 		helpers.RedirectFailedWithValidation(context, "/contact", err, form)
 		return
 	} else {
 
-		contacts.NewContractService(handler.db).SaveContactData(context, form)
+		contacts.NewService(handler.db).SaveContactData(context, form)
 		context.JSON(200, "success")
 	}
 }
 func (handler *SiteHandler) ServicesPage(context *gin.Context) {
 
 	context.HTML(http.StatusOK, "site.pages.services.gohtml", handler.withCommonData(context, gin.H{
-		"services": services.NewServicesService(handler.db).All(),
+		"services": services.NewService(handler.db).All(),
 	}))
 }
 func (handler *SiteHandler) PillPage(context *gin.Context) {

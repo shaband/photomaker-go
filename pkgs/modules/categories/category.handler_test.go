@@ -22,7 +22,7 @@ func TestIndex(t *testing.T) {
 	router := gin.Default()
 
 	mockService := &MockService{}
-	handler := CategoryHandler{service: mockService}
+	handler := Handler{service: mockService}
 
 	router.GET("/categories", handler.Index)
 

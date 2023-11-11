@@ -2,11 +2,12 @@ package categories
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 	"log"
 	"mime/multipart"
 	"time"
+
+	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 type DB interface {
@@ -22,20 +23,18 @@ type ServiceInterface interface {
 	GetSingleCategoryWithImages(conds ...interface{}) *Category
 	GetAll() *[]Category
 	Find(ID int) *Category
-	Update(ctx *gin.Context, ID uint, CategoryRequest *UpdateCategoryRequest)
-	DeleteById(ID int) *Category
+	Update(ctx *gin.Context, ID uint, CategoryRequest *UpdateCategoryRequest) *gorm.DB
+	DeleteById(ID int) *gorm.DB
 	Store(c *gin.Context, CategoryRequest *CreateCategoryRequest) *Category
-	DeleteImageByCategoryId(id int)
-
+	DeleteImageByCategoryId(id int) *gorm.DB
 }
 type Service struct {
 	db DB
 }
 
-
 const filePath = "assets/uploads/categories"
 
-func NewCategoryService(db *gorm.DB) *Service {
+func NewService(db *gorm.DB) *Service {
 
 	return &Service{
 		db: db,
@@ -72,16 +71,16 @@ func (service *Service) Find(ID int) *Category {
 
 	return &Category
 }
-func (service Service) Update(ctx *gin.Context, ID uint, CategoryRequest *UpdateCategoryRequest) {
+func (service Service) Update(ctx *gin.Context, ID uint, CategoryRequest *UpdateCategoryRequest) *gorm.DB {
 	category := CategoryRequest.ToEntity(ctx)
 	category.ID = ID
-	_ = service.db.Save(category)
+	return service.db.Save(category)
 }
 
-func (service *Service) DeleteById(ID int) *Category {
+func (service *Service) DeleteById(ID int) *gorm.DB {
 	// Category:=service.Find(ID)
-	service.db.Delete(&Category{}, ID)
-	return nil
+	return service.db.Delete(&Category{}, ID)
+
 }
 
 func (service *Service) Store(c *gin.Context, CategoryRequest *CreateCategoryRequest) *Category {
@@ -90,12 +89,10 @@ func (service *Service) Store(c *gin.Context, CategoryRequest *CreateCategoryReq
 	return category
 }
 
-func (service Service) DeleteImageByCategoryId(id int)  {
+func (service Service) DeleteImageByCategoryId(id int) *gorm.DB {
 	categoryImage := &CategoryImage{}
 	service.db.Find(categoryImage, id)
-	// categoryID := categoryImage.CategoryId
-	service.db.Delete(categoryImage)
-	// return categoryID
+	return service.db.Delete(categoryImage)
 }
 
 func SaveImage(c *gin.Context, dest string, image *multipart.FileHeader) string {

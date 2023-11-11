@@ -6,7 +6,7 @@ import (
 
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/shaband/photomaker-go/pkgs/modules/categories"
-	"github.com/shaband/photomaker-go/pkgs/modules/clients"
+	 "github.com/shaband/photomaker-go/pkgs/modules/clients"
 	"github.com/shaband/photomaker-go/pkgs/modules/contacts"
 	"github.com/shaband/photomaker-go/pkgs/modules/services"
 	"github.com/shaband/photomaker-go/pkgs/modules/settings"

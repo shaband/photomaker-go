@@ -43,7 +43,7 @@ func (service *contractService) BindForm(context *gin.Context) ContactForm {
 	return form
 }
 
-func NewContractService(db *gorm.DB) *contractService {
+func NewService(db *gorm.DB) *contractService {
 
 	return &contractService{
 		db: db,

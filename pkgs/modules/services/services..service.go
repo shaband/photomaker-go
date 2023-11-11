@@ -2,19 +2,20 @@ package services
 
 import "gorm.io/gorm"
 
-type servicesService struct {
+type serviceS struct {
 	db *gorm.DB
 }
 
-func NewServicesService(db *gorm.DB) servicesService {
+func NewService(db *gorm.DB) *serviceS {
 
-	return servicesService{
+	return &serviceS{
 		db: db,
 	}
 }
 
-func (service servicesService) All() []*Service {
+func (service serviceS) All() []*Service {
 	services := []*Service{}
 	service.db.Find(&services)
 	return services
 }
+

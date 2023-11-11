@@ -2,6 +2,8 @@ package categories
 
 import (
 	"testing"
+
+	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/stretchr/testify/assert"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
@@ -9,7 +11,7 @@ import (
 
 func TestService_All(t *testing.T) {
 	db, _ := gorm.Open(sqlite.Open("file::memory:?cache=shared"), &gorm.Config{})
-	service := NewCategoryService(db)
+	service := NewService(db)
 
 	categories := service.All()
 
@@ -18,7 +20,7 @@ func TestService_All(t *testing.T) {
 
 func TestService_GetSingleCategoryWithImages(t *testing.T) {
 	db, _ := gorm.Open(sqlite.Open("file::memory:?cache=shared"), &gorm.Config{})
-	service := NewCategoryService(db)
+	service := NewService(db)
 
 	category := service.GetSingleCategoryWithImages()
 
@@ -27,7 +29,7 @@ func TestService_GetSingleCategoryWithImages(t *testing.T) {
 
 func TestService_GetAll(t *testing.T) {
 	db, _ := gorm.Open(sqlite.Open("file::memory:?cache=shared"), &gorm.Config{})
-	service := NewCategoryService(db)
+	service := NewService(db)
 
 	categories := service.GetAll()
 
@@ -36,7 +38,7 @@ func TestService_GetAll(t *testing.T) {
 
 func TestService_Find(t *testing.T) {
 	db, _ := gorm.Open(sqlite.Open("file::memory:?cache=shared"), &gorm.Config{})
-	service := NewCategoryService(db)
+	service := NewService(db)
 
 	category := service.Find(1)
 
@@ -45,7 +47,7 @@ func TestService_Find(t *testing.T) {
 
 func TestService_Update(t *testing.T) {
 	db, _ := gorm.Open(sqlite.Open("file::memory:?cache=shared"), &gorm.Config{})
-	service := NewCategoryService(db)
+	service := NewService(db)
 
 	categoryRequest := &UpdateCategoryRequest{}
 	categoryRequest.Fake()
@@ -59,7 +61,7 @@ func TestService_Update(t *testing.T) {
 
 func TestService_DeleteById(t *testing.T) {
 	db, _ := gorm.Open(sqlite.Open("file::memory:?cache=shared"), &gorm.Config{})
-	service := NewCategoryService(db)
+	service := NewService(db)
 
 	service.DeleteById(1)
 
@@ -70,7 +72,7 @@ func TestService_DeleteById(t *testing.T) {
 
 func TestService_Store(t *testing.T) {
 	db, _ := gorm.Open(sqlite.Open("file::memory:?cache=shared"), &gorm.Config{})
-	service := NewCategoryService(db)
+	service := NewService(db)
 
 	categoryRequest := &CreateCategoryRequest{}
 	categoryRequest.Fake()
@@ -82,20 +84,17 @@ func TestService_Store(t *testing.T) {
 
 func TestService_DeleteImageByCategoryId(t *testing.T) {
 	db, _ := gorm.Open(sqlite.Open("file::memory:?cache=shared"), &gorm.Config{})
-	service := NewCategoryService(db)
+	service := NewService(db)
 
 	categoryID := service.DeleteImageByCategoryId(1)
 
 	assert.Equal(t, 1, categoryID)
 }
 
-
-
-
 func TestAll(t *testing.T) {
 	db, mock, _ := sqlmock.New()
 	gdb, _ := gorm.Open("postgres", db)
-	service := NewCategoryService(gdb)
+	service := NewService(gdb)
 
 	mock.ExpectQuery("^SELECT (.+) FROM \"categories\"$").WillReturnRows(sqlmock.NewRows([]string{"id", "name_ar", "name_en", "cover"}).AddRow(1, "test_ar", "test_en", "test_cover"))
 
@@ -106,4 +105,3 @@ func TestAll(t *testing.T) {
 	assert.Equal(t, "test_en", categories[0].NameEn)
 	assert.Equal(t, "test_cover", categories[0].Cover)
 }
-

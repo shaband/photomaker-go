@@ -2,17 +2,17 @@ package sliders
 
 import "gorm.io/gorm"
 
-type SliderService struct {
+type Service struct {
 	db *gorm.DB
 }
 
-func NewSliderService(db *gorm.DB) SliderService {
-	return SliderService{
+func NewService(db *gorm.DB) Service {
+	return Service{
 		db: db,
 	}
 }
 
-func (s SliderService) GetSliders(conds ...interface{}) []*Slider {
+func (s Service) GetSliders(conds ...interface{}) []*Slider {
 
 	Sliders := []*Slider{}
 
