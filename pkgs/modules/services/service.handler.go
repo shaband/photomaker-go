@@ -9,11 +9,10 @@ import (
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/helpers"
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/validator"
 	csrf "github.com/utrack/gin-csrf"
-	"gorm.io/gorm"
 )
 
 type Handler struct {
-	service    *serviceS
+	service    ServiceInterface
 	commonData func(c *gin.Context, data gin.H) gin.H
 }
 
@@ -21,7 +20,7 @@ func (handler Handler) Index(ctx *gin.Context) {
 
 	ctx.HTML(http.StatusOK, "admin.services.index.gohtml", withCommonData(ctx, gin.H{
 		"token":    csrf.GetToken(ctx),
-		"services": handler.service.GetAll(),
+		"services": handler.service.All(),
 	}))
 
 }
@@ -42,7 +41,7 @@ func (handler Handler) Store(ctx *gin.Context) {
 		helpers.RedirectFailedWithValidation(ctx, "/admin/services/create", errs, ServiceRequest)
 		return
 	}
-	handler.service.Store(&ServiceRequest)
+	handler.service.Store(ctx, &ServiceRequest)
 	helpers.RedirectSuccessWithMessage(ctx, "/admin/services", "Service created successfully")
 
 }
@@ -67,17 +66,17 @@ func (handler Handler) Update(ctx *gin.Context) {
 		helpers.RedirectFailedWithMessage(ctx, fmt.Sprintf("/admin/services/%s/edit", ctx.Param("id")), "Invalid Service ")
 		return
 	}
-	ServiceRequest := ServiceRequest{}
-	ctx.ShouldBind(&ServiceRequest)
+	Request := ServiceRequest{}
+	ctx.ShouldBind(&Request)
 
-	errs := validator.Validate(ServiceRequest)
+	errs := validator.Validate(Request)
 	if errs != nil {
 		fmt.Println(errs)
 
-		helpers.RedirectFailedWithValidation(ctx, fmt.Sprintf("/admin/services/%s/edit", ctx.Param("id")), errs, ServiceRequest)
+		helpers.RedirectFailedWithValidation(ctx, fmt.Sprintf("/admin/services/%s/edit", ctx.Param("id")), errs, Request)
 		return
 	}
-	handler.service.Update(uint(id), ServiceRequest.ToEntity())
+	handler.service.Update(ctx,uint(id), &Request)
 	helpers.RedirectSuccessWithMessage(ctx, "/admin/services", "Service Updated successfully")
 
 }
@@ -93,10 +92,10 @@ func (handler Handler) Delete(ctx *gin.Context) {
 
 }
 
-func NewHandler(DB *gorm.DB, commonData func(c *gin.Context, data gin.H) gin.H) *Handler {
+func NewHandler(service ServiceInterface, commonData func(c *gin.Context, data gin.H) gin.H) *Handler {
 
 	return &Handler{
-		service:    NewService(DB),
+		service:    service,
 		commonData: commonData,
 	}
 }
@@ -107,40 +106,4 @@ func withCommonData(c *gin.Context, data gin.H) gin.H {
 	data["commonData"] = commonData
 
 	return data
-}
-
-func (service *serviceS) GetAll() *[]Service {
-	Services := []Service{}
-	service.db.Find(&Services)
-	return &Services
-}
-func (service *serviceS) FindServiceByEmail(Email string) *Service {
-	Service := Service{}
-	service.db.Where("email = ?", Email).Find(&Service)
-	return &Service
-}
-
-func (service *serviceS) Find(ID int) *Service {
-	Service := Service{}
-	service.db.Find(&Service, ID)
-	return &Service
-}
-func (service serviceS) Update(ID uint, user *Service) {
-	user.ID = ID
-	result := service.db.Save(user)
-	fmt.Println(result)
-}
-
-func (service *serviceS) DeleteById(ID int) *Service {
-	// user:=service.Find(ID)
-	service.db.Delete(&Service{}, ID)
-	return nil
-}
-
-func (service *serviceS) Store(userRequest *ServiceRequest) *Service {
-
-	user := userRequest.ToEntity()
-	service.db.Create(user)
-
-	return user
 }
