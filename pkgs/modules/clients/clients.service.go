@@ -20,7 +20,6 @@ type DB interface {
 
 type ServiceInterface interface {
 	All(conds ...interface{}) []*Client
-	GetAll() *[]Client
 	Find(ID int) *Client
 	Update(ctx *gin.Context, ID uint, ClientRequest *UpdateClientRequest) *gorm.DB
 	DeleteById(ID int) *gorm.DB
@@ -39,7 +38,7 @@ func NewService(db *gorm.DB) Service {
 	}
 }
 
-func (service Service) All() []*Client {
+func (service Service) All(conds ...interface{}) []*Client {
 
 	Clients := []*Client{}
 
@@ -58,7 +57,7 @@ func SaveImage(c *gin.Context, dest string, image *multipart.FileHeader) string 
 	return "/" + path
 }
 
-func (service *Service) Find(ID int) *Client {
+func (service Service) Find(ID int) *Client {
 	Client := Client{}
 	service.db.Preload("Images").Find(&Client, ID)
 
@@ -70,15 +69,14 @@ func (service Service) Update(ctx *gin.Context, ID uint, ClientRequest *UpdateCl
 	return service.db.Save(category)
 }
 
-func (service *Service) DeleteById(ID int) *gorm.DB {
+func (service Service) DeleteById(ID int) *gorm.DB {
 	// Client:=service.Find(ID)
 	return service.db.Delete(&Client{}, ID)
 
 }
 
-func (service *Service) Store(c *gin.Context, ClientRequest *CreateClientRequest) *Client {
+func (service Service) Store(c *gin.Context, ClientRequest *CreateClientRequest) *Client {
 	category := ClientRequest.ToEntity(c)
 	service.db.Create(category)
 	return category
 }
-

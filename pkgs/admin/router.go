@@ -10,6 +10,9 @@ import (
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/database"
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/middleware"
 	"github.com/shaband/photomaker-go/pkgs/modules/users"
+	"github.com/shaband/photomaker-go/pkgs/modules/clients"
+	"github.com/shaband/photomaker-go/pkgs/modules/sliders"
+	"github.com/shaband/photomaker-go/pkgs/modules/services"
 )
 
 const userkey = "user"
@@ -23,6 +26,10 @@ func Register(router *gin.RouterGroup) {
 	AddCrud(router.Group("/users"), users.NewHandler(database.GetConnection(), withCommonData))
 	AddCrud(router.Group("/categories"), categoriesHandler)
 	router.DELETE("/category-images/:id", categoriesHandler.DeleteCategoryImage)
+
+	AddCrud(router.Group("/clients"), clients.NewHandler(clients.NewService(database.GetConnection()),withCommonData))
+	AddCrud(router.Group("/sliders"), sliders.NewHandler(sliders.NewService(database.GetConnection()),withCommonData))
+	AddCrud(router.Group("/services"), services.NewHandler(services.NewService(database.GetConnection()),withCommonData))
 
 	guest := router.Group("/auth")
 	// Login and logout routes
