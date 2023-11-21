@@ -55,7 +55,7 @@ func (handler Handler) Edit(ctx *gin.Context) {
 	}
 	ctx.HTML(http.StatusOK, "admin.services.edit.gohtml", gin.H{
 		"token": csrf.GetToken(ctx),
-		"user":  handler.service.Find(id),
+		"service":  handler.service.Find(id),
 	})
 }
 
