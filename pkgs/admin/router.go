@@ -4,15 +4,16 @@ import (
 	"net/http"
 
 	"github.com/shaband/photomaker-go/pkgs/modules/categories"
+	"github.com/shaband/photomaker-go/pkgs/modules/settings"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/database"
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/middleware"
-	"github.com/shaband/photomaker-go/pkgs/modules/users"
 	"github.com/shaband/photomaker-go/pkgs/modules/clients"
-	"github.com/shaband/photomaker-go/pkgs/modules/sliders"
 	"github.com/shaband/photomaker-go/pkgs/modules/services"
+	"github.com/shaband/photomaker-go/pkgs/modules/sliders"
+	"github.com/shaband/photomaker-go/pkgs/modules/users"
 )
 
 const userkey = "user"
@@ -21,15 +22,6 @@ func Register(router *gin.RouterGroup) {
 
 	middleware.LoadGlobalAdminMiddleware(router)
 	authHandler := users.NewAuthHandler(database.GetConnection())
-
-	categoriesHandler := categories.NewHandler(categories.NewService(database.GetConnection()), withCommonData)
-	AddCrud(router.Group("/users"), users.NewHandler(database.GetConnection(), withCommonData))
-	AddCrud(router.Group("/categories"), categoriesHandler)
-	router.DELETE("/category-images/:id", categoriesHandler.DeleteCategoryImage)
-
-	AddCrud(router.Group("/clients"), clients.NewHandler(clients.NewService(database.GetConnection()),withCommonData))
-	AddCrud(router.Group("/sliders"), sliders.NewHandler(sliders.NewService(database.GetConnection()),withCommonData))
-	AddCrud(router.Group("/services"), services.NewHandler(services.NewService(database.GetConnection()),withCommonData))
 
 	guest := router.Group("/auth")
 	// Login and logout routes
@@ -44,6 +36,20 @@ func Register(router *gin.RouterGroup) {
 		private.GET("/status", authHandler.Status)
 	}
 
+	categoriesHandler := categories.NewHandler(categories.NewService(database.GetConnection()), withCommonData)
+	AddCrud(router.Group("/users"), users.NewHandler(database.GetConnection(), withCommonData))
+	AddCrud(router.Group("/categories"), categoriesHandler)
+	router.DELETE("/category-images/:id", categoriesHandler.DeleteCategoryImage)
+
+	AddCrud(router.Group("/clients"), clients.NewHandler(clients.NewService(database.GetConnection()), withCommonData))
+	AddCrud(router.Group("/sliders"), sliders.NewHandler(sliders.NewService(database.GetConnection()), withCommonData))
+	AddCrud(router.Group("/services"), services.NewHandler(services.NewService(database.GetConnection()), withCommonData))
+
+	service := settings.NewService(database.GetConnection())
+	settingsHandler := settings.NewHandler(service, withCommonData)
+	router.GET("settings", settingsHandler.Index)
+	router.GET("settings", settingsHandler.Edit)
+	router.GET("settings", settingsHandler.Update)
 }
 
 type CurdContract interface {
