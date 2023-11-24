@@ -48,8 +48,8 @@ func Register(router *gin.RouterGroup) {
 	service := settings.NewService(database.GetConnection())
 	settingsHandler := settings.NewHandler(service, withCommonData)
 	router.GET("settings", settingsHandler.Index)
-	router.GET("settings", settingsHandler.Edit)
-	router.GET("settings", settingsHandler.Update)
+	router.GET("settings/:id/edit", settingsHandler.Edit)
+	router.Match([]string{http.MethodPut, http.MethodPatch},"settings", settingsHandler.Update)
 }
 
 type CurdContract interface {
