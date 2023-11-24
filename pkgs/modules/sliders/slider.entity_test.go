@@ -3,8 +3,8 @@ package sliders
 import (
 	"testing"
 
-	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/stretchr/testify/assert"
+	"github.com/DATA-DOG/go-sqlmock"
 )
 
 func TestSliderFake(t *testing.T) {

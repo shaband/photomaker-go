@@ -1,7 +1,6 @@
 package categories
 
 import (
-	// "github.com/brianvoe/gofakeit/v6"
 	"testing"
 )
 

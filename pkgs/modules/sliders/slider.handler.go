@@ -1,6 +1,7 @@
 package sliders
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -19,7 +20,7 @@ func (handler Handler) Index(ctx *gin.Context) {
 
 	ctx.HTML(http.StatusOK, "admin.sliders.index.gohtml", withCommonData(ctx, gin.H{
 		"token":   csrf.GetToken(ctx),
-		"sliders": handler.service.GetAll(),
+		"sliders": handler.service.All(),
 	}))
 
 }
@@ -30,7 +31,7 @@ func (handler Handler) Create(ctx *gin.Context) {
 	}))
 }
 func (handler Handler) Store(ctx *gin.Context) {
-	SliderRequest := CreateSliderRequest{}
+	SliderRequest := SliderRequest{}
 	_ = ctx.ShouldBind(&SliderRequest)
 
 	errs := validator.Validate(SliderRequest)
@@ -41,6 +42,41 @@ func (handler Handler) Store(ctx *gin.Context) {
 
 	handler.service.Store(ctx, &SliderRequest)
 	helpers.RedirectSuccessWithMessage(ctx, "/admin/sliders", "Slider created successfully")
+
+}
+func (handler Handler) Edit(ctx *gin.Context) {
+
+	id, err := strconv.Atoi(ctx.Param("id"))
+	if err != nil {
+
+		helpers.RedirectFailedWithMessage(ctx, "/admin/services", "Invalid Service ")
+		return
+	}
+	ctx.HTML(http.StatusOK, "admin.services.edit.gohtml", gin.H{
+		"token": csrf.GetToken(ctx),
+		"user":  handler.service.Find(id),
+	})
+}
+
+func (handler Handler) Update(ctx *gin.Context) {
+	id, err := strconv.Atoi(ctx.Param("id"))
+
+	if err != nil {
+		helpers.RedirectFailedWithMessage(ctx, fmt.Sprintf("/admin/services/%s/edit", ctx.Param("id")), "Invalid Service ")
+		return
+	}
+	Request := SliderRequest{}
+	ctx.ShouldBind(&Request)
+
+	errs := validator.Validate(Request)
+	if errs != nil {
+		fmt.Println(errs)
+
+		helpers.RedirectFailedWithValidation(ctx, fmt.Sprintf("/admin/services/%s/edit", ctx.Param("id")), errs, Request)
+		return
+	}
+	handler.service.Update(ctx,uint(id),&Request)
+	helpers.RedirectSuccessWithMessage(ctx, "/admin/services", "Service Updated successfully")
 
 }
 func (handler Handler) Delete(ctx *gin.Context) {
@@ -54,7 +90,6 @@ func (handler Handler) Delete(ctx *gin.Context) {
 	helpers.RedirectSuccessWithMessage(ctx, "/admin/sliders", "Deleted Successfully")
 
 }
-
 
 func NewHandler(service ServiceInterface, commonData func(c *gin.Context, data gin.H) gin.H) *Handler {
 

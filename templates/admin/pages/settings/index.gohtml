@@ -1,0 +1,73 @@
+{{define "page"}}
+      <!-- ===== Main Content Start ===== -->
+        <div class="max-w-screen-2xl mx-auto p-4 md:p-6 2xl:p-10">
+          <!-- Breadcrumb Start -->
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
+            <h2 class="font-semibold text-title-md2 text-black dark:text-white">Users</h2>
+
+          </div>
+
+          <!-- ====== Table Section Start -->
+          <div class="flex flex-col gap-10">
+          
+            <!-- ====== Table Three Start -->
+            <div
+              class="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+                            {{template "alerts" .}}
+
+              <div class="max-w-full overflow-x-auto">
+                <table class="w-full table-auto">
+                  <thead>
+                    <tr class="bg-gray-2 text-left dark:bg-meta-4">
+                      <th class=" py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
+                        #
+                      </th>
+                      <th class=" py-4 px-4 font-medium text-black dark:text-white">
+                        label
+                      </th>
+                      <th class=" py-4 px-4 font-medium text-black dark:text-white">
+                        value
+                      </th>
+                      <th class="py-4 px-4 font-medium text-black dark:text-white">
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {{range $key,$setting:=.settings}}
+                    <tr>
+                      <td class="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                        <h5 class="font-medium text-black dark:text-white">{{$setting.ID}}</h5>
+                      </td>
+                      <td class="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                        <p class="text-black dark:text-white">{{$setting.Label}}</p>
+                      </td>
+                      <td class="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                     <h5 class="font-medium text-black dark:text-white">
+                          {{$setting.value}}
+                        </h5>
+                      </td>
+                      <td class="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                        <div class="flex items-center space-x-3.5">
+                        <a class="hover:text-primary" href="/admin/settings/{{$setting.ID}}/edit">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+</svg>
+
+                          </a>
+                  </div>
+                      </td>
+                    </tr>
+                    {{end}}
+                 
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <!-- ====== Table Three End -->
+          </div>
+          <!-- ====== Table Section End -->
+        </div>
+
+      <!-- ===== Main Content End ===== -->
+{{end }}

@@ -21,7 +21,7 @@ func (handler Handler) Index(ctx *gin.Context) {
 
 	ctx.HTML(http.StatusOK, "admin.clients.index.gohtml", withCommonData(ctx, gin.H{
 		"token":   csrf.GetToken(ctx),
-		"clients": handler.service.GetAll(),
+		"clients": handler.service.All(),
 	}))
 
 }
