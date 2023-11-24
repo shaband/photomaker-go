@@ -1,7 +1,11 @@
 package template
 
 import (
+	"errors"
 	"testing"
+	"time"
+
+	"github.com/gin-contrib/multitemplate"
 	"github.com/stretchr/testify/assert"
 )
 

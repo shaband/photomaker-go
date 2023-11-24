@@ -1,7 +1,7 @@
 package categories
 
 import (
-	"github.com/brianvoe/gofakeit/v6"
+	// "github.com/brianvoe/gofakeit/v6"
 	"testing"
 )
 
@@ -22,15 +22,15 @@ func TestCategoryFake(t *testing.T) {
 	}
 }
 
-func TestCategoryImageFake(t *testing.T) {
-	categoryImage := CategoryImage{}
-	categoryImage.Fake()
+// func TestCategoryImageFake(t *testing.T) {
+// 	categoryImage := CategoryImage{}
+// 	categoryImage.Fake()
 
-	if categoryImage.Image == "" {
-		t.Error("Expected Image to be non-empty, got empty string")
-	}
+// 	if categoryImage.Image == "" {
+// 		t.Error("Expected Image to be non-empty, got empty string")
+// 	}
 
-	if categoryImage.CategoryID == 0 {
-		t.Error("Expected CategoryID to be non-zero, got zero")
-	}
-}
+// 	if categoryImage.CategoryID == 0 {
+// 		t.Error("Expected CategoryID to be non-zero, got zero")
+// 	}
+// }

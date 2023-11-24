@@ -9,7 +9,7 @@ import (
 
 func TestArabicJson(t *testing.T) {
 	bundle := i18n.NewBundle(language.Arabic)
-	bundle.RegisterUnmarshalFunc("json", i18n.UnmarshalJSONFile)
+	// bundle.RegisterUnmarshalFunc("json", i18n.UnmarshalJSONFile)
 	bundle.MustLoadMessageFile("ar.json")
 
 	localizer := i18n.NewLocalizer(bundle, "ar")
@@ -26,7 +26,7 @@ func TestArabicJson(t *testing.T) {
 
 func TestEnglishJson(t *testing.T) {
 	bundle := i18n.NewBundle(language.English)
-	bundle.RegisterUnmarshalFunc("json", i18n.UnmarshalJSONFile)
+	// bundle.RegisterUnmarshalFunc("json", i18n.UnmarshalJSONFile)
 	bundle.MustLoadMessageFile("en.json")
 
 	localizer := i18n.NewLocalizer(bundle, "en")

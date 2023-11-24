@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/shaband/photomaker-go/pkgs/infrastucture/config"
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/database"
 	"github.com/shaband/photomaker-go/pkgs/modules/categories"
 	"github.com/shaband/photomaker-go/pkgs/modules/clients"
@@ -12,8 +13,8 @@ import (
 )
 
 func main() {
-
-	database.Init()
+	cfg, _ := config.LoadConfig()
+	database.Init(cfg)
 	db := database.GetConnection()
 	database.MakeMigration(db)
 	settingsSeeder(db)
