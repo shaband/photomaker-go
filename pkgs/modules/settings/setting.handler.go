@@ -7,7 +7,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/helpers"
-	"github.com/shaband/photomaker-go/pkgs/infrastucture/validator"
 	csrf "github.com/utrack/gin-csrf"
 	
 )
@@ -47,17 +46,23 @@ func (handler Handler) Update(ctx *gin.Context) {
 		helpers.RedirectFailedWithMessage(ctx, fmt.Sprintf("/admin/settings/%s/edit", ctx.Param("id")), "Invalid Service ")
 		return
 	}
-	SettingRequest := SettingRequest{}
-	ctx.ShouldBind(&SettingRequest)
+	// ctx.ShouldBind(&SettingRequest)
 
-	errs := validator.Validate(SettingRequest)
-	if errs != nil {
-		fmt.Println(errs)
+	// errs := validator.Validate(SettingRequest)
+	// if errs != nil {
+		// fmt.Println(errs)
 
-		helpers.RedirectFailedWithValidation(ctx, fmt.Sprintf("/admin/settings/%s/edit", ctx.Param("id")), errs, SettingRequest)
+		// helpers.RedirectFailedWithValidation(ctx, fmt.Sprintf("/admin/settings/%s/edit", ctx.Param("id")), errs, SettingRequest)
+		// return
+	// }
+err,_	=handler.service.Update(ctx,uint(id))
+
+	if err != nil {
+		fmt.Println(err)
+		helpers.RedirectFailedWithMessage(ctx, fmt.Sprintf("/admin/settings/%s/edit", ctx.Param("id")), err.Error())
 		return
+	
 	}
-	handler.service.Update(ctx,uint(id), &SettingRequest)
 	helpers.RedirectSuccessWithMessage(ctx, "/admin/settings", "Service Updated successfully")
 
 }

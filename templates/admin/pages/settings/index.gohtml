@@ -44,7 +44,13 @@
                       </td>
                       <td class="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                      <h5 class="font-medium text-black dark:text-white">
-                          {{$setting.value}}
+                     {{if eq $setting.Type "file"}}
+                     <a href="{{$setting.Value}}" target="_blank" download>
+                          <img src="{{$setting.Value}}" width=100  height="100" alt="{{$setting.Slug}}"/>
+                    </a>
+                      {{else}}
+                          {{$setting.Value}}
+                      {{end}}
                         </h5>
                       </td>
                       <td class="border-b border-[#eee] py-5 px-4 dark:border-strokedark">

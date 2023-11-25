@@ -49,7 +49,7 @@ func Register(router *gin.RouterGroup) {
 	settingsHandler := settings.NewHandler(service, withCommonData)
 	router.GET("settings", settingsHandler.Index)
 	router.GET("settings/:id/edit", settingsHandler.Edit)
-	router.Match([]string{http.MethodPut, http.MethodPatch},"settings", settingsHandler.Update)
+	router.Match([]string{http.MethodPut, http.MethodPatch}, "settings/:id", settingsHandler.Update)
 }
 
 type CurdContract interface {

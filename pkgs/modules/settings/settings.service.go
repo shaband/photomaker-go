@@ -1,7 +1,11 @@
 package settings
 
 import (
+	"fmt"
+	"log"
+	"mime/multipart"
 	"reflect"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -20,7 +24,7 @@ type DB interface {
 type ServiceInterface interface {
 	All(conds ...interface{}) []*Setting
 	Find(ID int) *Setting
-	Update(ctx *gin.Context, ID uint, Request *SettingRequest) *gorm.DB
+	Update(ctx *gin.Context, ID uint) (error, *gorm.DB)
 	GetAllValuesPluckedBy(key string) map[string]string
 	FindValue(slug string) *string
 }
@@ -52,11 +56,38 @@ func (service Service) Find(ID int) *Setting {
 	service.db.Find(&setting, ID)
 	return &setting
 }
-func (service Service) Update(ctx *gin.Context, ID uint, setting *SettingRequest) *gorm.DB {
-	entity := setting.ToEntity()
-	entity.ID = ID
-	return service.db.Model(entity).Updates(entity)
+func (service Service) Update(ctx *gin.Context, ID uint) (error, *gorm.DB) {
+	entity := Setting{}
+	trx := service.db.Find(&entity, ID)
+	if trx.Error != nil {
+		return trx.Error, nil
+	}
 
+	switch entity.Type {
+	case "file":
+		file, err := ctx.FormFile("value")
+		if err != nil {
+			return err, nil
+		}
+		entity.Value = saveFile(ctx, filePath, file)
+		break
+	// case "text":
+	// 	entity.Value = ctx.PostForm("value")
+	// 	break
+	default:
+		entity.Value = ctx.PostForm("value")
+		break
+	}
+
+	if entity.Value == "" {
+		return fmt.Errorf("value is required"), nil
+	}
+
+	trx = service.db.Save(&entity)
+	if trx.Error != nil {
+		return trx.Error, nil
+	}
+	return nil, trx
 }
 
 func (service Service) DeleteById(ID int) *Service {
@@ -85,4 +116,17 @@ func getAttr(obj Setting, fieldName string) reflect.Value {
 	}
 
 	return curField
+}
+
+const filePath = "assets/uploads/clients"
+
+func saveFile(c *gin.Context, dest string, file *multipart.FileHeader) string {
+	path := dest + "/" + fmt.Sprint(time.Now().Unix()) + "/" + file.Filename
+
+	err := c.SaveUploadedFile(file, path)
+	if err != nil {
+		log.Println(err)
+		return ""
+	}
+	return "/" + path
 }
