@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/helpers"
+	"golang.org/x/exp/maps"
 	"gorm.io/gorm"
 )
 
@@ -14,6 +15,11 @@ type Service struct {
 
 const filePath = "assets/uploads/contacts"
 
+func (service *Service) All() *[]*Contact {
+	contacts := []*Contact{}
+	service.db.Find(&contacts)
+	return &contacts
+}
 func (service *Service) GetAll() *[]*ServiceType {
 	ServiceTypes := []*ServiceType{}
 	service.db.Preload("Items").Find(&ServiceTypes)
@@ -67,16 +73,25 @@ func (service *Service) SaveContactData(c *gin.Context, data ContactForm) *Conta
 	fmt.Println(result)
 	return &contact
 }
-func (service Service) Update(ctx *gin.Context, ID uint, Request *ContactRequest) *gorm.DB {
+func (service *Service) Update(ctx *gin.Context, ID uint, Request *ContactRequest) *gorm.DB {
 	category := Request.ToEntity()
 	category.ID = ID
 	return service.db.Save(category)
 }
 
-
 func (service *Service) Find(ID int) *Contact {
 	Contact := Contact{}
-	service.db.Preload("Images").Find(&Contact, ID)
+	service.db.Find(&Contact, ID)
+	SelectedserviceTypeItems:=Contact.ServiceTypes.(map[string]interface{});
+	servicesIDs := maps.Keys(SelectedserviceTypeItems)
+	services := []ServiceType{}
+	service.db.Find(&services, servicesIDs)
+m:=make(map[string]interface{})
+	for _, serviceType := range services {
+		m[serviceType.NameEn]=SelectedserviceTypeItems[ fmt.Sprint(serviceType.ID)]
+	}
+	Contact.ServiceTypes=m
+	fmt.Println(Contact.ServiceTypes)
 
 	return &Contact
 }

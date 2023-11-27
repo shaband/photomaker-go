@@ -36,11 +36,7 @@ func (service Service) All(conds ...interface{}) []*Setting {
 	service.db.Find(&settings)
 	return settings
 }
-func (service Service) GetAll() []Setting {
-	Settings := []Setting{}
-	service.db.Find(&Settings)
-	return Settings
-}
+
 func (service Service) GetAllValuesPluckedBy(key string) map[string]string {
 	Settings := []Setting{}
 	service.db.Find(&Settings)

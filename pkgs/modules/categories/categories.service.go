@@ -41,7 +41,7 @@ func NewService(db *gorm.DB) *Service {
 	}
 }
 
-func (service Service) All(conds ...interface{}) []*Category {
+func (service *Service) All(conds ...interface{}) []*Category {
 
 	Categories := []*Category{}
 
@@ -50,7 +50,7 @@ func (service Service) All(conds ...interface{}) []*Category {
 	return Categories
 }
 
-func (service Service) GetSingleCategoryWithImages(conds ...interface{}) *Category {
+func (service *Service) GetSingleCategoryWithImages(conds ...interface{}) *Category {
 
 	category := Category{}
 
@@ -71,7 +71,7 @@ func (service *Service) Find(ID int) *Category {
 
 	return &Category
 }
-func (service Service) Update(ctx *gin.Context, ID uint, CategoryRequest *UpdateCategoryRequest) *gorm.DB {
+func (service *Service) Update(ctx *gin.Context, ID uint, CategoryRequest *UpdateCategoryRequest) *gorm.DB {
 	category := CategoryRequest.ToEntity(ctx)
 	category.ID = ID
 	return service.db.Save(category)
@@ -89,7 +89,7 @@ func (service *Service) Store(c *gin.Context, CategoryRequest *CreateCategoryReq
 	return category
 }
 
-func (service Service) DeleteImageByCategoryId(id int) *gorm.DB {
+func (service *Service) DeleteImageByCategoryId(id int) *gorm.DB {
 	categoryImage := &CategoryImage{}
 	service.db.Find(categoryImage, id)
 	return service.db.Delete(categoryImage)

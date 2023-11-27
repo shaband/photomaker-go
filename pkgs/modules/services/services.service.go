@@ -32,7 +32,7 @@ func NewService(db *gorm.DB) *serviceS {
 	}
 }
 
-func (service serviceS) All(conds ...interface{}) []*Service {
+func (service *serviceS) All(conds ...interface{}) []*Service {
 	services := []*Service{}
 	service.db.Find(&services)
 	return services
@@ -54,7 +54,7 @@ func (service *serviceS) Find(ID int) *Service {
 	service.db.Find(&Service, ID)
 	return &Service
 }
-func (service serviceS) Update(ctx *gin.Context, ID uint, ServiceRequest *ServiceRequest) *gorm.DB {
+func (service *serviceS) Update(ctx *gin.Context, ID uint, ServiceRequest *ServiceRequest) *gorm.DB {
 
 	entity := ServiceRequest.ToEntity()
 	entity.ID = ID

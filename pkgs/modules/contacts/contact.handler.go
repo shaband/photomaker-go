@@ -13,8 +13,14 @@ import (
 )
 
 type Handler struct {
-	service    Service
+	service    *Service
 	commonData func(c *gin.Context, data gin.H) gin.H
+}
+
+func (handler Handler) Index(ctx *gin.Context) {
+	ctx.HTML(http.StatusOK, "admin.contacts.index.gohtml", withCommonData(ctx, gin.H{
+		"contacts": handler.service.All(),
+	}))
 }
 
 func (handler Handler) Edit(ctx *gin.Context) {
@@ -56,7 +62,7 @@ func (handler Handler) Update(ctx *gin.Context) {
 
 }
 
-func NewHandler(service Service, commonData func(c *gin.Context, data gin.H) gin.H) *Handler {
+func NewHandler(service *Service, commonData func(c *gin.Context, data gin.H) gin.H) *Handler {
 
 	return &Handler{
 		service:    service,

@@ -31,13 +31,13 @@ type Service struct {
 
 const filePath = "assets/uploads/sliders"
 
-func NewService(db *gorm.DB) Service {
-	return Service{
+func NewService(db *gorm.DB) *Service {
+	return &Service{
 		db: db,
 	}
 }
 
-func (service Service) GetSliders(conds ...interface{}) []*Slider {
+func (service *Service) GetSliders(conds ...interface{}) []*Slider {
 
 	Sliders := []*Slider{}
 
@@ -57,7 +57,7 @@ func SaveImage(c *gin.Context, dest string, image *multipart.FileHeader) string 
 	return "/" + path
 }
 
-func (service Service) All(conds ...interface{}) []*Slider {
+func (service *Service) All(conds ...interface{}) []*Slider {
 
 	Sliders := []*Slider{}
 
@@ -65,25 +65,25 @@ func (service Service) All(conds ...interface{}) []*Slider {
 	return Sliders
 }
 
-func (service Service) Find(ID int) *Slider {
+func (service *Service) Find(ID int) *Slider {
 	Slider := Slider{}
 	service.db.Preload("Images").Find(&Slider, ID)
 
 	return &Slider
 }
-func (service Service) Update(ctx *gin.Context, ID uint, SliderRequest *SliderRequest) *gorm.DB {
+func (service *Service) Update(ctx *gin.Context, ID uint, SliderRequest *SliderRequest) *gorm.DB {
 	category := SliderRequest.ToEntity(ctx)
 	category.ID = ID
 	return service.db.Save(category)
 }
 
-func (service Service) DeleteById(ID int) *gorm.DB {
+func (service *Service) DeleteById(ID int) *gorm.DB {
 	// Slider:=service.Find(ID)
 	return service.db.Delete(&Slider{}, ID)
 
 }
 
-func (service Service) Store(c *gin.Context, SliderRequest *SliderRequest) *Slider {
+func (service *Service) Store(c *gin.Context, SliderRequest *SliderRequest) *Slider {
 	category := SliderRequest.ToEntity(c)
 	service.db.Create(category)
 	return category

@@ -31,14 +31,14 @@ type Service struct {
 
 const filePath = "assets/uploads/clients"
 
-func NewService(db *gorm.DB) Service {
+func NewService(db *gorm.DB) *Service {
 
-	return Service{
+	return &Service{
 		db: db,
 	}
 }
 
-func (service Service) All(conds ...interface{}) []*Client {
+func (service *Service) All(conds ...interface{}) []*Client {
 
 	Clients := []*Client{}
 
@@ -57,25 +57,25 @@ func SaveImage(c *gin.Context, dest string, image *multipart.FileHeader) string 
 	return "/" + path
 }
 
-func (service Service) Find(ID int) *Client {
+func (service *Service) Find(ID int) *Client {
 	Client := Client{}
 	service.db.Preload("Images").Find(&Client, ID)
 
 	return &Client
 }
-func (service Service) Update(ctx *gin.Context, ID uint, ClientRequest *UpdateClientRequest) *gorm.DB {
+func (service *Service) Update(ctx *gin.Context, ID uint, ClientRequest *UpdateClientRequest) *gorm.DB {
 	category := ClientRequest.ToEntity(ctx)
 	category.ID = ID
 	return service.db.Save(category)
 }
 
-func (service Service) DeleteById(ID int) *gorm.DB {
+func (service *Service) DeleteById(ID int) *gorm.DB {
 	// Client:=service.Find(ID)
 	return service.db.Delete(&Client{}, ID)
 
 }
 
-func (service Service) Store(c *gin.Context, ClientRequest *CreateClientRequest) *Client {
+func (service *Service) Store(c *gin.Context, ClientRequest *CreateClientRequest) *Client {
 	category := ClientRequest.ToEntity(c)
 	service.db.Create(category)
 	return category

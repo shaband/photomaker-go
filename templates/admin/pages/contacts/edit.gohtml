@@ -17,11 +17,11 @@
             <div class="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                 <div class="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
                     <h3 class="font-semibold text-black dark:text-white">
-                        Update User {{.user.Username}}
+                        Update contact {{.contact.Email}}
                     </h3>
                 </div>
                     {{template "alerts" .}}
-                <form action="/admin/users/{{.user.ID}}" method="post">
+                <form action="/admin/contacts/{{.contact.ID}}" method="post">
                <input type="hidden" name="_method" value="PUT">
 
                     <input type="hidden" name="_csrf" value="{{.token}}">
@@ -29,23 +29,22 @@
                     <div class="p-6.5">
                         <div class="mb-4.5">
                             <label class="mb-2.5 block text-black dark:text-white">
-                                username 
+                                FullName
                             
                             </label>
-                            <input type="text" name="username"
-                           value="{{oldWithDefault .commonData.__inputs "Username" .user.Username}}"
-                            
-                             placeholder="Enter your full name"
+                            <input type="text"
+                           value="{{.contact.Name}}"
+                            disabled
                                 class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary" />
                         </div>
                         <div class="mb-4.5">
                             <label class="mb-2.5 block text-black dark:text-white">
                                 Phone
                             </label>
-                            <input type="text" name="phone"
-                           value="{{oldWithDefault .commonData.__inputs "Phone" .user.Phone}}"
-                            
-                             placeholder="Enter your full name"
+                            <input type="text"
+                           value="{{.contact.Phone}}"
+                            disabled
+                             
                                 class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary" />
                         </div>
 
@@ -53,27 +52,58 @@
                             <label class="mb-2.5 block text-black dark:text-white">
                                 Email
                             </label>
-                            <input type="email" name="email"
-                              value="{{oldWithDefault .commonData.__inputs "email" .user.Email}}"
-                             placeholder="Enter your email address"
+                            <input type="email" disabled
+                              value="{{.contact.Email}}"
                                 class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary" />
                         </div>
-
                         <div class="mb-4.5">
                             <label class="mb-2.5 block text-black dark:text-white">
-                                Password
+                                Category
                             </label>
-                            <input type="password" name="password" placeholder="Enter password"
-                                class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary" 
-                                />
+                            <input type="category" disabled
+                              value="{{.contact.Category}}"
+                                class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary" />
                         </div>
 
-                        <div class="mb-5.5">
+ <div class="mb-4.5">
+
+       <table class="w-full table-auto">
+                  <thead>
+                    <tr class="bg-gray-2 text-left dark:bg-meta-4">
+                     
+                      <th class=" py-4 px-4 font-medium text-black dark:text-white">
+                        service
+                      </th>
+                      <th class=" py-4 px-4 font-medium text-black dark:text-white">
+                     item
+                      </th>
+                      
+                    </tr>
+                  </thead>
+                  <tbody>
+ {{.contact.serviceTypes}}
+                {{/* {{ range $serviceType,$seriveTypeItems :=.contact.serviceTypes}}
+                   <tr>
+                      <td class="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                        <h5 class="font-medium text-black dark:text-white">{{$serviceType}}</h5>
+                      </td>
+                      <td class="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                        <p class="text-black dark:text-white">{{$seriveTypeItems}}</p>
+                      </td>
+                    </tr>
+                    {{end}} */}}
+                 
+                  </tbody>
+                </table>
+
+
+ 
                             <label class="mb-2.5 block text-black dark:text-white">
-                                Re-type Password
+                                Replay
                             </label>
-                            <input type="password" name="confirm_password" placeholder="Re-enter password"
-                                class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary" />
+
+<textarea name="replay"  class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
+</textarea>
                         </div>
 
                         <button class="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray">

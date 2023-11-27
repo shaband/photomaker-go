@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/shaband/photomaker-go/pkgs/modules/categories"
+	"github.com/shaband/photomaker-go/pkgs/modules/contacts"
 	"github.com/shaband/photomaker-go/pkgs/modules/settings"
 
 	"github.com/gin-contrib/sessions"
@@ -45,11 +46,15 @@ func Register(router *gin.RouterGroup) {
 	AddCrud(router.Group("/sliders"), sliders.NewHandler(sliders.NewService(database.GetConnection()), withCommonData))
 	AddCrud(router.Group("/services"), services.NewHandler(services.NewService(database.GetConnection()), withCommonData))
 
-	service := settings.NewService(database.GetConnection())
-	settingsHandler := settings.NewHandler(service, withCommonData)
+	settingsHandler := settings.NewHandler(settings.NewService(database.GetConnection()), withCommonData)
+	contactsHandler := contacts.NewHandler(contacts.NewService(database.GetConnection()), withCommonData)
 	router.GET("settings", settingsHandler.Index)
 	router.GET("settings/:id/edit", settingsHandler.Edit)
 	router.Match([]string{http.MethodPut, http.MethodPatch}, "settings/:id", settingsHandler.Update)
+	
+	router.GET("contacts", contactsHandler.Index)
+	router.GET("contacts/:id/edit", contactsHandler.Edit)
+	router.Match([]string{http.MethodPut, http.MethodPatch}, "contacts/:id", contactsHandler.Update)
 }
 
 type CurdContract interface {
