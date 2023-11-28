@@ -1,6 +1,7 @@
 package users
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-contrib/sessions"
@@ -36,6 +37,7 @@ func (handler *AuthHandler) Login(ctx *gin.Context) {
 	var LoginRequest loginRequest
 	ctx.ShouldBind(&LoginRequest)
 	if errors := validator.Validate(LoginRequest); errors != nil {
+		fmt.Println(errors)
 		helpers.RedirectFailedWithValidation(ctx, "/admin/auth/login", errors, LoginRequest)
 		return
 	}
