@@ -7,6 +7,8 @@ import (
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/helpers"
 	"golang.org/x/exp/maps"
 	"gorm.io/gorm"
+	gomail "gopkg.in/gomail.v2"
+
 )
 
 type Service struct {
@@ -40,9 +42,10 @@ func (service *Service) BindForm(context *gin.Context) ContactForm {
 
 	for _, service := range services {
 		if form.ServiceTypeItems == nil {
-			form.ServiceTypeItems = make(map[int]string)
+			form.ServiceTypeItems = make(map[string]string)
 		}
-		form.ServiceTypeItems[service] = context.PostForm(fmt.Sprintf("service_type_items[%v]", service))
+		
+		form.ServiceTypeItems[fmt.Sprint(service)] = context.PostForm(fmt.Sprintf("service_type_items[%v]", service))
 	}
 
 	form.Attachment, _ = context.FormFile("attachment")
@@ -74,24 +77,38 @@ func (service *Service) SaveContactData(c *gin.Context, data ContactForm) *Conta
 	return &contact
 }
 func (service *Service) Update(ctx *gin.Context, ID uint, Request *ContactRequest) *gorm.DB {
-	category := Request.ToEntity()
-	category.ID = ID
-	return service.db.Save(category)
+	entity := Request.ToEntity()
+	entity.ID = ID
+
+	trx :=service.db.Model(entity).Updates(entity)
+	trx.Find(&entity,ID)
+
+	msg := gomail.NewMessage()
+    msg.SetHeader("From", "photomaker@photomaker.com")
+    msg.SetHeader("To", entity.Email)
+    msg.SetHeader("Subject", "replying on your message to phomaker ")
+    msg.SetBody("text/html",fmt.Sprintf("hello %s </br> %s",entity.Name, entity.Replay))
+
+    n := gomail.NewDialer("localhost", 1025, "", "")
+
+    // Send the email
+    if err := n.DialAndSend(msg); err != nil {
+        panic(err)
+    }
+	return trx
 }
 
 func (service *Service) Find(ID int) *Contact {
 	Contact := Contact{}
 	service.db.Find(&Contact, ID)
-	SelectedserviceTypeItems:=Contact.ServiceTypes.(map[string]interface{});
+	SelectedserviceTypeItems:=Contact.ServiceTypes;
 	servicesIDs := maps.Keys(SelectedserviceTypeItems)
 	services := []ServiceType{}
 	service.db.Find(&services, servicesIDs)
-m:=make(map[string]interface{})
+m:=make(map[string]string)
 	for _, serviceType := range services {
-		m[serviceType.NameEn]=SelectedserviceTypeItems[ fmt.Sprint(serviceType.ID)]
+		m[serviceType.NameEn]=SelectedserviceTypeItems[fmt.Sprint(serviceType.ID)]
 	}
 	Contact.ServiceTypes=m
-	fmt.Println(Contact.ServiceTypes)
-
 	return &Contact
 }

@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/helpers"
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/validator"
+
 	csrf "github.com/utrack/gin-csrf"
 )
 
@@ -40,7 +41,6 @@ func (handler Handler) Edit(ctx *gin.Context) {
 func (handler Handler) Update(ctx *gin.Context) {
 	id, err := strconv.Atoi(ctx.Param("id"))
 
-	fmt.Println(id)
 	if err != nil {
 		helpers.RedirectFailedWithMessage(ctx, fmt.Sprintf("/admin/contacts/%s/edit", ctx.Param("id")), "Invalid Contact ")
 		return

@@ -12,5 +12,5 @@ type Contact struct {
 	File         string
 	Category     string
 	Replay       string
-	ServiceTypes interface{} `gorm:"serializer:json"`
+	ServiceTypes map[string]string `gorm:"serializer:json"`
 }

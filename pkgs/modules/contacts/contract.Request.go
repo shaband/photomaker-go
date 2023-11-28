@@ -1,7 +1,7 @@
 package contacts
 
 type ContactRequest struct {
-	Replay string `form:"replay" validate:"required,"`
+	Replay string `form:"replay" validate:"required"`
 
 }
 

@@ -10,6 +10,6 @@ type ContactForm struct {
 	Phone            string                `form:"phone" validate:"required"`
 	Email            string                `form:"email" validate:"required,email"`
 	ServiceTypes     []int                 `form:"service_types[]" validate:"required,dive,required" `
-	ServiceTypeItems map[int]string        `form:"service_type_items" validate:"required"`
+	ServiceTypeItems map[string]string        `form:"service_type_items" validate:"required"`
 	Attachment       *multipart.FileHeader `form:"-" validate:"omitempty,file"`
 }
