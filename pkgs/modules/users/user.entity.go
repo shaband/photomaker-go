@@ -15,8 +15,10 @@ type User struct {
 }
 
 func (u *User) CheckPassword(password string) bool {
-	return CheckPasswordHash(u.Password, password)
+	return CheckPasswordHash( password,u.Password)
 }
+
+
 
 func HashPassword(password string) (string, error) {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)

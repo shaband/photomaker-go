@@ -2,13 +2,13 @@ package contacts
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/gin-gonic/gin"
 	"github.com/shaband/photomaker-go/pkgs/infrastucture/helpers"
 	"golang.org/x/exp/maps"
-	"gorm.io/gorm"
 	gomail "gopkg.in/gomail.v2"
-
+	"gorm.io/gorm"
 )
 
 type Service struct {
@@ -93,7 +93,7 @@ func (service *Service) Update(ctx *gin.Context, ID uint, Request *ContactReques
 
     // Send the email
     if err := n.DialAndSend(msg); err != nil {
-        panic(err)
+        log.Println(err)
     }
 	return trx
 }

@@ -42,7 +42,9 @@ func (handler *AuthHandler) Login(ctx *gin.Context) {
 		return
 	}
 	err := handler.service.Login(ctx, LoginRequest)
+	
 	if err != nil {
+	fmt.Println(err)
 		helpers.RedirectFailedWithMessage(ctx, "/admin/auth/login", err.Error())
 		return
 	}
